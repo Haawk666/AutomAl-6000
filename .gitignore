@@ -1,0 +1,25 @@
+# Python stuff:
+__pycache__/
+
+# IDE-generated stuff:
+workspace.xml
+misc.xml
+modules.xml
+vcs.xml
+AACC.iml
+.idea/
+
+# Sphinx stuff
+Docs/build/
+
+# AACC-generated stuff:
+log_test.log
+log.txt
+Images/Outputs/Buffers/
+aacc.exe
+AutomAl6000.exe
+build/
+dist/
+Pipfile.lock
+aacc.spec
+temp/
