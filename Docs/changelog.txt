@@ -1,0 +1,108 @@
+AACC 0.0.0
+From specialization project version to first restructured version 0.0.0
+
+
+New features in 0.0.0:
+-----------------
+- Fully restructured both the core program and the GUI from scratch.
+  This will hopefully make the program structure more sensible and thus make life easier in the future.
+  Tried to lay good structural foundations for future features
+  
+- Added terminal output as a new widget, allowing the core to report on its progress and other program
+  info to be displayed. The logging module is now used to generate intermodular reporting.
+
+- Marginally improved column detection: Vertex positions are now calculated as float values rather
+  than pixel indicies. This allows columns to have more fine-tuned positions and evades pixel
+  snapping as it used to. It has escpecially improved the accuracy of column positions in realtively
+  low resolution images (Such as large particles).
+  
+- Column characterization has had a major ovehaul. New and better statistical analysis has uncovered new distributions
+  over several parameters. Weak and strong untangling has been done from scratch. New methods for analysing levels,
+  finding intersections much more have been implemented, and is in early testing.
+  
+- Implemented better version handling. If the core detects a save-file from a previous version, it will
+  run a script that loads the instance in a compatible version and transforms the data to the current
+  version. Hopefully this will ensure backwards compatibility with save-states through all versions!
+  (Adding a new attribute to the SuchSoftware, AtomicGraph, Egde or Vertex classes breaks save-file
+  compatibility, which is a hassle...) Note: Version compatibility will only be preserved starting from
+  this version (0.0.0). Due to how pickle works, it was not possible to write a dynamic script to
+  handle version conversion from the previous version. I had to make this conversion by writing two
+  different scripts that must be run explicitly. If file conversion from the previous version to
+  version 0.0.0 is needed, send me the files and I can convert them and return them manually!
+  
+- Added some keyboard shortcuts: When you have a column selected, press 1 to instantly change its
+  species to Aluminium, 2 for Magnesium, 3 for Silicon and 4 for Copper. Use the '+' key to easily
+  toggle the column height between 0, 1 and 2. (0 corresponds to the 0-plane, 1 corresponds to the
+  1/2-plane and 2 is a special height that is intended for special cases, such as beta prime corners).
+  If you have 'enable move' enabled, you can use the 'w/a/s/d'-keys to move the selected column at pixel
+  increments (Make sure the central widget has focus). You can now also cycle through the tabs of the
+  central widget with the 'x' and 'z'-key. (x takes you to the right, z to the left)
+  
+- Improved the visual cue in overlay and graph-views of the currently selected column.
+  
+- Enableded zooming of the tab-views with 'shift+mousescrollwheel'. 'alt+mouswheel' will scroll the
+  view horizontally' and simply scrolling will scroll the view vertically. This made the GUI 'feel' a
+  lot less restrained and was sorely needed in my opinion.
+  
+- The tab-views are now linked, meaning that if you zoom in and translate your view to a specific area
+  in the graph-tab, when you switch to for instance the overlay-tab, it will be zoomed in and translated
+  to the same area. This allows you to swiftly switch between views of the same image feature. In the 
+  future I plan to have a checkbox that toggles this feature.
+  
+- Added a vertex report button that will print a report of vertex/column properties to the right-side
+  window. Also added a button 'print index', which will print only the index of the column to the console,
+  in case you need to remember it for later. (No more writing down full pages of vertex indices by hand).
+  Pressing the 'stats' button in the image controls group will now also report image and particle stats
+  to the console window, instead of showing it in a pop-up-box. This is convenient in many ways.
+  
+- When manually setting the species of a column, this is now respected by the algorithm and no changes
+  will be made to that column unless you reset it with the new 'reset column' button.
+  
+- Added an option in the overlay filters to toggle show/hide columns that have been set by the user.
+
+- Vectorized some old code, producing a slight optimization on some sub-processes.
+
+- Wrote program-wide tooltips.
+
+- Added the option of a new 'dark' theme that is better for reviewing images in the dark!
+
+- implemented perturbation mode.
+
+- Made several plotting features for data-mining purposes.
+
+- Implemented concept of sub-graphs and a new tab for this.
+
+- Made an api for writing plugins, as well as an example plugin.
+
+- Wrote a data-export wizard!
+
+- Made a new group-box type that can be expanded or collapsed by doubble-clicking
+  
+
+Bugfixes:
+-----------------
+- Fixed some of the buggines in the overlay filters, but work still remains on this.
+
+- A lot of code has been changed in this update, and not much time for testing, so many new bugs have
+  probarbly been introduced, Yehaaw!
+
+- Fixed the crashing when closing and loading projects bug. (I think...)
+
+- Tried to clean the code as much as time allowed (Still a lot of cleaning and optimization to be done!)
+
+
+other:
+-----------------
+- Slightly started the daunting task of properly commenting and formatting docstrings. The first priority
+  is the graph.py file.
+
+- Made a validation set of images that the algorithm can be compared with through a script. This will
+  enable quick statistics of the effectiveness of any new change made to the algorithm. This will hopefully
+  streamline the future effort a bit. This script can be run from the debug menu and will print a report.
+ 
+- set up a repo at gitHUB and is now actively using version control.
+
+
+
+
+
