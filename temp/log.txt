@@ -1,0 +1,5 @@
+GUI: Welcome to AutomAl 6000 by Haakon Tvedt
+GUI: version: 0.2.1
+GUI: Build: Alpha 2.0
+GUI: See http://automal.org for help
+------------------------
