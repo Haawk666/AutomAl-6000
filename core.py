@@ -555,7 +555,7 @@ class Project:
             pass
 
         elif search_type == 6:
-            # Advanced zeta
+            # Advanced zetas
             logger.info('Running zeta analysis...')
             column_characterization.zeta_analysis(
                 self.graph,
