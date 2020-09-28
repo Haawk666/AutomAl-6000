@@ -282,10 +282,10 @@ class AtomicGraph(QtWidgets.QGraphicsScene):
         """Initialize a custom QtWidgets.QGraphicsScene object for **atomic graphs**."""
 
         super().__init__(*args)
-
         self.ui_obj = ui_obj
         self.scale_factor = scale_factor
         self.mode = mode
+        self.lbl_progress = QtWidgets.QLabel('')
         self.interactive_vertex_objects = []
         self.arcs = []
         self.mesh_details = []
@@ -1673,8 +1673,8 @@ class ControlWindow(QtWidgets.QWidget):
                 '2 - ...The rest',
                 '3 - Spatial mapping',
                 '4 - Identify edge columns',
-                '5 - Basic zeta analysis',
-                '6 - Advanced zeta analysis',
+                '5 - Not in use',
+                '6 - Zeta analysis',
                 '7 - Apply alpha model',
                 '8 - Particle detection',
                 '9 - Calculate normalized gamma',
@@ -1687,7 +1687,7 @@ class ControlWindow(QtWidgets.QWidget):
                 '16 - Map vertex connectivity',
                 '17 - Map vertex in-connectivity',
                 '18 - Untangling algorithm',
-                '19 - Weighted zeta analysis',
+                '19 - Weak untangling',
                 '20 - Binary zeta analysis',
                 '21 - Not in use',
                 '22 - Not in use',

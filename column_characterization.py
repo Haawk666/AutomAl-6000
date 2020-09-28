@@ -170,7 +170,7 @@ def calculate_precipitate_displacement(graph_obj):
                 lower_y = vertex.spatial_coor_y
 
 
-def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district', use_n=False):
+def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district', use_n=False, ui_obj=None):
     logger.info('Starting zeta analysis')
     if method == 'weighted':
         logger.info('    Mapping cities..')
@@ -190,7 +190,24 @@ def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district',
     else:
         votes[starting_index] = -1
     counter = 0
+    if ui_obj is not None:
+        ui_obj.gs_atomic_graph.lbl_progress.setText('Iteration {}'.format(0))
+        ui_obj.gs_atomic_graph.addWidget(ui_obj.gs_atomic_graph.lbl_progress)
     cont = True
+    if method == 'district':
+        attr = 'district'
+    elif method == 'separation':
+        attr = 'projected_separation_district'
+    elif method == 'partners':
+        attr = 'partners'
+    elif method == 'out_neighbours':
+        attr = 'out_neighbourhood'
+    elif method == 'weighted':
+        attr = 'city'
+    elif method == 'binary':
+        attr = 'district'
+    else:
+        attr = 'district'
     while cont:
         for vertex in graph_obj.vertices:
             if use_n:
@@ -198,21 +215,21 @@ def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district',
             else:
                 n = 3
             if method == 'district':
-                candidates = vertex.district[0:n]
+                candidates = getattr(vertex, attr)[0:n]
             elif method == 'separation':
-                candidates = vertex.projected_separation_district[0:n]
+                candidates = getattr(vertex, attr)[0:n]
             elif method == 'partners':
-                candidates = list(vertex.partners)
+                candidates = list(getattr(vertex, attr))
             elif method == 'out_neighbours':
-                candidates = list(vertex.out_neighbourhood)
+                candidates = list(getattr(vertex, attr))
             elif method == 'weighted':
-                candidates = vertex.city
+                candidates = getattr(vertex, attr)
             elif method == 'binary':
                 candidates = vertex.district
                 if vertex.is_edge_column:
                     candidates = vertex.district[0:n]
             else:
-                candidates = vertex.district[0:n]
+                candidates = getattr(vertex, attr)[0:n]
             if method == 'binary':
                 for citizen in candidates:
                     if citizen in vertex.partners:
@@ -231,11 +248,16 @@ def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district',
                             votes[citizen] = 100
                         elif votes[citizen] < -100:
                             votes[citizen] = -100
+                elif not vertex.is_in_precipitate:
+                    for citizen in candidates:
+                        votes[citizen] -= 0.2 * votes[vertex.i]
+                        if votes[citizen] > 100:
+                            votes[citizen] = 100
+                        elif votes[citizen] < -100:
+                            votes[citizen] = -100
                 else:
                     for citizen in candidates:
-                        r = graph_obj.projected_separation_matrix[vertex.i, citizen]
-                        factor = 1 - r / 404.95
-                        votes[citizen] -= factor * votes[vertex.i]
+                        votes[citizen] -= 0.1 * votes[vertex.i]
                         if votes[citizen] > 100:
                             votes[citizen] = 100
                         elif votes[citizen] < -100:
@@ -251,7 +273,7 @@ def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district',
             vertex.set_zeta(1)
 
     graph_obj.build_local_zeta_maps()
-    # graph_obj.build_local_maps()
+    graph_obj.build_local_maps()
 
     time_2 = time.time()
     logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))

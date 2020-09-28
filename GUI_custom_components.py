@@ -144,12 +144,10 @@ class InteractiveGraphColumn(InteractiveColumn):
 
         Inherits GUI_custom_components.InteractiveColumn. Is used to highlight atomic positions."""
         super().__init__(ui_obj=ui_obj, vertex=vertex, scale_factor=scale_factor, movable=True, selectable=True, r=r)
-
         self.selected_pen = GUI_settings.pen_selected_1
         self.unselected_pen = GUI_settings.pen_graph
         self.level_0_brush = GUI_settings.brush_graph_0
         self.level_1_brush = GUI_settings.brush_graph_1
-
         self.set_style()
 
     def set_style(self):
@@ -162,6 +160,10 @@ class InteractiveGraphColumn(InteractiveColumn):
             self.setBrush(self.level_0_brush)
         else:
             self.setBrush(self.level_1_brush)
+
+    def set_brush_greyscale(self, grey_value):
+
+        self.brush().setColor(QtGui.QColor(grey_value, grey_value, grey_value))
 
 
 class Arrow(QtWidgets.QGraphicsItemGroup):

@@ -562,7 +562,8 @@ class Project:
                 starting_index,
                 self.graph.vertices[starting_index].zeta,
                 use_n=True,
-                method='partners'
+                method='partners',
+                ui_obj=ui_obj
             )
             logger.info('zeta\'s set.')
 
