@@ -7,6 +7,11 @@ user of AutomAl 6000 might want to accomplish.
 Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+AutomAl 6000 can be run from an executable file for windows, or directly from the source code.
+
+Executable
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 To install AutomAl 6000, simply follow the steps below.
 
     1. Go to the **download** section of this webpage, and download the zip-file provided under **Executable** to a
@@ -15,21 +20,50 @@ To install AutomAl 6000, simply follow the steps below.
     2. Navigate to the downloaded zip-file on your computer, right click and select 'extract all' or something similar,
     depending on your operating system or installed compression software.
 
-    3. (Optional) Navigate into the extracted folder and locate the 'aacc.exe' -file. Right click and select 'Send to
+    3. (Optional) Navigate into the extracted folder and locate the 'AutomAl6000.exe' -file. Right click and select 'Send to
     -> desktop (create shortcut)', if a desktop shortcut is desired.
 
 .. note::
 
-    When starting AutomAl, there will be a significant waiting-time (\~20 sec) before the GUI loads. This is because
-    the exe will first build its environment in temporary folders, which takes some time. Unfortunately, as a
-    consequence of pyinstaller's --onefile option, during this time there will be no indication that the program is
-    running, so be patient before clicking several times! In the future, a full-fledged installer is planned, which will
-    eliminate this 'quirk'.
+    There is not yet an executable available for the current version, as these have been very time-consuming to get
+    working. Once a semi-stable version of AutomAl 6000 is reached, we still intend to provide an executable.
+
+Source code
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Using AutomAl 6000 directly from the source code, takes some extra steps to set up. Some of these steps are explained in
+more depth in the "quickstart" tutorial available from the **links** section. All though the steps below are explained
+for windows users, the software **might** also work on different systems, but this has not been tested as of yet.
+
+    #. Go to `AutomAl 6000 on GitHub <https://github.com/Haawk666/AutomAl-6000>`_, and from the sub-menu of the **clone** button, select **Download ZIP** and select a suitable location on your computer.
+
+    #. Unzip the folder.
+
+    #. Download and install the latest 64-bit version of `python <https://www.python.org/>`_  for windows, and make sure python.exe is added to your system path. (or just use an already existing install if you have python 3.8 or higher).
+
+    #. From the start menu of windows, type ``cmd``, and hit enter. This should bring up a terminal window.
+
+    #. Install **pipenv** by typing ``pip install pipenv``, and hitting enter.
+
+    #. Navigate to the location of aacc.py by first typing the letter of the drive, followed by a colon and hitting enter. Next, type ``cd`` and the path to the unzipped ``AutomAl-6000-master`` folder. For instance, if aacc.py were located in ``C:\programs\automal6000``, one would first type ``C:`` and hit enter, and then ``cd programs\automal6000``.
+
+    #. Type ``pipenv shell`` and hit enter. This will create a virtual environment for the folder and activate it.
+
+    #. Type ``pipenv install numpy`` and hit enter. This will install numpy as well as all other requirements from the pipfile in the folder.
+
+    #. If all went according to plan (see notes below), you can now type ``python aacc.py`` and hit enter to start AutomAl 6000.
+
+.. note::
+
+    On some networks, pip will not be allowed to download from pypi.org. Try a different network.
+
+.. note::
+
+    If pipenv for some reason does not install all the dependencies from the pipfile, manually install ``numpy``, ``scipy``, ``pillow``, ``matplotlib`` and ``pyqt5``.
+
 
 Keyboard shortcuts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-These key-bindigs will be applicable from version Alpha 1.1..
 
 =================   =====================================================   =====================================================
 Key                 Function                                                Alternate function
@@ -43,11 +77,6 @@ Z, X                Move left/right between tabs in the central widget
 2                   Set currently selected column to 'Cu'
 3                   Set currently selected column to 'Al'
 4                   Set currently selected column to 'Mg'
-5
-6
-7
-8
-9
 \+                  Toggle currently selected column z-height
 P                   Enable move (Enter to accept, P to reset)
 R                   Print details about currently selected column

@@ -170,111 +170,52 @@ def calculate_precipitate_displacement(graph_obj):
                 lower_y = vertex.spatial_coor_y
 
 
-def zeta_analysis(graph_obj, starting_index, starting_zeta=0, method='district', use_n=False, ui_obj=None):
-    logger.info('Starting zeta analysis')
-    if method == 'weighted':
-        logger.info('    Mapping cities..')
-        for vertex in graph_obj.vertices:
-            vertex.city = set()
-            vertex.city.add(vertex.i)
-            for citizen in vertex.district:
-                vertex.city.add(citizen)
-                for extended_citizen in graph_obj.vertices[citizen].district:
-                    vertex.city.add(extended_citizen)
-        graph_obj.build_local_maps(build_out=True)
-        logger.info('    Cities mapped.')
+def zeta_analysis(graph_obj):
+    logger.info('Starting zeta analysis...')
     time_1 = time.time()
     votes = [0] * graph_obj.order
-    if starting_zeta == 0:
-        votes[starting_index] = 1
-    else:
-        votes[starting_index] = -1
-    counter = 0
-    if ui_obj is not None:
-        ui_obj.gs_atomic_graph.lbl_progress.setText('Iteration {}'.format(0))
-        ui_obj.gs_atomic_graph.addWidget(ui_obj.gs_atomic_graph.lbl_progress)
+    votes[0] = 1
     cont = True
-    if method == 'district':
-        attr = 'district'
-    elif method == 'separation':
-        attr = 'projected_separation_district'
-    elif method == 'partners':
-        attr = 'partners'
-    elif method == 'out_neighbours':
-        attr = 'out_neighbourhood'
-    elif method == 'weighted':
-        attr = 'city'
-    elif method == 'binary':
-        attr = 'district'
-    else:
-        attr = 'district'
+    counter = 0
     while cont:
         for vertex in graph_obj.vertices:
-            if use_n:
-                n = vertex.n
-            else:
-                n = 3
-            if method == 'district':
-                candidates = getattr(vertex, attr)[0:n]
-            elif method == 'separation':
-                candidates = getattr(vertex, attr)[0:n]
-            elif method == 'partners':
-                candidates = list(getattr(vertex, attr))
-            elif method == 'out_neighbours':
-                candidates = list(getattr(vertex, attr))
-            elif method == 'weighted':
-                candidates = getattr(vertex, attr)
-            elif method == 'binary':
-                candidates = vertex.district
+            for partner in vertex.partners:
                 if vertex.is_edge_column:
-                    candidates = vertex.district[0:n]
-            else:
-                candidates = getattr(vertex, attr)[0:n]
-            if method == 'binary':
-                for citizen in candidates:
-                    if citizen in vertex.partners:
-                        votes[citizen] -= 0.5 * votes[vertex.i]
-                    elif citizen in vertex.anti_neighbourhood:
-                        votes[citizen] += 0.2 * votes[vertex.i]
-                    if votes[citizen] > 100:
-                        votes[citizen] = 100
-                    elif votes[citizen] < -100:
-                        votes[citizen] = -100
-            else:
-                if vertex.is_edge_column:
-                    for citizen in candidates:
-                        votes[citizen] -= 0.01 * votes[vertex.i]
-                        if votes[citizen] > 100:
-                            votes[citizen] = 100
-                        elif votes[citizen] < -100:
-                            votes[citizen] = -100
-                elif not vertex.is_in_precipitate:
-                    for citizen in candidates:
-                        votes[citizen] -= 0.2 * votes[vertex.i]
-                        if votes[citizen] > 100:
-                            votes[citizen] = 100
-                        elif votes[citizen] < -100:
-                            votes[citizen] = -100
+                    votes[partner] -= 0.1 * votes[vertex.i]
+                    if votes[partner] > 100:
+                        votes[partner] = 100
+                    elif votes[partner] < -100:
+                        votes[partner] = -100
                 else:
-                    for citizen in candidates:
-                        votes[citizen] -= 0.1 * votes[vertex.i]
-                        if votes[citizen] > 100:
-                            votes[citizen] = 100
-                        elif votes[citizen] < -100:
-                            votes[citizen] = -100
+                    votes[partner] -= 0.5 * votes[vertex.i]
+                    if votes[partner] > 100:
+                        votes[partner] = 100
+                    elif votes[partner] < -100:
+                        votes[partner] = -100
+            for out_semi_partner in vertex.out_semi_partners:
+                if not vertex.is_edge_column:
+                    votes[out_semi_partner] -= 0.2 * votes[vertex.i]
+                    if votes[out_semi_partner] > 100:
+                        votes[out_semi_partner] = 100
+                    elif votes[out_semi_partner] < -100:
+                        votes[out_semi_partner] = -100
+            for anti_neighbour in vertex.anti_neighbourhood:
+                if not vertex.is_edge_column:
+                    votes[anti_neighbour] += 0.0 * votes[vertex.i]
+                    if votes[anti_neighbour] > 100:
+                        votes[anti_neighbour] = 100
+                    elif votes[anti_neighbour] < -100:
+                        votes[anti_neighbour] = -100
         counter += 1
         if counter > 1000:
             cont = False
-
     for vertex in graph_obj.vertices:
         if votes[vertex.i] > 0:
             vertex.set_zeta(0)
         else:
             vertex.set_zeta(1)
-
     graph_obj.build_local_zeta_maps()
     graph_obj.build_local_maps()
-
     time_2 = time.time()
     logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
 

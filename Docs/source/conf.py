@@ -86,16 +86,16 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-# html_theme_options = {
-#     "relbarbgcolor": "black"
-# }
+html_theme_options = {
+    'style_nav_header_background': 'black'
+}
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 html_short_title = 'AutomAl'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = '_static/logo.png'
+html_logo = '_static/logo_inverted.png'
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
