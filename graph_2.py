@@ -940,7 +940,7 @@ class AtomicGraph:
                 counter += 1
                 i, j = j, next_index
             backup_counter += 1
-            if backup_counter > 25:
+            if backup_counter > 25 or len(corners) == 1:
                 # logger.warning('Emergency stop!')
                 stop = True
         angles = []

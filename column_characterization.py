@@ -179,29 +179,45 @@ def zeta_analysis(graph_obj):
     counter = 0
     while cont:
         for vertex in graph_obj.vertices:
+            # Evaluate "trustworthyness" of the vertex NN structure information:
+            # - ie Vertices with no semi-partners should be more influential than vertices with many semi-partners.
+            # - Whether the average mesh centered sub_graphs around the vertex deviates from 4 should also negatively influence the trustworthyness of the vertex.
+            # - So, let the trustworthyness of a vertex be th_i = MAX(0, -0.167 * (|P~(v_i)| + (Sum_j(|V(H_mesh^(1)(v_i, v_j))|) / |N(v_i)|) ** 2) + 1)
+            avg_mesh_order = 0
+            for j in vertex.neighbourhood:
+                mesh = graph_obj.get_mesh(vertex.i, j)
+                avg_mesh_order += mesh.order
+            avg_mesh_order /= len(vertex.neighbourhood)
+
+            th_i = -0.05 * (len(vertex.semi_partners) + (4 - avg_mesh_order) ** 2) + 1
+            if th_i < 0:
+                th_i = 0
+
+            print('Vertex {}: {}, {}'.format(vertex.i, avg_mesh_order, th_i))
+
             for partner in vertex.partners:
                 if vertex.is_edge_column:
-                    votes[partner] -= 0.1 * votes[vertex.i]
+                    votes[partner] -= th_i * 0.1 * votes[vertex.i]
                     if votes[partner] > 100:
                         votes[partner] = 100
                     elif votes[partner] < -100:
                         votes[partner] = -100
                 else:
-                    votes[partner] -= 0.5 * votes[vertex.i]
+                    votes[partner] -= th_i * 0.5 * votes[vertex.i]
                     if votes[partner] > 100:
                         votes[partner] = 100
                     elif votes[partner] < -100:
                         votes[partner] = -100
             for out_semi_partner in vertex.out_semi_partners:
                 if not vertex.is_edge_column:
-                    votes[out_semi_partner] -= 0.2 * votes[vertex.i]
+                    votes[out_semi_partner] -= th_i * 0.2 * votes[vertex.i]
                     if votes[out_semi_partner] > 100:
                         votes[out_semi_partner] = 100
                     elif votes[out_semi_partner] < -100:
                         votes[out_semi_partner] = -100
             for anti_neighbour in vertex.anti_neighbourhood:
                 if not vertex.is_edge_column:
-                    votes[anti_neighbour] += 0.0 * votes[vertex.i]
+                    votes[anti_neighbour] += th_i * 0.0 * votes[vertex.i]
                     if votes[anti_neighbour] > 100:
                         votes[anti_neighbour] = 100
                     elif votes[anti_neighbour] < -100:

@@ -4,6 +4,7 @@ Guides
 Herein we have collected a selection of guides that tries to give a step-by-step introduction to certain tasks that a
 user of AutomAl 6000 might want to accomplish.
 
+
 Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -82,6 +83,16 @@ P                   Enable move (Enter to accept, P to reset)
 R                   Print details about currently selected column
 =================   =====================================================   =====================================================
 
+GUI familiarization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The GUI has four main components.
+
+* **Control window**. In the left dock widget, there are buttons, readouts and settings used to interact with the software. The controls are grouped by function, and these groups can be expanded or collapsed by double clicking on the group title.
+* **Tab view**. The central widget features several tabs. Each tab offers a different viewing function for the image. The tabs can be cycled with the ``z`` and ``x`` keys.
+* **Terminal window**. In the right dock widget, AutomAl 6000 modules will output information about what they are doing.
+* **System bar**. At the bottom of the GUI, AutomAl 6000 will report current status. When tasks are being performed, the GUI will often be frozen and the system message will typically be ``working...``. If the GUI is ready for inputs, the system message will be ``Ready.``.
+
+
 Project workflow with AutomAl's GUI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -89,16 +100,16 @@ There is an implicit logical progression when analyzing images with the AutomAl 
 project file will be in certain *stages*, and what state the project is in will affect what you can and/or should do
 next. The stages are
 
-    #. A dm3 HAADF-STEM image has been imported as a project file, but no other analysis has taken place yet. the project is in an 'initial' state.
+    #. A dm3 HAADF-STEM image has been imported as a project file, but no other analysis has taken place yet. the project is in an **initial** state.
 
-    #. Column detection has been performed, and the project now has information about 2D atomic positions. The project is now in a 'column' state.
+    #. Column detection has been performed, and the project now has information about 2D atomic positions. The project is now in a **columns** state.
 
-    #. Column characterization has been applied, and colums now have information about the probability of its own atomic species, its z-position, its neighbours in the opposite and same crystal plane, etc... The project is in a 'result' stage.
+    #. Column characterization has been applied, and columns now have information about the probability of its own atomic species, its z-position, its neighbours in the opposite and same crystal plane, etc... The project is in a **result** stage.
 
-    #. Manual consideration of the data, and manual corrections and control has been performed by the user. This is the final state, and the project in now in a 'control' state.
+    #. Manual consideration of the data, and manual corrections and control has been performed by the user. This is the final state, and the project in now in a **control** state.
 
-It is the 'control' state that one would use to analyse data, perform principal component analysis, generate plots
-and/or export data. It is important to note though, that these 'states' are only implicit, and is not internally
+It is the **control** state that one would use to analyse data, generate models
+and/or export data. It is important to note though, that these *states* are only implicit, and is not internally
 tracked, and even though the GUI has checks in place to make sure invalid operations are not performed, some of the
 software's methods assume a certain state, but can be performed in other states as well, with possibly unpredictable
 results. The outline given below, should give a feel for how the GUI is intended to be used.
@@ -106,26 +117,38 @@ results. The outline given below, should give a feel for how the GUI is intended
 Initial stage
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Before importing an .dm3 -file into AutomAl, one will usually find it beneficial to prepare the image in a specific
-way. Using a program such as digital micrograph (DMG), one should apply a fft-mask to reduce the noise in the image. In
-addition, one could use digital micrograph's scaling algorithm to upscale the image if it is small and/or low
-magnification (The scale should typically not be any lower than \~6 pm / pixel). These preparation steps will greatly
-increase the effectiveness of the column detection algorithm. In the future, these techniques might be included directly
-in the software, but for now, pre-processing in DMG is necessary.
+Before importing an .dm3 -file into AutomAl 6000, some pre-processing is needed. Below is an excerpt from my master thesis.
 
 .. Note::
 
-    The filetype of .dm3 must be maintained. It is the only file-type currently supported for import, and contains essential
-    metadata. For example, when rescaled in DMG, the 'scale' field of the dm3 metadata is correctly and automatically
-    updated.
+    For the column detection to work optimally, images that are to be analyzed using AutomAl 6000
+    should be noise filtered using software such as Gatan Microscopy Suite (GMS) by Gatan [13], which
+    is a commercial image processor that is widely used in the TEM-field as a constituent of the standard
+    software suites on TEM hardware. Applying an appropriate low pass filter on the Fast Fourier Transform (FFT) of the image will eliminate many of the noise frequencies of the image. Filtering out the
+    noise in the image is necessary for column detection to work.
 
-Now that we have a pre-processed .dm3 file ready, we can open AutomAl, and from the 'file' menu select 'new'. Using the
-file-dialog, locate the .dm3 and hit 'open'.
+    To apply a low pass filter in GMS, start by performing a FFT on the image. Click on the resulting
+    FFT with the band pass tool selected, which will produce a donut shaped mask on the FFT. Adjust
+    the inner radius of the mask to zero, and the outer radius to approximately 6,7 nm−1, which will
+    include the 200 Al reflection, and exclude the 220 Al reflection. This will eliminate features that are
+    smaller than 0.15 nm in real space. Finally, perform inverse FFT on the masked FFT to obtain the
+    noise filtered image.
 
-With the program there is a sample image included which can be used to get familiar with the software. This file is
-called 'sample.dm3', and is already pre-processed, so can be imported directly. Once 'sample.dm3' is imported, the
-project instance that the GUI creates, is now in the 'initial' state, and can now be saved as an AutomAl project file using
-'file -> save'. This filetype has no exctension. Typically though, one would proceed directly to column detection from this state.
+    If the scale of the image is greater than 7 pm/pixel, AutomAl 6000 will automatically upsample the
+    image so as to double both the width and height of the image. Using bilinear up-scaling has proven
+    to have a positive effect on the column detection in images with scales in this high range. This is
+    because the circular samples used in the COM calculations becomes over-granulated (non-circular) for
+    low scales. AutomAl 6000 uses the resampling method of Scipy’s ndimage module [14].
+
+Now that we have a pre-processed .dm3 file ready, we can open AutomAl 6000, and press **Project->Import**, which will open an import dialogue.
+
+Once the image has been imported, the **species dictionary** dialogue will appear. You can read more about the species dictionary in a later section.
+
+The project can now be saved with the **Project->Save** button.
+
+.. note::
+
+    Save often!
 
 Column stage
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

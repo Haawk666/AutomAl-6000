@@ -336,7 +336,7 @@ class Project:
                 )
                 self.num_columns = 0
                 self.search_mat = copy.deepcopy(self.im_mat)
-                for vertex in self.graph.vertices():
+                for vertex in self.graph.vertices:
                     if vertex.peak_gamma > self.threshold:
                         self.num_columns += 1
                         search_peak_values.append(self.search_mat.max())
@@ -885,8 +885,15 @@ class Project:
 
     @ staticmethod
     def import_from_file(filename, file_type, gui=None):
-
         if file_type == 'dm3':
-            return Project(filename, debug_obj=gui, species_dict=Project.default_species_dict)
+            try:
+                project = Project(filename, debug_obj=gui, species_dict=Project.default_species_dict)
+            except:
+                logger.info('Could not opend .dm3 file.')
+                project = None
+            return project
+        else:
+            logger.info('Unknown import format')
+            return None
 
 
