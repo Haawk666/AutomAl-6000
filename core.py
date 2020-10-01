@@ -870,7 +870,6 @@ class Project:
         logger.info('Generating heat map (this may take a long time).')
         time_1 = time.time()
         columns = [[[]] * self.im_height] * self.im_width
-        contribution_number = [[0] * self.im_height] * self.im_width
         heat_map = np.zeros((self.im_height, self.im_width), dtype=np.float)
         kernel_pixel_size = int(kernel_size * self.al_lattice_const / self.scale)
         for vertex in self.graph.vertices:
@@ -882,12 +881,9 @@ class Project:
             for x in range(x_min, x_max):
                 for y in range(y_min, y_max):
                     columns[y][x].append(value)
-                    contribution_number[y][x] += 1
-        for x in range(0, self.im_width):
-            for y in range(0, self.im_height):
-                pass
         if measure_type.lower() == 'variance':
             for x in range(0, self.im_width):
+                print('{:.2f}%'.format(100 * x / (self.im_width - 1)))
                 for y in range(0, self.im_height):
                     heat_map[y, x] = np.var(columns[y][x])
         elif measure_type.lower() == 'mean':
