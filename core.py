@@ -496,22 +496,18 @@ class Project:
             self.column_characterization(starting_index, search_type=4, ui_obj=ui_obj)
             # Map connectivity:
             self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
-            # Advanced zeta analysis:
-            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
             # Alpha model:
             self.column_characterization(starting_index, search_type=7, ui_obj=ui_obj)
             # Map connectivity
             self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
-            # Advanced zeta analysis:
-            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
             # Find particle:
             self.column_characterization(starting_index, search_type=8, ui_obj=ui_obj)
             # Calc gamma:
             self.column_characterization(starting_index, search_type=9, ui_obj=ui_obj)
-            # Untangle
-            self.column_characterization(starting_index, search_type=18, ui_obj=ui_obj)
             # Advanced zeta analysis:
             self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
+            # Untangle
+            self.column_characterization(starting_index, search_type=18, ui_obj=ui_obj)
             # Composite model:
             self.column_characterization(starting_index, search_type=11, ui_obj=ui_obj)
             # Find particle:
@@ -839,6 +835,69 @@ class Project:
 
                 heat_map[y, x] = measure
 
+        time_2 = time.time()
+        total_time = time_2 - time_1
+        logger.info(
+            'Heat map summary:\n    Kernel size: {} * a (pm)\n    Step size: {} (px)\n'
+            '    Attribute: {}\n    Measure type: {}\n    Total time: {:.4f} (s)\n'.format(
+                kernel_size,
+                kernel_step_size,
+                attribute,
+                measure_type,
+                total_time,
+            )
+        )
+        details = {
+            'title': title,
+            'heat_mat': heat_map,
+            'kernel': {'size': kernel_size, 'step_size': kernel_step_size},
+            'attribute': attribute,
+            'measure': measure_type,
+            'min': heat_map.min(),
+            'max': heat_map.max()
+        }
+        for i, map_ in enumerate(self.maps):
+            if map_['title'] == title:
+                logger.warning('There is already a heat map with this title. Overwriting...')
+                self.maps[i] = details
+                break
+        else:
+            self.maps.append(details)
+
+        return heat_map
+
+    def make_heat_map_2(self, attribute, kernel_size=1, kernel_step_size=1, measure_type='variance', kernel_type='square', title='heat map'):
+        logger.info('Generating heat map (this may take a long time).')
+        time_1 = time.time()
+        columns = [[[]] * self.im_height] * self.im_width
+        contribution_number = [[0] * self.im_height] * self.im_width
+        heat_map = np.zeros((self.im_height, self.im_width), dtype=np.float)
+        kernel_pixel_size = int(kernel_size * self.al_lattice_const / self.scale)
+        for vertex in self.graph.vertices:
+            value = getattr(self.graph.vertices[vertex.i], attribute)
+            x_min = max(0, int(vertex.im_coor_x) - kernel_pixel_size)
+            x_max = min(self.im_width, int(vertex.im_coor_x) + kernel_pixel_size)
+            y_min = max(0, int(vertex.im_coor_y) - kernel_pixel_size)
+            y_max = min(self.im_height, int(vertex.im_coor_y) + kernel_pixel_size)
+            for x in range(x_min, x_max):
+                for y in range(y_min, y_max):
+                    columns[y][x].append(value)
+                    contribution_number[y][x] += 1
+        for x in range(0, self.im_width):
+            for y in range(0, self.im_height):
+                pass
+        if measure_type.lower() == 'variance':
+            for x in range(0, self.im_width):
+                for y in range(0, self.im_height):
+                    heat_map[y, x] = np.var(columns[y][x])
+        elif measure_type.lower() == 'mean':
+            for x in range(0, self.im_width):
+                for y in range(0, self.im_height):
+                    heat_map[y, x] = np.mean(columns[y][x])
+        else:
+            for x in range(0, self.im_width):
+                for y in range(0, self.im_height):
+                    heat_map[y, x] = np.sum(columns[y][x])
         time_2 = time.time()
         total_time = time_2 - time_1
         logger.info(

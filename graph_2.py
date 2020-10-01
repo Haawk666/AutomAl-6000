@@ -1058,7 +1058,7 @@ class AtomicGraph:
         return corners, next_, j
 
     def angle_sort(self, i, j):
-        min_angle = 300
+        min_angle = 1000
         next_index = -1
         p1 = self.vertices[i].im_pos()
         pivot = self.vertices[j].im_pos()
