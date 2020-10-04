@@ -154,19 +154,15 @@ Column stage
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 We now wish to locate the positions of the columns in the image. To do this, using the built-in centre of mass approach, set the
-threshold value under **column detection** to something like 0,3 and hit *start*. This will produce a pop-up; select *Threshold*
-from the drop-down menu and press okay. Column detection will now run for some time (1-10 mins depending on the size
-and scale of the image). When it's complete, one should evaluate the result from the *atomic positions* tab. If there are too many
-columns detected, then the process should be reset with a higher threshold value. If however not all columns where
-detected, one should lower the threshold value, and press *start* again. This will continue from the current state, and
-will pick up progressively darker columns based on the threshold value. Continue this approach until the number of
-undetected columns are approachable by manual intervention. In the current version, you must select columns that are on
-the very edge, and press *enable move* and use those to cover columns in the precipitate, if you wish to manually complete the column detection.
+threshold value **Column detection->Detection threshold value, T** to something like 0,3 (between 0 or 1) and hit **Column detection->Start**. This will produce a pop-up; select *Threshold*
+from the drop-down menu and press okay. Column detection will now run for some time (5-15 mins depending on the size
+and scale of the image). When it's complete, one should evaluate the result with the **atomic positions** tab. If there are too many or too few
+columns detected, reconsider the threshold value and hit **Column detection->Start** as before. Column detection will then either roll back detection or continue detection depending on the new threshold value.
+If there is only a handful of missing or superfluous columns, this can be corrected manually by using the buttons **Selected column->New** and **Selected column->Delete**.
 
 .. Note::
 
-    Columns on the very edge of the image will not be considered by the algorithms, so are in effect superfluous. Columns
-    to be removed can also be just be moved to the very edge.
+    Columns on the very edge of the image will not be considered by the algorithms, so are in effect superfluous.
 
 .. Note::
 
@@ -174,27 +170,28 @@ the very edge, and press *enable move* and use those to cover columns in the pre
     columns depending on properties of the image and precipitate. Additionally one might want to slightly adjust some
     positions, especially columns surrounding Cu or other
     bright columns. All this is due to the crudeness of the column detection. In the future other methods that are
-    available, like AtomMap might get integrated as an option for column detection. The column detection algorithm has not been a
+    available, like AtoMap might get integrated as an option for import. The column detection algorithm has not been a
     major focus in this work, but it still plays an important part on the end result.
 
 .. Note::
 
-    It is important to get a good result at this stage before proceeding to column characterization, since moving
-    columns after column characterization has been performed, is not currently supported.
+    It is important to get a good result at this stage before proceeding to column characterization, since the quality of the column detection might influebnce the quality of the
+    column characterization.
 
 
 Result stage
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-To produce an atomic overlay, first set the correct alloy type under *Column characterization* -> *Alloy*. Next, select
-a column that is inside the Al-matrix, and manually set its species to Al. This will act as a kind of \'seed\' column.
+To produce an atomic overlay, first set the correct alloy type by using the species dictionary dialog, accessed from **Project->Species dict**.
+Also, if a different model than the default model is to be used, set this under **Project->Associated model**. Next, select
+a column that is inside the Al-matrix, and manually set its species to Al by hitting ``3`` on the keyboard, or use **Selected column->Atomic species**. This will act as a kind of \'seed\' column.
 Then, while said column is still selected,
-hit *start* and select *0 - full column characterization*. The algorithm might take anywhere between 1-15 mins, depending on
+hit **Column characterization->Start** and select *0 - full column characterization*. The algorithm might take anywhere between 5-15 mins, depending on
 several factors.
 
 .. Note::
 
-    If no pop-up dialog appears when hitting *start*, it is because no column is selected, or because no project is open.
+    If no pop-up dialog appears when hitting **Column characterization->Start**, it is because no column is selected, or because no project is open.
 
 One can also selectively do the individual steps of the algorithm by selecting the appropriate step in the pop-up menu.
 This allows you to review the results at different stages, if for whatever reason. It is not recommended to do this,
@@ -206,37 +203,31 @@ Control stage
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 After the column characterization has run, manual consideration of the result is needed. There are several built-in
-tools to aid in this, of which the *atomic graph*, is the central component. See [Master thesis] for details on atomic
-graphs and how to interpret them, but here is the TL;DR:
+tools to aid in this, of which the *atomic graph*, is the central component. See my master thesis, introductory slides, or the youtube tutorials for details on atomic
+graphs and how to interpret them and/or manipulate them.
 
-Another tool you you can use to consider the result, is the *info-graph*. This shows...
+
+Build new statistical models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Coming soon*
+
 
 Generating plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *Coming soon*
 
-Performing built-in principle component analysis (PCA)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*Coming soon*
 
 Exporting data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *Coming soon*
 
-Testing the accuracy/effectiveness of the algorithms using the validation data-set
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*Coming soon*
 
 Using core.SuchSoftware as an API without the GUI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *Coming soon*
 
-Writing plugins for AutomAl 6000
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Coming soon*

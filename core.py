@@ -792,20 +792,13 @@ class Project:
 
         """
         logger.info('Generating heat map (this may take a long time).')
-
         time_1 = time.time()
-
         self.graph.build_cities()
-
         heat_map = np.zeros((self.im_height, self.im_width), dtype=np.float)
-
         kernel_pixel_size = int(kernel_size * self.al_lattice_const / self.scale)
-
         x_steps = int(self.im_width/kernel_step_size)
         y_steps = int(self.im_height/kernel_step_size)
-
         warning_triggered = False
-
         for x_step in range(0, x_steps):
             x = x_step * kernel_step_size
             print('{:.2f}%'.format(100 * x / (x_steps - 1)))
@@ -820,7 +813,6 @@ class Project:
                                     y - kernel_pixel_size < citizen.im_coor_y < y + kernel_pixel_size:
                                 attribute_list.append(getattr(citizen, attribute))
                         break
-
                 if measure_type.lower() == 'variance':
                     measure = np.var(attribute_list)
                 elif measure_type.lower() == 'mean':
@@ -834,7 +826,6 @@ class Project:
                     measure = np.var(attribute_list)
 
                 heat_map[y, x] = measure
-
         time_2 = time.time()
         total_time = time_2 - time_1
         logger.info(
