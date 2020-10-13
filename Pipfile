@@ -13,6 +13,7 @@ scipy = "*"
 pyqt5 = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+h5py = "*"
 
 [requires]
 python_version = "3.8"

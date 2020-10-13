@@ -114,7 +114,8 @@ class Project:
         # Counting and statistical variables.
         self.num_columns = 0
         self.pixel_average = 0
-        self.calc_avg_pixel_value()
+        if not (filename_full == 'Empty' or filename_full == 'empty'):
+            self.calc_avg_pixel_value()
 
         # These are hyper-parameters of the algorithms. See the documentation.
         self.threshold = 0.2586
@@ -935,8 +936,11 @@ class Project:
             try:
                 project = Project(filename, debug_obj=gui, species_dict=Project.default_species_dict)
             except:
-                logger.info('Could not opend .dm3 file.')
+                logger.info('Could not open .dm3 file.')
                 project = None
+            return project
+        elif file_type == 'AtoMap':
+            project = conversion_tools.import_from_atomap(filename, debug_obj=gui)
             return project
         else:
             logger.info('Unknown import format')

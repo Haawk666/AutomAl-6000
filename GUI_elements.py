@@ -1631,7 +1631,7 @@ class ControlWindow(QtWidgets.QWidget):
             if ok_pressed:
                 self.ui_obj.project_instance.scale = scale
                 self.ui_obj.project_instance.r = int(100 / scale)
-                self.ui_obj.project_instance.overhead = int(6 * (self.r / 10))
+                self.ui_obj.project_instance.overhead = int(6 * (self.project_instance.r / 10))
                 self.widgets['column_detection']['sbtn_scale']['widget'].set_value(self.ui_obj.project_instance.scale)
                 self.widgets['column_detection']['lbl_atomic_radii']['widget'].set_value(self.ui_obj.project_instance.r)
                 self.widgets['column_detection']['lbl_overhead']['widget'].set_value(self.ui_obj.project_instance.overhead)
@@ -2396,9 +2396,7 @@ class ImportWizard(QtWidgets.QDialog):
             message.setText('Import format not yet supported!')
             message.exec_()
         elif self.cmb_export.currentText() == 'AtoMap':
-            message = QtWidgets.QMessageBox()
-            message.setText('Import format not yet supported!')
-            message.exec_()
+            self.ui_obj.import_trigger('AtoMap')
         else:
             message = QtWidgets.QMessageBox()
             message.setText('Import format not supported!')

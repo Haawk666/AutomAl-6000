@@ -3,3 +3,5 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
+core: Generated instance from empty
+conversion_tools: Generated instance from C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/6xxx.hdf5

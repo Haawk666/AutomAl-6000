@@ -1,7 +1,10 @@
 # Program imports:
 import utils
+import core
 # External imports:
 import logging
+import h5py
+import copy
 # Instantiate logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -210,6 +213,59 @@ def make_svg(project, filter_, species_type='atomic_species', graph=None, image=
     return xml_string
 
 
+def import_from_atomap(filename, debug_obj=None):
+
+    column_file = h5py.File(filename, 'r+')
+
+    project = core.Project('empty', debug_obj=debug_obj, species_dict=core.Project.default_species_dict)
+    project.filename_full = filename
+
+    for group_name in column_file:
+        if ('atom_lattice' in group_name) or ('sublattice' in group_name):
+            data = column_file[group_name]
+            modified_image_data = data['modified_image_data'][:]
+            original_image_data = data['original_image_data'][:]
+            atom_position_array = data['atom_positions'][:]
+
+            project.im_mat = original_image_data
+            project.scale = 1
+            (project.im_height, project.im_width) = project.im_mat.shape
+            project.im_mat = utils.normalize_static(project.im_mat)
+            project.fft_im_mat = utils.gen_fft(project.im_mat)
+            project.search_mat = copy.deepcopy(project.im_mat)
+            project.calc_avg_pixel_value()
+            project.r = int(100 / project.scale)
+            project.overhead = int(7 * (project.r / 10))
+            project.graph = core.graph_2.AtomicGraph(
+                project.scale,
+                active_model=None,
+                species_dict=project.species_dict,
+                district_size=project.district_size
+            )
+
+            for i, column in enumerate(atom_position_array):
+                new_vertex = core.graph_2.Vertex(
+                    i,
+                    column[0],
+                    column[1],
+                    project.r,
+                    project.scale,
+                    parent_graph=project.graph
+                )
+                new_vertex.avg_gamma, new_vertex.peak_gamma = utils.circular_average(
+                    project.im_mat,
+                    int(column[0]),
+                    int(column[1]),
+                    project.r
+                )
+                project.graph.add_vertex(new_vertex)
+                project.num_columns += 1
+
+            project.find_edge_columns()
+
+            logger.info('Generated instance from {}'.format(project.filename_full))
+
+    return project
 
 
 
