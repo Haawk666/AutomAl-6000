@@ -3,5 +3,3 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/0_Small_L_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/0_Small_L_control

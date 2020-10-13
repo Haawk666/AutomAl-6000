@@ -210,7 +210,19 @@ graphs and how to interpret them and/or manipulate them.
 Build new statistical models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Coming soon*
+The ''Default model'', which is the default statistical model used by AutomAl 6000, is calculated from a wide range of different images. This general approach is not always the most effective though,
+and if extended use of AutomAl 6000 is desired, it might be beneficial to build custom statistical models from your own data. Fortunately, this is fairly easy with
+AutomAl 6000's model wizard.
+
+Once you have at minimum 4-5 correctly overlayed and graphed images, you can used these to calculate statistical parameters of a multinomial multivariate normal distribution.
+To do this, click **Data->Calculate model**, which will bring up the wizard. In principle, one can use
+any nominal attribute and any numerical attributes, but the recommended attributes are **Advanced species** for the nominal attribute, and **alpha min**, **alpha max**,
+**theta angle mean**, **normalized avg gamma** and **normalized peak gamma** for the numerical attributes. It is also recommended to exclude **edge columns** with the filter settings.
+If the files that are used is properly finalized, recalculating graph parameters should **not** be necessary.
+
+Save the model to a convenient location. You can now apply this model on an image by clicking **Project->Associated model**, and selecting the model you saved. This will now be the
+model used by AutomAl 6000 the next time column characterization is run. You can also inspect the details of the model by clicking **Data->Model plots**, and then in the dialog which appears,
+click **Select model->Load**.
 
 
 Generating plots
@@ -222,7 +234,7 @@ Generating plots
 Exporting data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Coming soon*
+Exporting data is easy with the export wizard. Click **Project->Export**, and follow the instructions.
 
 
 Using core.SuchSoftware as an API without the GUI
