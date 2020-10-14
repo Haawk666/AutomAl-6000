@@ -213,7 +213,7 @@ def make_svg(project, filter_, species_type='atomic_species', graph=None, image=
     return xml_string
 
 
-def import_from_atomap(filename, debug_obj=None):
+def import_from_atomap(filename, scale, debug_obj=None):
 
     column_file = h5py.File(filename, 'r+')
 
@@ -222,13 +222,13 @@ def import_from_atomap(filename, debug_obj=None):
 
     for group_name in column_file:
         if ('atom_lattice' in group_name) or ('sublattice' in group_name):
+
             data = column_file[group_name]
-            modified_image_data = data['modified_image_data'][:]
             original_image_data = data['original_image_data'][:]
             atom_position_array = data['atom_positions'][:]
 
             project.im_mat = original_image_data
-            project.scale = 1
+            project.scale = scale
             (project.im_height, project.im_width) = project.im_mat.shape
             project.im_mat = utils.normalize_static(project.im_mat)
             project.fft_im_mat = utils.gen_fft(project.im_mat)

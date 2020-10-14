@@ -1629,14 +1629,23 @@ class ControlWindow(QtWidgets.QWidget):
         if self.ui_obj.project_instance is not None:
             scale, ok_pressed = QtWidgets.QInputDialog.getDouble(self, "Set", "Image scale (pm/pixel):", self.ui_obj.project_instance.scale, 0, 10000, 4)
             if ok_pressed:
+                self.ui_obj.sys_message('Working...')
                 self.ui_obj.project_instance.scale = scale
                 self.ui_obj.project_instance.r = int(100 / scale)
-                self.ui_obj.project_instance.overhead = int(6 * (self.project_instance.r / 10))
+                self.ui_obj.project_instance.overhead = int(6 * (self.ui_obj.project_instance.r / 10))
                 self.widgets['column_detection']['sbtn_scale']['widget'].set_value(self.ui_obj.project_instance.scale)
                 self.widgets['column_detection']['lbl_atomic_radii']['widget'].set_value(self.ui_obj.project_instance.r)
                 self.widgets['column_detection']['lbl_overhead']['widget'].set_value(self.ui_obj.project_instance.overhead)
                 self.ui_obj.project_instance.redraw_search_mat()
-                self.ui_obj.update_central_widget()
+                self.ui_obj.project_instance.graph.scale = scale
+                for vertex in self.ui_obj.project_instance.graph.vertices:
+                    vertex.r = self.ui_obj.project_instance.r
+                    vertex.scale = scale
+                    vertex.spatial_coor_x = vertex.im_coor_x * scale
+                    vertex.spatial_coor_y = vertex.im_coor_y * scale
+                    vertex.spatial_coor_z = vertex.zeta * 0.5 * vertex.al_lattice_const
+                self.ui_obj.update_display()
+                self.ui_obj.sys_message('Ready.')
 
     def btn_start_column_detection_trigger(self):
         if self.ui_obj.project_instance is not None:
@@ -2396,7 +2405,9 @@ class ImportWizard(QtWidgets.QDialog):
             message.setText('Import format not yet supported!')
             message.exec_()
         elif self.cmb_export.currentText() == 'AtoMap':
-            self.ui_obj.import_trigger('AtoMap')
+            scale, ok_pressed = QtWidgets.QInputDialog.getDouble(self, "Set scale", "Please set the image scale (in pm/pixel) with\nat least 5 significant figures:", 6.0000, 0, 1000, 4)
+            if ok_pressed:
+                self.ui_obj.import_trigger('AtoMap', scale=scale)
         else:
             message = QtWidgets.QMessageBox()
             message.setText('Import format not supported!')

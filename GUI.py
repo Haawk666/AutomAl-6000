@@ -577,11 +577,11 @@ class MainUI(QtWidgets.QMainWindow):
     # Menu triggers:
     # ----------
 
-    def import_trigger(self, file_type):
+    def import_trigger(self, file_type, scale=1.0):
         filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Select dm3', '')
         if filename[0]:
             self.sys_message('Working...')
-            self.project_instance = core.Project.import_from_file(filename[0], file_type)
+            self.project_instance = core.Project.import_from_file(filename[0], file_type, scale=scale)
             self.savefile = None
             self.control_instance = None
             self.update_display()

@@ -931,7 +931,7 @@ class Project:
                 f.write(line)
 
     @ staticmethod
-    def import_from_file(filename, file_type, gui=None):
+    def import_from_file(filename, file_type, gui=None, scale=1.0):
         if file_type == 'dm3':
             try:
                 project = Project(filename, debug_obj=gui, species_dict=Project.default_species_dict)
@@ -940,7 +940,11 @@ class Project:
                 project = None
             return project
         elif file_type == 'AtoMap':
-            project = conversion_tools.import_from_atomap(filename, debug_obj=gui)
+            try:
+                project = conversion_tools.import_from_atomap(filename, scale, debug_obj=gui)
+            except:
+                logger.info('Could not open AtoMap file.')
+                project = None
             return project
         else:
             logger.info('Unknown import format')
