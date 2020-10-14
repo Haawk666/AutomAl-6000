@@ -60,7 +60,7 @@ for windows users, the software **might** also work on different systems, but th
 
 .. note::
 
-    If pipenv for some reason does not install all the dependencies from the pipfile, manually install ``numpy``, ``scipy``, ``pillow``, ``matplotlib`` and ``pyqt5``.
+    If pipenv for some reason does not install all the dependencies from the pipfile, manually install ``numpy``, ``scipy``, ``pillow``, ``matplotlib``, ``h5py`` and ``pyqt5``.
 
 
 Keyboard shortcuts
