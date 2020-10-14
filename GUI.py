@@ -143,7 +143,7 @@ class MainUI(QtWidgets.QMainWindow):
         logger.info('See http://automal.org for help\n------------------------')
 
     # ----------
-    # Business logic methods:
+    # Business methods:
     # ----------
 
     def set_advanced_species(self, h):
