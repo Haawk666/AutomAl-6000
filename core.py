@@ -940,11 +940,7 @@ class Project:
                 project = None
             return project
         elif file_type == 'AtoMap':
-            try:
-                project = conversion_tools.import_from_atomap(filename, scale, debug_obj=gui)
-            except:
-                logger.info('Could not open AtoMap file.')
-                project = None
+            project = conversion_tools.import_from_atomap(filename, scale, debug_obj=gui)
             return project
         else:
             logger.info('Unknown import format')
