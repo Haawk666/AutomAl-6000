@@ -3,7 +3,5 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_0_Medium_Qprime_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_0_Medium_Qprime_control
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_Cast4_1hRT_5h175C_Sigurd_12_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_Cast4_1hRT_5h175C_Sigurd_12_control
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/haakon_035_control
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/haakon_035_control

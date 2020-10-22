@@ -1494,7 +1494,7 @@ class AtomicGraph:
                 else:
                     self. set_advanced_species(vertex.i, 'Mg_2')
 
-    def calc_condensed_property_data(self, keys, filter_=None, recalc=False):
+    def calc_condensed_property_data(self, keys, filter_=None, recalc=False, include_un=False):
 
         if filter_ is None:
             filter_ = {
@@ -1523,10 +1523,13 @@ class AtomicGraph:
                                         if not (filter_['exclude_flag_3_columns'] and vertex.flag_3):
                                             if not (filter_['exclude_flag_4_columns'] and vertex.flag_4):
 
+
+
                                                 data_item = {}
                                                 for key in keys:
-                                                    data_item[key] = eval('vertex.{}'.format(key))
-                                                data.append(data_item)
+                                                    data_item[key] = getattr(vertex, key)
+                                                if not (not include_un and vertex.atomic_species == 'Un'):
+                                                    data.append(data_item)
 
         return data
 

@@ -1522,7 +1522,7 @@ class ControlWindow(QtWidgets.QWidget):
             model_filename = QtWidgets.QFileDialog.getOpenFileName(self, "Load model", '', "")
             if model_filename[0]:
                 self.ui_obj.project_instance.graph.active_model = model_filename[0]
-            self.widgets['project']['lbl_active_model']['widget'].set_value(self.ui_obj.project_instance.graph.active_model)
+            self.widgets['project']['sbtn_active_model']['widget'].set_value(self.ui_obj.project_instance.graph.active_model)
 
     def btn_import_trigger(self):
         ImportWizard(ui_obj=self.ui_obj)

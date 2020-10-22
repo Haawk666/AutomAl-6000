@@ -192,7 +192,7 @@ class Arrow(QtWidgets.QGraphicsItemGroup):
         if self.dual_arc and not self.co_planar:
             self.childItems()[0].setPen(self.normal_pen)
             self.childItems()[0].show()
-            self.childItems()[1].hide()
+            self.childItems()[1].show()
         elif self.dual_arc and self.co_planar:
             self.childItems()[0].setPen(self.dislocation_pen)
             self.childItems()[0].show()
@@ -265,9 +265,9 @@ class DistanceArrow(QtWidgets.QGraphicsItemGroup):
 
     def set_style(self):
 
-            self.childItems()[0].setPen(self.pen)
-            self.childItems()[0].show()
-            self.show()
+        self.childItems()[0].setPen(self.pen)
+        self.childItems()[0].show()
+        self.show()
 
     def make_arrow_obj(self):
 
