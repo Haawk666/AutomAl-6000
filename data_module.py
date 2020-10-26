@@ -38,7 +38,7 @@ class MultivariateNormalDist:
         for a, attribute in enumerate(self.attribute_keys):
             if attribute == 'theta_angle_mean':
                 logger.warning('The variance of the theta angle mean will typically be 0. Setting a manual variance of 0.2')
-                self.variances.append(0.2)
+                self.variances.append(0.02)
             else:
                 self.variances.append(utils.variance(data[a, :]))
         # Standardize data

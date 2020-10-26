@@ -236,9 +236,58 @@ def zeta_analysis(graph_obj):
     logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
 
 
-def experimental_zeta(graph_obj):
+def experimental_zeta(graph_obj, starting_index):
 
-    pass
+    # First determine the matrix:
+    logger.info('Starting zeta analysis...')
+    time_1 = time.time()
+    votes = [0.0] * graph_obj.order
+    votes[starting_index] = 1
+    cont = True
+    counter = 0
+    while cont:
+        for vertex in graph_obj.vertices:
+            if not vertex.is_in_precipitate:
+                for partner in vertex.partners:
+                    if vertex.is_edge_column:
+                        votes[partner] -= 0.1 * votes[vertex.i]
+                        if votes[partner] > 100:
+                            votes[partner] = 100
+                        elif votes[partner] < -100:
+                            votes[partner] = -100
+                    else:
+                        votes[partner] -= 0.5 * votes[vertex.i]
+                        if votes[partner] > 100:
+                            votes[partner] = 100
+                        elif votes[partner] < -100:
+                            votes[partner] = -100
+                for out_semi_partner in vertex.out_semi_partners:
+                    if not vertex.is_edge_column:
+                        votes[out_semi_partner] -= 0.1 * votes[vertex.i]
+                        if votes[out_semi_partner] > 100:
+                            votes[out_semi_partner] = 100
+                        elif votes[out_semi_partner] < -100:
+                            votes[out_semi_partner] = -100
+                for anti_neighbour in vertex.anti_neighbourhood:
+                    if not vertex.is_edge_column:
+                        votes[anti_neighbour] += 0.0 * votes[vertex.i]
+                        if votes[anti_neighbour] > 100:
+                            votes[anti_neighbour] = 100
+                        elif votes[anti_neighbour] < -100:
+                            votes[anti_neighbour] = -100
+        counter += 1
+        if counter > 100:
+            cont = False
+    for vertex in graph_obj.vertices:
+        if not vertex.is_in_precipitate:
+            if votes[vertex.i] > 0:
+                vertex.set_zeta(0)
+            else:
+                vertex.set_zeta(1)
+    graph_obj.build_local_zeta_maps()
+    graph_obj.build_local_maps()
+    time_2 = time.time()
+    logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
 
 
 def arc_intersection_denial(graph_obj):

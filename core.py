@@ -548,8 +548,10 @@ class Project:
             logger.info('Edge columns found.')
 
         elif search_type == 5:
-            # not in use
-            pass
+            # Experimental zetas
+            logger.info('Running experimental zeta analysis...')
+            column_characterization.experimental_zeta(self.graph, starting_index=starting_index)
+            logger.info('zeta\'s set.')
 
         elif search_type == 6:
             # Advanced zetas
