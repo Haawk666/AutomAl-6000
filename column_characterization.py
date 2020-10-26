@@ -236,6 +236,11 @@ def zeta_analysis(graph_obj):
     logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
 
 
+def experimental_zeta(graph_obj):
+
+    pass
+
+
 def arc_intersection_denial(graph_obj):
     time_1 = time.time()
     intersections = graph_obj.find_intersections()

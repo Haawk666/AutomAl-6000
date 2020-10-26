@@ -192,7 +192,7 @@ class Arrow(QtWidgets.QGraphicsItemGroup):
         if self.dual_arc and not self.co_planar:
             self.childItems()[0].setPen(self.normal_pen)
             self.childItems()[0].show()
-            self.childItems()[1].show()
+            self.childItems()[1].hide()
         elif self.dual_arc and self.co_planar:
             self.childItems()[0].setPen(self.dislocation_pen)
             self.childItems()[0].show()
