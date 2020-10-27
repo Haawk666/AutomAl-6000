@@ -383,9 +383,13 @@ class AtomicGraph(QtWidgets.QGraphicsScene):
                 else:
                     co_planar = False
                 self.arcs[-1].append(GUI_custom_components.Arrow(
-                    i=vertex_a.i, j=vertex_b.i, p1=p1, p2=p2,
+                    i=vertex_a.i,
+                    j=vertex_b.i,
+                    p1=p1,
+                    p2=p2,
                     r=self.ui_obj.project_instance.r,
-                    scale_factor=self.scale_factor, dual_arc=True,
+                    scale_factor=self.scale_factor,
+                    dual_arc=True,
                     co_planar=co_planar
                 ))
                 self.addItem(self.arcs[-1][-1])
@@ -394,9 +398,13 @@ class AtomicGraph(QtWidgets.QGraphicsScene):
                 p1 = vertex_a.im_pos()
                 p2 = vertex_b.im_pos()
                 self.arcs[-1].append(GUI_custom_components.Arrow(
-                    i=vertex_a.i, j=vertex_b.i, p1=p1, p2=p2,
+                    i=vertex_a.i,
+                    j=vertex_b.i,
+                    p1=p1,
+                    p2=p2,
                     r=self.ui_obj.project_instance.r,
-                    scale_factor=self.scale_factor, dual_arc=False,
+                    scale_factor=self.scale_factor,
+                    dual_arc=False,
                     co_planar=False
                 ))
                 self.addItem(self.arcs[-1][-1])
@@ -447,29 +455,33 @@ class AtomicGraph(QtWidgets.QGraphicsScene):
             )
         for vertex_b in partners:
             p1 = vertex_a.im_pos()
-            p1 = (p1[0], p1[1])
             p2 = vertex_b.im_pos()
-            p2 = (p2[0], p2[1])
             if vertex_a.zeta == vertex_b.zeta:
                 co_planar = True
             else:
                 co_planar = False
             self.arcs[i].append(GUI_custom_components.Arrow(
-                i=vertex_a.i, j=vertex_b.i, p1=p1, p2=p2,
-                r=self.ui_obj.overlay_settings['overlay_radii'] * self.ui_obj.project_instance.r,
-                scale_factor=self.scale_factor, dual_arc=True,
+                i=vertex_a.i,
+                j=vertex_b.i,
+                p1=p1,
+                p2=p2,
+                r=self.ui_obj.project_instance.r,
+                scale_factor=self.scale_factor,
+                dual_arc=True,
                 co_planar=co_planar
             ))
             self.addItem(self.arcs[i][-1])
         for vertex_b in out_semi_partners:
             p1 = vertex_a.im_pos()
-            p1 = (p1[0], p1[1])
             p2 = vertex_b.im_pos()
-            p2 = (p2[0], p2[1])
             self.arcs[i].append(GUI_custom_components.Arrow(
-                i=vertex_a.i, j=vertex_b.i, p1=p1, p2=p2,
-                r=self.ui_obj.overlay_settings['overlay_radii'] * self.ui_obj.project_instance.r,
-                scale_factor=self.scale_factor, dual_arc=False,
+                i=vertex_a.i,
+                j=vertex_b.i,
+                p1=p1,
+                p2=p2,
+                r=self.ui_obj.project_instance.r,
+                scale_factor=self.scale_factor,
+                dual_arc=False,
                 co_planar=False
             ))
             self.addItem(self.arcs[i][-1])
