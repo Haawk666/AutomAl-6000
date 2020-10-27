@@ -3216,7 +3216,7 @@ class CalcModels(QtWidgets.QDialog):
 
     def frame_1_layout(self):
 
-        self.cmb_nominal_data.addItems(list(GUI.core.graph_2.Vertex.nominal_attributes))
+        self.cmb_nominal_data.addItems(['advanced_species', 'atomic_species'])
 
         h_layout = QtWidgets.QHBoxLayout()
         v_layout = QtWidgets.QVBoxLayout()
@@ -3233,7 +3233,19 @@ class CalcModels(QtWidgets.QDialog):
         self.widget_frame_1.setLayout(h_layout)
 
     def frame_2_layout(self):
-        self.list_2.addItems(list(GUI.core.graph_2.Vertex.numerical_attributes))
+        self.list_1.addItems([
+            'alpha_min',
+            'alpha_max',
+            'theta_angle_mean',
+            'normalized_avg_gamma',
+            'normalized_peak_gamma'
+        ])
+        self.list_2.addItems([
+            'theta_min',
+            'theta_max',
+            'normalized_area_gamma',
+            'redshift'
+        ])
 
         h_layout = QtWidgets.QHBoxLayout()
         v_layout_1 = QtWidgets.QVBoxLayout()
