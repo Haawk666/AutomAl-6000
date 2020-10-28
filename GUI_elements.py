@@ -3534,6 +3534,7 @@ class PlotModels(QtWidgets.QDialog):
         self.ui_obj = ui_obj
 
         self.setWindowTitle('Display model details')
+        self.model_name = model
 
         if model:
             self.model = data_module.VertexDataManager.load(model)
@@ -3743,7 +3744,9 @@ class PlotModels(QtWidgets.QDialog):
         self.model.dual_plot(self.cmb_attribute_1.currentText(), self.cmb_attribute_2.currentText())
 
     def btn_plot_all_trigger(self):
+        self.close()
         self.model.plot_all()
+        PlotModels(ui_obj=self.ui_obj, model=self.model_name)
 
     def btn_plot_z_scores_trigger(self):
         self.model.z_plot()

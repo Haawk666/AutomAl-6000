@@ -8,7 +8,7 @@ import column_characterization
 # External imports:
 import numpy as np
 import copy
-import sys
+import random
 import logging
 # Instantiate logger:
 logger = logging.getLogger(__name__)
@@ -646,6 +646,11 @@ class AtomicGraph:
             # Remap the vertex maps
             self.build_local_maps(build_out=True)
             self.build_local_zeta_maps(build_out=True)
+        if self.adjacency_matrix is None:
+            self.adjacency_matrix = np.zeros([self.order, self.order], dtype=int)
+        else:
+            self.adjacency_matrix = np.concatenate((self.adjacency_matrix, np.zeros([self.order - 1, 1], dtype=int)), axis=1)
+            self.adjacency_matrix = np.concatenate((self.adjacency_matrix, np.zeros([1, self.order], dtype=int)), axis=0)
         self.summarize_stats()
 
     def vertex_moved(self, i):
@@ -694,6 +699,9 @@ class AtomicGraph:
             logger.info('    Rebuilding vertex maps...')
             self.build_local_maps(build_out=True)
             self.build_local_zeta_maps(build_out=True)
+        if self.adjacency_matrix is not None:
+            self.adjacency_matrix = np.delete(self.adjacency_matrix, i, axis=0)
+            self.adjacency_matrix = np.delete(self.adjacency_matrix, i, axis=1)
         self.summarize_stats()
 
     def get_classes(self):
@@ -871,14 +879,12 @@ class AtomicGraph:
 
     def get_adjacency_matrix(self):
         self.summarize_stats()
-        M = np.zeros(self.order - 1, self.order - 1)
-        for x in range(0, self.order):
-            for y in range(0, self.order):
-                if x in self.vertices[y].out_neighbourhood:
-                    M[y, x] = 1
-                else:
-                    M[y, x] = 0
-        return M
+        if self.adjacency_matrix is None:
+            self.adjacency_matrix = np.zeros([self.order, self.order], dtype=int)
+        for vertex in self.vertices:
+            for out_neighbour in vertex.out_neighbourhood:
+                self.adjacency_matrix[vertex.i, out_neighbour] = 1
+        return self.adjacency_matrix
 
     def get_anti_graph(self):
         logger.info('Building anti-graph..')
@@ -1465,10 +1471,15 @@ class AtomicGraph:
 
     def refresh_graph(self):
         logger.info('Refreshing graph...')
+        logger.info('    Building maps...')
         self.build_local_maps()
+        logger.info('    Calculating parameters...')
         self.calc_all_parameters()
+        logger.info('    Evaluating sub-categories...')
         self.evaluate_sub_categories()
+        logger.info('    Mapping arcs...')
         self.map_arcs()
+        logger.info('    Summarizing stats...')
         self.summarize_stats()
         logger.info('Graph refreshed!')
 
@@ -1523,11 +1534,11 @@ class AtomicGraph:
                                         if not (filter_['exclude_flag_3_columns'] and vertex.flag_3):
                                             if not (filter_['exclude_flag_4_columns'] and vertex.flag_4):
 
-
-
                                                 data_item = {}
                                                 for key in keys:
                                                     data_item[key] = getattr(vertex, key)
+                                                    if key == 'theta_angle_mean':
+                                                        data_item[key] += random.gauss(0, 0.1)
                                                 if not (not include_un and vertex.atomic_species == 'Un'):
                                                     data.append(data_item)
 
