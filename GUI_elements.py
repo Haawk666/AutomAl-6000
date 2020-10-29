@@ -1279,6 +1279,9 @@ class ControlWindow(QtWidgets.QWidget):
                     'widget_type': 'btn'},
                 'btn_show_prediction': {
                     'widget': GUI_custom_components.MediumButton('Show model prediction', self, trigger_func=self.btn_show_prediction_trigger),
+                    'widget_type': 'btn'},
+                'btn_check_integrity': {
+                    'widget': GUI_custom_components.MediumButton('Check integrity', self, trigger_func=self.btn_check_integrity_trigger),
                     'widget_type': 'btn'}
             }
         }
@@ -2248,6 +2251,10 @@ class ControlWindow(QtWidgets.QWidget):
                     self.species_states['chb_{}'.format(species)] = self.widgets['overlay']['chb_{}'.format(species)]['widget'].isChecked()
                     break
             self.ui_obj.sys_message('Ready.')
+
+    def btn_check_integrity_trigger(self):
+        if self.ui_obj.project_instance is not None:
+            self.ui_obj.project_instance.graph.check_integrity()
 
 
 class MenuBar:

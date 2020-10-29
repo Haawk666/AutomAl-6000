@@ -31,7 +31,9 @@ class MultivariateNormalDist:
 
         # The mean of each dimension
         self.means = []
+        test_MEANS = []
         for a, attribute in enumerate(self.attribute_keys):
+            test_MEANS.append(np.mean(data[a, :]))
             self.means.append(utils.mean_val(data[a, :]))
         # The variance of each dimension
         self.variances = []

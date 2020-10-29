@@ -3,28 +3,130 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/haakon_041b_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/haakon_041b_control
-core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_041b_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_0_Medium_Qprime_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_0_multi_phase_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_Cast4_1hRT_5h175C_Sigurd_08_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_Cast4_1hRT_5h175C_Sigurd_12_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_005_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_035_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_041b_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_042_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_043_control
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_044_control
 core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_044_control
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_045_control
-GUI: Successfully saved model to C:/Users/haakot/AutomAl/test_model
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
-matplotlib.axes._axes: *c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* & *y*.  Please use the *color* keyword-argument or provide a 2-D array with a single row if you intend to specify the same RGB or RGBA value for all points.
 core: Calculating probabilities from all attributes...
 core: Calculated probabilities from all attributes.
+core: Vertex 2308:
+    General:
+        Image position (x, y) = (858.280, 550.982)
+        Pixel position (x, y) = (858, 550)
+        Spatial relative position in pm (x, y, z) = (5265.488, 3380.238, 202.475)
+        Peak gamma = 0.6579
+        Average gamma = 0.4354
+        Atomic species: Al
+        Advanced species: Al_2
+        Symmetry: 4
+    Analysis:
+        Probability vector: {
+            Al: 0.838
+            Cu: 0.000
+            Mg: 0.162
+            Si: 0.000
+            Un: 0.000
+        }
+            Prediction: Al
+            Confidence: 0
+    Graph parameters:
+        In-degree: 5
+        Out-degree: 4
+        Degree: 5
+        Alpha angles: [ 1.478 1.089 3.716 ]
+            Max: 3.716
+            Min: 1.089
+        Theta angles: [ 1.478 1.089 1.472 0.959 1.285 ]
+            Max: 1.478
+            Min: 0.959
+            Variance: 0.053
+            Mean: 1.257
+        Normalized peak gamma: 0.425
+        Normalized average gamma: 0.356
+        Redshift: -177.574
+        Average central separation: 318.38842288686783
+    Local graph mapping:
+        District: [3, 49, 2644, 73, 3767, 2072, 210, 3360, 3411, 2631]
+        In-neighbourhood: {3, 73, 49, 2644, 3767}
+        Out-neighbourhood: {73, 49, 3, 2644}
+        Neighbourhood: {3, 73, 49, 2644, 3767}
+        Anti-Neighbourhood: {3360, 2631, 210, 3411, 2072}
+        Partners: {73, 3, 2644, 49}
+        Semi-partners: {3767}
+        Out-semi-partners: set()
+        In-semi-partners: {3767}
+    Settings:
+        Is in precipitate: True
+        Is edge column: False
+        Is set by user: False
+        Show in overlay: True
+        Is void: False
+        Flag 1: False
+        Flag 2: False
+        Flag 3: False
+        Flag 4: False
+        Flag 5: False
+        Flag 6: False
+        Flag 7: False
+        Flag 8: False
+        Flag 9: False
+
+GUI_elements: Model prediction for vertex 2308:
+    Attributes:
+        alpha_min: 1.088938793421633
+        alpha_max: 3.716294535511657
+        theta_angle_mean: 1.2566370614359172
+        normalized_avg_gamma: 0.35566277487612846
+        normalized_peak_gamma: 0.42470693141222
+    Alpha prediction:
+        Al_1: 2.359397757150724e-10
+        Al_2: 0.5543747918260273
+        Cu_1: 5.519448420382655e-50
+        Mg_1: 2.297472833675441e-14
+        Mg_2: 0.44562520792938065
+        Si_1: 8.629288742634453e-12
+        Si_2: 1.0944242938547269e-38
+        Cu_2: 0.0
+        Un_1: 0.0
+        Un_2: 0.0
+    Full prediction:
+        Al_1: 2.0447420199208e-12
+        Al_2: 0.04692900317066487
+        Cu_1: 1.3852512433541625e-58
+        Mg_1: 3.0807569286008773e-12
+        Mg_2: 0.9530709968173099
+        Si_1: 6.899946106073862e-12
+        Si_2: 8.560172556223817e-45
+        Cu_2: 0.0
+        Un_1: 0.0
+        Un_2: 0.0
+
+core: Calculating probabilities from all attributes...
+core: Calculated probabilities from all attributes.
+GUI_elements: Model prediction for vertex 2308:
+    Attributes:
+        alpha_min: 1.088938793421633
+        alpha_max: 3.716294535511657
+        theta_angle_mean: 1.2566370614359172
+        normalized_avg_gamma: 0.35566277487612846
+        normalized_peak_gamma: 0.42470693141222
+    Alpha prediction:
+        Al_1: 2.359397757150724e-10
+        Al_2: 0.5543747918260273
+        Cu_1: 5.519448420382655e-50
+        Mg_1: 2.297472833675441e-14
+        Mg_2: 0.44562520792938065
+        Si_1: 8.629288742634453e-12
+        Si_2: 1.0944242938547269e-38
+        Cu_2: 0.0
+        Un_1: 0.0
+        Un_2: 0.0
+    Full prediction:
+        Al_1: 2.0447420199208e-12
+        Al_2: 0.04692900317066487
+        Cu_1: 1.3852512433541625e-58
+        Mg_1: 3.0807569286008773e-12
+        Mg_2: 0.9530709968173099
+        Si_1: 6.899946106073862e-12
+        Si_2: 8.560172556223817e-45
+        Cu_2: 0.0
+        Un_1: 0.0
+        Un_2: 0.0

@@ -1469,6 +1469,11 @@ class AtomicGraph:
             vertex.set_probability_from_advanced()
             vertex.determine_species_from_probability_vector()
 
+    def check_integrity(self):
+        for vertex in self.vertices:
+            if vertex.i in vertex.district:
+                logger.info('    {}'.format(vertex.i))
+
     def refresh_graph(self):
         logger.info('Refreshing graph...')
         logger.info('    Building maps...')
