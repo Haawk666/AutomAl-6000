@@ -229,11 +229,13 @@ def import_from_atomap(filename, scale, debug_obj=None):
 
             project.im_mat = original_image_data
             project.scale = scale
-            if not scale == data.attrs['pixel_size']:
+            if not scale == 1000 * data.attrs['pixel_size']:
                 logger.warning('The indicated scale ({}), does not agree with the scale indication in the file ({}).'.format(
                     scale,
                     data.attrs['pixel_size']
                 ))
+                if not data.attrs['pixel_size'] == 1.0:
+                    project.scale = 1000 * data.attrs['pixel_size']
             (project.im_height, project.im_width) = project.im_mat.shape
             project.im_mat = utils.normalize_static(project.im_mat)
             project.fft_im_mat = utils.gen_fft(project.im_mat)
