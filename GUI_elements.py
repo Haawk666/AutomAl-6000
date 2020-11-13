@@ -1712,7 +1712,7 @@ class ControlWindow(QtWidgets.QWidget):
                 '17 - Map vertex in-connectivity',
                 '18 - Untangling algorithm',
                 '19 - Weak untangling',
-                '20 - Binary zeta analysis',
+                '20 - Not in use',
                 '21 - Not in use',
                 '22 - Not in use',
                 '23 - Plot gamma'

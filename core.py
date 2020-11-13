@@ -31,9 +31,11 @@ class Project:
     :param filename_full: The full path and/or relative path and filename of the .dm3 image to import. A project can
         be instantiated with filename_full='empty', but this is only meant to be used as a placeholder.
         Use Project.import(filename, file_type) to instantiate projects from other files than dm3.
-    :param debug_obj: (Optional, default=None) An instance of an AutomAl 6000 GUI.MainUI().
-    :type filename_full: string
+    :param debug_obj: (Optional, default=None) An reference to an AutomAl 6000 GUI.MainUI() instance.
+    :param species_dict: (Optional, default=None) A species dictionary for the project. If none is provided, core.Project.default_species_dict is used.
+    :type filename_full: str
     :type debug_obj: GUI.MainUI()
+    :type species_dict: dict
 
     """
 
@@ -134,6 +136,9 @@ class Project:
     def report(self, supress_log=True):
         """Build a string representation of the current instance.
 
+        :returns A project summary:
+        :rtype str:
+
         """
 
         string = 'Project summary:\n'
@@ -161,6 +166,12 @@ class Project:
             return None
 
     def vertex_report(self, i, supress_log=False):
+        """Build a string representation of vertex i.
+
+        :returns A vertex summary:
+        :rtype str:
+
+        """
         string = self.graph.vertices[i].report()
         if supress_log:
             return string
@@ -172,7 +183,7 @@ class Project:
         """Generate a string representation of the alloy based on the alloys present in the species dictionary.
 
         :returns A species string on the form Al-Mg-Si.
-        :rtype string:
+        :rtype str:
 
         """
         species_string = ''
@@ -244,7 +255,7 @@ class Project:
 
         :param filename_full: Path and name of save-file. The project will be pickled as *filename_full* without any
             file-extension identifier.
-        :type filename_full: string
+        :type filename_full: str
 
         """
 
@@ -262,7 +273,7 @@ class Project:
         """Load an instance from a pickle-file.
 
         :param filename_full: Path-name of the file to be loaded.
-        :type filename_full: string
+        :type filename_full: str
 
         :return: project instance.
         :rtype: core.Project
@@ -300,7 +311,6 @@ class Project:
         ----------------------------------- ------------------------------------------------------
         s                                   Search until self.search_size columns are found.
         t                                   Search until self.search_mat.max() < self.threshold.
-        o                                   Undefined.
         ----------------------------------- ------------------------------------------------------
 
         This algorithm will check the column state and continue appropriately if there are already columns
@@ -646,15 +656,8 @@ class Project:
             logger.info('Untangling complete')
 
         elif search_type == 20:
-            # Binary zeta analysis
-            logger.info('Running binary zeta analysis')
-            column_characterization.zeta_analysis(
-                self.graph,
-                starting_index,
-                self.graph.vertices[starting_index].zeta,
-                method='binary'
-            )
-            logger.info('Zeta analysis complete.')
+            # Not in use
+            pass
 
         elif search_type == 21:
             # Calc area gamma
