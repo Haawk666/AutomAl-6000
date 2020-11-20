@@ -508,7 +508,6 @@ class MainUI(QtWidgets.QMainWindow):
             filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save image", '',
                                                              "PNG (*.png);;BMP Files (*.bmp);;JPEG (*.JPEG)")
             if filename[0]:
-                self.update_overlay()
                 rect_f = self.gs_overlay_composition.sceneRect()
                 img = QtGui.QImage(rect_f.size().toSize(), QtGui.QImage.Format_ARGB32)
                 img.fill(QtCore.Qt.white)

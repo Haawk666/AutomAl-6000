@@ -488,7 +488,7 @@ class Vertex:
 
     def decrement_n(self):
         for advanced_species, value in self.parent_graph.species_dict['advanced_species'].items():
-            if value['n'] == self.n - 1:
+            if value['n'] == self.n - 1 and not value['atomic_species'] == 'Un':
                 self.reset_probability_vector(bias=advanced_species)
                 self.determine_species_from_probability_vector()
                 break
@@ -1012,8 +1012,8 @@ class AtomicGraph:
         self.build_local_zeta_map([i] + self.vertices[i].district)
 
     def set_n(self, i, n):
-        for key, item in self.species_dict.items():
-            if item['symmetry'] == n:
+        for key, item in self.species_dict['advanced_species'].items():
+            if item['n'] == n and not item['atomic_species'] == 'Un':
                 self.set_advanced_species(i, key)
                 break
         else:

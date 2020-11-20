@@ -3,6 +3,5 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-core: Could not open .dm3 file.
-GUI_elements: Cannot change the default categories! Open a project first
-core: Generated instance from C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Bilder/Validation_set/Images/Small L.dm3
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/workflow_set/ARM_FICAL_150C_20h_WQ_013_cropped_IFFT_columns
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/workflow_set/ARM_FICAL_150C_20h_WQ_013_cropped_IFFT_columns
