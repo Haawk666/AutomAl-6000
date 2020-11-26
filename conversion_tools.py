@@ -46,8 +46,8 @@ def make_svg(project, filter_, species_type='atomic_species', graph=None, image=
 
             xml_string += '  <g\n'
             xml_string += '     inkscape:groupmode="layer"\n'
-            xml_string += '     inkscape:label="Atomic graph"\n'
-            xml_string += '     id="Atomic graph"\n'
+            xml_string += '     inkscape:label="Atomic graph [arcs]"\n'
+            xml_string += '     id="Atomic graph [arcs]"\n'
             xml_string += '     style="display:inline" >\n'
 
             project.graph.map_arcs()
@@ -83,6 +83,14 @@ def make_svg(project, filter_, species_type='atomic_species', graph=None, image=
                     xml_string += '       y2="{}"\n'.format(arc.vertex_b.im_coor_y)
                     xml_string += '       stroke="{}"\n'.format(utils.rgb_to_hex((220, 20, 20)))
                     xml_string += '       stroke-width="4" />\n'
+
+            xml_string += '  </g>\n'
+
+            xml_string += '  <g\n'
+            xml_string += '     inkscape:groupmode="layer"\n'
+            xml_string += '     inkscape:label="Atomic graph [vertices]"\n'
+            xml_string += '     id="Atomic graph [vertices]"\n'
+            xml_string += '     style="display:inline" >\n'
 
             for vertex in project.graph.vertices:
 
