@@ -2112,7 +2112,10 @@ class ControlWindow(QtWidgets.QWidget):
             )
 
     def btn_test_trigger(self):
-        pass
+        if self.ui_obj.project_instance is not None:
+            for vertex in self.ui_obj.project_instance.graph.vertices:
+                if vertex.theta_angle_mean < 0.5 and not vertex.is_edge_column:
+                    print(vertex.i)
 
     def btn_crash_trigger(self):
         raise IndexError
@@ -3748,7 +3751,9 @@ class PlotModels(QtWidgets.QDialog):
             PlotModels(ui_obj=self.ui_obj, model=filename[0])
 
     def btn_dual_plot_trigger(self):
-        self.model.dual_plot(self.cmb_attribute_1.currentText(), self.cmb_attribute_2.currentText())
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save plot", '', "")
+        if filename[0]:
+            self.model.dual_plot(self.cmb_attribute_1.currentText(), self.cmb_attribute_2.currentText(), filename=filename[0])
 
     def btn_plot_all_trigger(self):
         self.close()
@@ -3759,10 +3764,12 @@ class PlotModels(QtWidgets.QDialog):
         self.model.z_plot()
 
     def btn_plot_pca_trigger(self):
-        if self.cmb_pca_setting.currentText() == 'Show categories':
-            self.model.plot_pca(show_category=True)
-        else:
-            self.model.plot_pca(show_category=False)
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, "Save plot", '', "")
+        if filename[0]:
+            if self.cmb_pca_setting.currentText() == 'Show categories':
+                self.model.plot_pca(show_category=True, filename=filename[0])
+            else:
+                self.model.plot_pca(show_category=False, filename=filename[0])
 
     def btn_plot_all_pca_trigger(self):
         self.model.plot_all_pc()

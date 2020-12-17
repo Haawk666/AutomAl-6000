@@ -1530,7 +1530,14 @@ class AtomicGraph:
         data = []
         for vertex in self.vertices:
             if not vertex.void:
-                if not (filter_['exclude_edge_columns'] and vertex.is_edge_column):
+                edge = False
+                if vertex.is_edge_column:
+                    edge = True
+                for neighbour in self.get_vertex_objects_from_indices(vertex.neighbourhood):
+                    if neighbour.is_edge_column:
+                        edge = True
+                        break
+                if not (filter_['exclude_edge_columns'] and edge):
                     if not (filter_['exclude_matrix_columns'] and not vertex.is_in_precipitate):
                         if not (filter_['exclude_particle_columns'] and vertex.is_in_precipitate):
                             if not (filter_['exclude_hidden_columns'] and not vertex.show_in_overlay):
@@ -1545,7 +1552,9 @@ class AtomicGraph:
                                                     if key == 'theta_angle_mean':
                                                         data_item[key] += random.gauss(0, 0.1)
                                                 if not (not include_un and vertex.atomic_species == 'Un'):
-                                                    data.append(data_item)
+                                                    if not vertex.advanced_species == 'Cu_2':
+                                                        if not vertex.theta_angle_mean < 0.7:
+                                                            data.append(data_item)
 
         return data
 

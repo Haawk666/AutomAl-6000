@@ -299,15 +299,52 @@ class VertexDataManager:
         self.uncategorized_normal_dist = MultivariateNormalDist(self.concatenated_matrix_data, 'All categories',
                                                                 self.attribute_keys)
 
-    def process_pca_data(self):
+    def process_pca_data(self, method=None):
         self.normalized_concatenated_matrix_data = np.array(self.concatenated_matrix_data)
         self.normalized_matrix_data = []
         for category_data in self.matrix_data:
             self.normalized_matrix_data.append(np.array(category_data))
         self.norm_data()
-        self.normalized_uncategorized_normal_dist = MultivariateNormalDist(self.normalized_concatenated_matrix_data,
-                                                                           'All categories', self.attribute_keys)
-        self.pca_feature_vector = self.normalized_uncategorized_normal_dist.covar_matrix_eigenvectors.T
+
+        if method is None:
+            self.normalized_uncategorized_normal_dist = MultivariateNormalDist(self.normalized_concatenated_matrix_data, 'All categories', self.attribute_keys)
+            self.pca_feature_vector = self.normalized_uncategorized_normal_dist.covar_matrix_eigenvectors.T
+        elif method == 'means':
+            mean_data = []
+            for c, category in enumerate(self.category_list):
+                mean_data.append(self.composite_model[c].means)
+            matrix_data = np.array(mean_data).T
+            distribution = MultivariateNormalDist(matrix_data, 'means', self.attribute_keys)
+            self.pca_feature_vector = distribution.covar_matrix_eigenvectors.T
+        elif method == 'mean_means':
+            mean_data = []
+            for c, category in enumerate(self.category_list):
+                mean_data.append(self.composite_model[c].means)
+            print(mean_data)
+            new_category_list = []
+            for c, category in enumerate(self.category_list):
+                if self.species_dict[self.category_key][category]['atomic_species'] not in new_category_list:
+                    new_category_list.append(self.species_dict[self.category_key][category]['atomic_species'])
+            mean_mean_data = []
+            k_s = []
+            for new_c, new_category in enumerate(new_category_list):
+                mean_mean_data.append([0]*self.k)
+                k_s.append(0)
+                for c, category in enumerate(self.category_list):
+                    if self.species_dict[self.category_key][category]['atomic_species'] == new_category:
+                        for k, attribute in enumerate(self.attribute_keys):
+                            mean_mean_data[-1][k] += mean_data[c][k]
+                        k_s[-1] += 1
+            for new_c, new_category in enumerate(new_category_list):
+                for k, attribute in enumerate(self.attribute_keys):
+                    mean_mean_data[new_c][k] /= k_s[new_c]
+            print(mean_mean_data)
+            matrix_data = np.array(mean_mean_data).T
+            distribution = MultivariateNormalDist(matrix_data, 'mean_means', self.attribute_keys)
+            self.pca_feature_vector = distribution.covar_matrix_eigenvectors.T
+
+        logger.info('{}'.format(self.pca_feature_vector))
+
         self.composed_uncategorized_data = np.matmul(self.pca_feature_vector, self.normalized_concatenated_matrix_data)
         self.composed_data = []
         for normalized_category_data in self.normalized_matrix_data:
@@ -443,7 +480,7 @@ class VertexDataManager:
 
         plt.show()
 
-    def dual_plot(self, attribute_1, attribute_2):
+    def dual_plot(self, attribute_1, attribute_2, filename='temp'):
 
         if type(attribute_1) == int:
             attr_1_index = attribute_1
@@ -464,11 +501,11 @@ class VertexDataManager:
         line_1 = np.linspace(attr_1_min_val, attr_1_max_val, 1000)
         line_2 = np.linspace(attr_2_min_val, attr_2_max_val, 1000)
 
-        fig = plt.figure(constrained_layout=True)
-        gs = GridSpec(2, 2, figure=fig)
-        ax_attr_1 = fig.add_subplot(gs[0, 0])
-        ax_attr_2 = fig.add_subplot(gs[1, 0])
-        ax_scatter = fig.add_subplot(gs[:, 1])
+        fig = plt.figure(constrained_layout=True, figsize=(6, 6), dpi=200)
+        gs = GridSpec(4, 4, figure=fig)
+        ax_attr_1 = fig.add_subplot(gs[0, 1:4])
+        ax_attr_2 = fig.add_subplot(gs[1:4, 0])
+        ax_scatter = fig.add_subplot(gs[1:4, 1:4])
 
         for c, category in enumerate(self.category_list):
             mean = self.composite_model[c].means[attr_1_index]
@@ -496,17 +533,30 @@ class VertexDataManager:
         elif attr_1_key == 'normalized_avg_gamma':
             attr_1_key = '$\\gamma_{avg}$'
 
-        ax_attr_1.set_ylabel('f({}|$\\mu,~\\sigma$)'.format(attr_1_key))
-        ax_attr_1.set_xlabel('{} ({})'.format(attr_1_key, self.attribute_units[attr_1_index]))
-        ax_attr_1.legend()
+        ax_attr_1.tick_params(
+            axis='y',  # changes apply to the x-axis
+            which='both',  # both major and minor ticks are affected
+            left=False,  # ticks along the bottom edge are off
+            right=False,  # ticks along the top edge are off
+            labelleft=False)
+        ax_attr_1.tick_params(
+            axis='x',  # changes apply to the x-axis
+            which='both',  # both major and minor ticks are affected
+            bottom=False,  # ticks along the bottom edge are off
+            top=True,  # ticks along the top edge are off
+            labelbottom=False,
+            labeltop=True)
+        # ax_attr_1.set_ylabel('f({}|$\\mu,~\\sigma$)'.format(attr_1_key))
+        # ax_attr_1.set_xlabel('{} ({})'.format(attr_1_key, self.attribute_units[attr_1_index]))
+        # ax_attr_1.legend()
 
         for c, category in enumerate(self.category_list):
             mean = self.composite_model[c].means[attr_2_index]
             var = self.composite_model[c].variances[attr_2_index]
             color = self.species_dict[self.category_key][category]['color']
             ax_attr_2.plot(
-                line_2,
                 utils.normal_dist(line_2, mean, var),
+                line_2,
                 c=np.array(utils.norm_rgb_tuple(color)),
                 label='{} ($\mu$ = {:.2f}, $\sigma^2$ = {:.2f})'.format(category, mean, var)
             )
@@ -526,9 +576,16 @@ class VertexDataManager:
         elif attr_2_key == 'normalized_avg_gamma':
             attr_2_key = '$\\gamma_{avg}$'
 
-        ax_attr_2.set_ylabel('f({}|$\\mu,~\\sigma$)'.format(attr_2_key))
-        ax_attr_2.set_xlabel('{} ({})'.format(attr_2_key, self.attribute_units[attr_1_index]))
-        ax_attr_2.legend()
+        ax_attr_2.axes.invert_xaxis()
+        ax_attr_2.tick_params(
+            axis='x',  # changes apply to the x-axis
+            which='both',  # both major and minor ticks are affected
+            bottom=False,  # ticks along the bottom edge are off
+            top=False,  # ticks along the top edge are off
+            labelbottom=False)
+        #ax_attr_2.set_ylabel('{} ({})'.format(attr_2_key, self.attribute_units[attr_1_index]))
+        #ax_attr_2.set_xlabel('f({}|$\\mu,~\\sigma$)'.format(attr_2_key))
+        # ax_attr_2.legend()
 
         for c, category in enumerate(self.category_list):
             color = self.species_dict[self.category_key][category]['color']
@@ -537,14 +594,37 @@ class VertexDataManager:
                 self.matrix_data[c][attr_2_index, :],
                 c=np.array(utils.norm_rgb_tuple(color)),
                 label='{}'.format(category),
-                s=8
+                s=1
             )
+        color = self.species_dict[self.category_key]['Cu_1']['color']
+        ax_scatter.scatter(
+            self.matrix_data[self.category_list.index('Cu_1')][attr_1_index, :],
+            self.matrix_data[self.category_list.index('Cu_1')][attr_2_index, :],
+            c=np.array(utils.norm_rgb_tuple(color)),
+            label='{}'.format('Cu_1'),
+            s=1
+        )
 
-        ax_scatter.set_xlabel('{} ({})'.format(attr_1_key, self.attribute_units[attr_1_index]))
-        ax_scatter.set_ylabel('{} ({})'.format(attr_2_key, self.attribute_units[attr_2_index]))
-        ax_scatter.legend()
+        ax_scatter.tick_params(
+            axis='x',  # changes apply to the x-axis
+            which='both',  # both major and minor ticks are affected
+            bottom=False,  # ticks along the bottom edge are off
+            top=True,  # ticks along the top edge are off
+            labelbottom=False,
+            labeltop=False)
+        ax_scatter.tick_params(
+            axis='y',  # changes apply to the x-axis
+            which='both',  # both major and minor ticks are affected
+            left=True,  # ticks along the bottom edge are off
+            right=False,  # ticks along the top edge are off
+            labelright=False,
+            labelleft=False)
+        # ax_scatter.set_xlabel('{} ({})'.format(attr_1_key, self.attribute_units[attr_1_index]))
+        # ax_scatter.set_ylabel('{} ({})'.format(attr_2_key, self.attribute_units[attr_2_index]))
+        # ax_scatter.legend()
 
-        plt.show()
+        plt.savefig(filename, bbox_inches='tight')
+        # plt.show()
 
     def plot_all(self):
         fig = plt.figure(constrained_layout=True)
@@ -648,8 +728,8 @@ class VertexDataManager:
 
         plt.show()
 
-    def plot_pca(self, show_category=True):
-        self.process_pca_data()
+    def plot_pca(self, show_category=True, filename='temp'):
+        self.process_pca_data(method='mean_means')
         attr_1_key = 'PC 1'
         attr_1_index = 0
         attr_2_key = 'PC 2'
@@ -661,11 +741,11 @@ class VertexDataManager:
         line_1 = np.linspace(attr_1_min_val, attr_1_max_val, 1000)
         line_2 = np.linspace(attr_2_min_val, attr_2_max_val, 1000)
 
-        fig = plt.figure(constrained_layout=True)
-        gs = GridSpec(2, 2, figure=fig)
-        ax_attr_1 = fig.add_subplot(gs[0, 0])
-        ax_attr_2 = fig.add_subplot(gs[1, 0])
-        ax_scatter = fig.add_subplot(gs[:, 1])
+        fig = plt.figure(constrained_layout=True, figsize=(6, 6), dpi=200)
+        gs = GridSpec(4, 4, figure=fig)
+        ax_attr_1 = fig.add_subplot(gs[0, 1:4])
+        ax_attr_2 = fig.add_subplot(gs[1:4, 0])
+        ax_scatter = fig.add_subplot(gs[1:4, 1:4])
 
         if show_category:
 
@@ -680,24 +760,44 @@ class VertexDataManager:
                     label='{} ($\mu$ = {:.2f}, $\sigma^2$ = {:.2f})'.format(category, mean, var)
                 )
 
+            ax_attr_1.tick_params(
+                axis='y',  # changes apply to the x-axis
+                which='both',  # both major and minor ticks are affected
+                left=False,  # ticks along the bottom edge are off
+                right=False,  # ticks along the top edge are off
+                labelleft=False)
+            ax_attr_1.tick_params(
+                axis='x',  # changes apply to the x-axis
+                which='both',  # both major and minor ticks are affected
+                bottom=False,  # ticks along the bottom edge are off
+                top=True,  # ticks along the top edge are off
+                labelbottom=False,
+                labeltop=True)
             # ax_attr_1.set_title('{} fitted density'.format(attr_1_key))
-            ax_attr_1.set_xlabel('{}'.format(attr_1_key))
-            ax_attr_1.legend()
+            # ax_attr_1.set_xlabel('{}'.format(attr_1_key))
+            # ax_attr_1.legend()
 
             for c, category in enumerate(self.category_list):
                 mean = self.composed_normal_dist[c].means[attr_2_index]
                 var = self.composed_normal_dist[c].variances[attr_2_index]
                 color = self.species_dict[self.category_key][category]['color']
                 ax_attr_2.plot(
-                    line_2,
                     utils.normal_dist(line_2, mean, var),
+                    line_2,
                     c=np.array(list(utils.norm_rgb_tuple(color))),
                     label='{} ($\mu$ = {:.2f}, $\sigma^2$ = {:.2f})'.format(category, mean, var)
                 )
 
+            ax_attr_2.axes.invert_xaxis()
+            ax_attr_2.tick_params(
+                axis='x',  # changes apply to the x-axis
+                which='both',  # both major and minor ticks are affected
+                bottom=False,  # ticks along the bottom edge are off
+                top=False,  # ticks along the top edge are off
+                labelbottom=False)
             # ax_attr_2.set_title('{} fitted density'.format(attr_2_key))
-            ax_attr_2.set_xlabel('{}'.format(attr_2_key))
-            ax_attr_2.legend()
+            # ax_attr_2.set_xlabel('{}'.format(attr_2_key))
+            # ax_attr_2.legend()
 
             for c, category in enumerate(self.category_list):
                 color = self.species_dict[self.category_key][category]['color']
@@ -706,13 +806,27 @@ class VertexDataManager:
                     self.composed_data[c][attr_2_index, :],
                     c=np.array(list(utils.norm_rgb_tuple(color))),
                     label='{}'.format(category),
-                    s=8
+                    s=1
                 )
 
+            ax_scatter.tick_params(
+                axis='x',  # changes apply to the x-axis
+                which='both',  # both major and minor ticks are affected
+                bottom=False,  # ticks along the bottom edge are off
+                top=True,  # ticks along the top edge are off
+                labelbottom=False,
+                labeltop=False)
+            ax_scatter.tick_params(
+                axis='y',  # changes apply to the x-axis
+                which='both',  # both major and minor ticks are affected
+                left=True,  # ticks along the bottom edge are off
+                right=False,  # ticks along the top edge are off
+                labelright=False,
+                labelleft=False)
             # ax_scatter.set_title('Scatter-plot of {} vs {}'.format(attr_1_key, attr_2_key))
-            ax_scatter.set_xlabel('{}'.format(attr_1_key))
-            ax_scatter.set_ylabel('{}'.format(attr_2_key))
-            ax_scatter.legend()
+            # ax_scatter.set_xlabel('{}'.format(attr_1_key))
+            # ax_scatter.set_ylabel('{}'.format(attr_2_key))
+            # ax_scatter.legend()
 
         else:
 
@@ -755,7 +869,8 @@ class VertexDataManager:
             ax_scatter.set_ylabel('{}'.format(attr_2_key))
             ax_scatter.legend()
 
-        plt.show()
+        plt.savefig(filename, bbox_inches='tight')
+        # plt.show()
 
     def plot_all_pc(self):
         self.process_pca_data()

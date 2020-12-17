@@ -509,7 +509,7 @@ class Project:
             self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
             # Alpha model:
             self.column_characterization(starting_index, search_type=7, ui_obj=ui_obj)
-            # Map connectivity
+            # Map connectivity:
             self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
             # Find particle:
             self.column_characterization(starting_index, search_type=8, ui_obj=ui_obj)
@@ -517,7 +517,7 @@ class Project:
             self.column_characterization(starting_index, search_type=9, ui_obj=ui_obj)
             # Advanced zeta analysis:
             self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
-            # Untangle
+            # Untangle:
             self.column_characterization(starting_index, search_type=18, ui_obj=ui_obj)
             # Composite model:
             self.column_characterization(starting_index, search_type=11, ui_obj=ui_obj)
@@ -527,7 +527,9 @@ class Project:
             self.column_characterization(starting_index, search_type=21, ui_obj=ui_obj)
             # Calc gamma:
             self.column_characterization(starting_index, search_type=9, ui_obj=ui_obj)
-            # Untangle
+            # Advanced zeta analysis:
+            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
+            # Untangle:
             self.column_characterization(starting_index, search_type=18, ui_obj=ui_obj)
             # Advanced zeta analysis:
             self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)

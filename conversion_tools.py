@@ -56,12 +56,9 @@ def make_svg(project, filter_, species_type='atomic_species', graph=None, image=
 
                 if arc.dual_arc:
 
-                    xml_string += '    <line\n'
+                    xml_string += '    <path\n'
                     xml_string += '       id="arc{}"\n'.format(arc.j)
-                    xml_string += '       x1="{}"\n'.format(arc.vertex_a.im_coor_x)
-                    xml_string += '       y1="{}"\n'.format(arc.vertex_a.im_coor_y)
-                    xml_string += '       x2="{}"\n'.format(arc.vertex_b.im_coor_x)
-                    xml_string += '       y2="{}"\n'.format(arc.vertex_b.im_coor_y)
+                    xml_string += '       d="M {},{} {},{}"\n'.format(arc.vertex_a.im_coor_x, arc.vertex_a.im_coor_y, arc.vertex_b.im_coor_x, arc.vertex_b.im_coor_y)
 
                     if arc.co_planar:
 
@@ -75,12 +72,9 @@ def make_svg(project, filter_, species_type='atomic_species', graph=None, image=
 
                 else:
 
-                    xml_string += '    <line\n'
+                    xml_string += '    <path\n'
                     xml_string += '       id="arc{}"\n'.format(arc.j)
-                    xml_string += '       x1="{}"\n'.format(arc.vertex_a.im_coor_x)
-                    xml_string += '       y1="{}"\n'.format(arc.vertex_a.im_coor_y)
-                    xml_string += '       x2="{}"\n'.format(arc.vertex_b.im_coor_x)
-                    xml_string += '       y2="{}"\n'.format(arc.vertex_b.im_coor_y)
+                    xml_string += '       d="M {},{} {},{}"\n'.format(arc.vertex_a.im_coor_x, arc.vertex_a.im_coor_y, arc.vertex_b.im_coor_x, arc.vertex_b.im_coor_y)
                     xml_string += '       stroke="{}"\n'.format(utils.rgb_to_hex((220, 20, 20)))
                     xml_string += '       stroke-width="4" />\n'
 

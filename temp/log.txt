@@ -3,7 +3,8 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/ARM_FICAL_150C_20h_WQ_006_IFFT_result
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/ARM_FICAL_150C_20h_WQ_006_IFFT_result
-core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/ARM_FICAL_150C_20h_WQ_006_IFFT_control
-core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/ARM_FICAL_150C_20h_WQ_006_IFFT_control
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Figures/source/figure_9.svg
+core: Failed to load save-file!
+GUI: File was not loaded. Something must have gone wrong!
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Kenji_No1_exMgCu_64min_250C_009_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Kenji_No1_exMgCu_64min_250C_009_IFFT_result
