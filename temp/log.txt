@@ -3,8 +3,261 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Figures/source/figure_9.svg
-core: Failed to load save-file!
-GUI: File was not loaded. Something must have gone wrong!
-GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Kenji_No1_exMgCu_64min_250C_009_IFFT_result
-core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Kenji_No1_exMgCu_64min_250C_009_IFFT_result
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_8M7S_1440_003_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_8M7S_1440_003_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_8M7S_1440_003_IFFT_control
+GUI: Control comparison of precipitate:----------
+    Deviations: 16 (7.511737089201878 %) 
+    Symmetry deviations: 16 (7.511737089201878 %)
+        43
+        271
+        305
+        741
+        983
+        1211
+        1643
+        1929
+        1985
+        2169
+        2178
+        2240
+        2255
+        2260
+        2274
+        2290
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_8M7S_1440_003_IFFT_control
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_8M7S_1440_003_IFFT_control
+GUI: Successfully exported overlay image to file!
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_columns
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_columns
+core: Doing the basics...
+core: Mapping spatial locality...
+column_characterization: Determining districts based on projected separations..
+column_characterization:     The projected separation matrix was None, calculating matrix..
+column_characterization: Starting separation calculation.
+    This could take some time, especially if there are many columns
+column_characterization: Distance calculations took 68.67330694198608 seconds.
+
+column_characterization: Sorting took 1.0704843997955322 seconds.
+core: Spatial mapping complete.
+core: Finding edge columns....
+column_characterization: Detecting edge columns
+column_characterization: Found edge columns in 0.008994817733764648 seconds
+core: Edge columns found.
+core: Mapping vertex connectivity...
+core: Vertices mapped.
+core: Calculating probabilities from alpha attributes...
+core: Calculated probabilities from alpha attributes.
+core: Mapping vertex connectivity...
+core: Vertices mapped.
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+core: Running zeta analysis...
+column_characterization: Starting zeta analysis...
+column_characterization: Zeta analysis completed in 12.307079076766968 seconds
+core: zeta's set.
+core: Running untangling algorithm
+core: Untangling complete
+core: Calculating probabilities from all attributes...
+core: Calculated probabilities from all attributes.
+core: Finding particle...
+core: Found particle.
+core: Calculating area gamma
+core: Area gamma calculated
+core: Finding normalized intensities...
+core: Found intensities.
+core: Running zeta analysis...
+column_characterization: Starting zeta analysis...
+column_characterization: Zeta analysis completed in 12.143027067184448 seconds
+core: zeta's set.
+core: Running untangling algorithm
+core: Untangling complete
+core: Running zeta analysis...
+column_characterization: Starting zeta analysis...
+column_characterization: Zeta analysis completed in 12.334586143493652 seconds
+core: zeta's set.
+core: Basics done
+core: Analyzing results...
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+graph_2: Refreshing graph...
+graph_2:     Building maps...
+graph_2:     Calculating parameters...
+graph_2:     Evaluating sub-categories...
+graph_2:     Mapping arcs...
+graph_2:     Summarizing stats...
+graph_2: Graph refreshed!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_result
+GUI: Successfully exported overlay image to file!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Analyzing results...
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+graph_2: Refreshing graph...
+graph_2:     Building maps...
+graph_2:     Calculating parameters...
+graph_2:     Evaluating sub-categories...
+graph_2:     Mapping arcs...
+graph_2:     Summarizing stats...
+graph_2: Graph refreshed!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Analyzing results...
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+graph_2: Refreshing graph...
+graph_2:     Building maps...
+graph_2:     Calculating parameters...
+graph_2:     Evaluating sub-categories...
+graph_2:     Mapping arcs...
+graph_2:     Summarizing stats...
+graph_2: Graph refreshed!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+GUI: Successfully exported overlay image to file!
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/b_ARM_FICAL_150C_20h_WQ_006_IFFT_control
+GUI: Control comparison of precipitate:----------
+    Deviations: 12 (3.9215686274509802 %) 
+    Symmetry deviations: 11 (3.5947712418300655 %)
+        6
+        21
+        27
+        255
+        349
+        872
+        3361
+        3446
+        3669
+        3869
+        3964
+        4089
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_columns
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_columns
+core: Doing the basics...
+core: Mapping spatial locality...
+column_characterization: Determining districts based on projected separations..
+column_characterization:     The projected separation matrix was None, calculating matrix..
+column_characterization: Starting separation calculation.
+    This could take some time, especially if there are many columns
+column_characterization: Distance calculations took 70.0166277885437 seconds.
+
+column_characterization: Sorting took 1.0284919738769531 seconds.
+core: Spatial mapping complete.
+core: Finding edge columns....
+column_characterization: Detecting edge columns
+column_characterization: Found edge columns in 0.00899505615234375 seconds
+core: Edge columns found.
+core: Mapping vertex connectivity...
+core: Vertices mapped.
+core: Calculating probabilities from alpha attributes...
+core: Calculated probabilities from alpha attributes.
+core: Mapping vertex connectivity...
+core: Vertices mapped.
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+core: Running zeta analysis...
+column_characterization: Starting zeta analysis...
+column_characterization: Zeta analysis completed in 13.38381290435791 seconds
+core: zeta's set.
+core: Running untangling algorithm
+core: Untangling complete
+core: Calculating probabilities from all attributes...
+core: Calculated probabilities from all attributes.
+core: Finding particle...
+core: Found particle.
+core: Calculating area gamma
+core: Area gamma calculated
+core: Finding normalized intensities...
+core: Found intensities.
+core: Running zeta analysis...
+column_characterization: Starting zeta analysis...
+column_characterization: Zeta analysis completed in 13.719621181488037 seconds
+core: zeta's set.
+core: Running untangling algorithm
+core: Untangling complete
+core: Running zeta analysis...
+column_characterization: Starting zeta analysis...
+column_characterization: Zeta analysis completed in 13.339906692504883 seconds
+core: zeta's set.
+core: Basics done
+core: Analyzing results...
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+graph_2: Refreshing graph...
+graph_2:     Building maps...
+graph_2:     Calculating parameters...
+graph_2:     Evaluating sub-categories...
+graph_2:     Mapping arcs...
+graph_2:     Summarizing stats...
+graph_2: Graph refreshed!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_result
+GUI: Successfully exported overlay image to file!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_control
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_control
+core: Analyzing results...
+core: Finding particle...
+core: Found particle.
+core: Finding normalized intensities...
+core: Found intensities.
+graph_2: Refreshing graph...
+graph_2:     Building maps...
+graph_2:     Calculating parameters...
+graph_2:     Evaluating sub-categories...
+graph_2:     Mapping arcs...
+graph_2:     Summarizing stats...
+graph_2: Graph refreshed!
+core: Saved C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_control
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_result
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_control
+GUI: Control comparison of precipitate:----------
+    Deviations: 24 (6.138107416879795 %) 
+    Symmetry deviations: 24 (6.138107416879795 %)
+        1911
+        2103
+        2259
+        2379
+        2459
+        2493
+        2825
+        2853
+        2857
+        3142
+        3298
+        3355
+        3377
+        3380
+        3411
+        3442
+        3448
+        3528
+        3535
+        3578
+        3740
+        3743
+        3871
+        3888
+GUI: Opening file C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_control
+core: Loaded C:/Users/haakot/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/c_Kenji_No1_exMgCu_64min_250C_009_IFFT_control
+GUI: Successfully exported overlay image to file!

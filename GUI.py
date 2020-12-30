@@ -677,22 +677,25 @@ class MainUI(QtWidgets.QMainWindow):
             else:
                 deviations = 0
                 symmetry_deviations = 0
+                precipitate_columns = 0
                 deviation_indices = []
                 for vertex, control_vertex in zip(self.project_instance.graph.vertices, self.control_instance.graph.vertices):
-                    if vertex.species_index == control_vertex.species_index:
-                        pass
-                    elif vertex.species_index == 0 and control_vertex.species_index == 1:
-                        deviations += 1
-                        deviation_indices.append(vertex.i)
-                    elif vertex.species_index == 1 and control_vertex.species_index == 0:
-                        deviations += 1
-                        deviation_indices.append(vertex.i)
-                    else:
-                        deviations += 1
-                        symmetry_deviations += 1
-                        deviation_indices.append(vertex.i)
+                    if control_vertex.is_in_precipitate:
+                        precipitate_columns += 1
+                        if vertex.atomic_species == control_vertex.atomic_species:
+                            pass
+                        elif vertex.atomic_species == 'Si' and control_vertex.atomic_species == 'Cu':
+                            deviations += 1
+                            deviation_indices.append(vertex.i)
+                        elif vertex.atomic_species == 'Cu' and control_vertex.atomic_species == 'Si':
+                            deviations += 1
+                            deviation_indices.append(vertex.i)
+                        else:
+                            deviations += 1
+                            symmetry_deviations += 1
+                            deviation_indices.append(vertex.i)
 
-                msg = 'Control comparison:----------\n    Deviations: {}\n    Symmetry deviations: {}'.format(deviations, symmetry_deviations)
+                msg = 'Control comparison of precipitate:----------\n    Deviations: {} ({} %) \n    Symmetry deviations: {} ({} %)'.format(deviations, 100 * deviations / precipitate_columns, symmetry_deviations, 100 * symmetry_deviations / precipitate_columns)
             message = QtWidgets.QMessageBox()
             message.setText(msg)
             message.exec_()
