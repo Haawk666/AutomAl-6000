@@ -390,7 +390,7 @@ class Vertex:
         self.reset_probability_vector(bias=self.advanced_species)
 
     def permute_j_k(self, j, k):
-        if j == k:
+        if j == k or j == self.i or k == self.i:
             return False
 
         pos_j = -1
@@ -1241,11 +1241,19 @@ class AtomicGraph:
         self.refresh_graph()
 
     def permute_j_k(self, i, j, k):
-        if self.vertices[i].permute_j_k(j, k):
-            self.vertices[i].out_neighbourhood.discard(j)
-            self.vertices[i].out_neighbourhood.add(k)
-            self.build_local_map([i] + self.vertices[i].district, build_out=False)
-            return True
+        if j in self.vertices[i].out_neighbourhood:
+            if k in self.vertices[i].out_neighbourhood:
+                return False
+            else:
+                if self.vertices[i].permute_j_k(j, k):
+                    self.vertices[i].out_neighbourhood.discard(j)
+                    self.vertices[i].out_neighbourhood.add(k)
+                    self.build_local_map([i] + self.vertices[i].district, build_out=False)
+                    return True
+                else:
+                    return False
+        else:
+            return False
 
     def permute_zeta_j_k(self, i, j, k):
         if self.vertices[i].permute_zeta_j_k(j, k):

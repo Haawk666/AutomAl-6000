@@ -449,6 +449,7 @@ class MainUI(QtWidgets.QMainWindow):
             elif key == QtCore.Qt.Key_Space:
                 if self.tabs.currentIndex() == 3:
                     self.control_window.widgets['atomic_graph']['chb_permute_mode']['widget'].toggle()
+                    self.selection_history = []
                 else:
                     pass
             elif key == QtCore.Qt.Key_R:
