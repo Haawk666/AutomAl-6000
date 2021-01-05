@@ -229,10 +229,10 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
             b = sub_graph.meshes[1].vertex_indices[2]
 
             if sub_graph.configuration == 'A_1':
-                k = graph_obj.weak_remove_edge(i, j, aggressive=True)
+                k = graph_obj.op_weak_arc_termination(i, j, aggressive=True)
                 if not k == -1:
                     if graph_obj.get_projected_separation(i, k) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, k):
+                        if graph_obj.op_arc_pivot(i, j, k):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, k, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'B_1':
@@ -244,34 +244,34 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
             elif sub_graph.configuration == 'C_1':
                 if graph_obj.vertices[i].partner_query(j):
                     if graph_obj.get_projected_separation(i, a) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, a):
+                        if graph_obj.op_arc_pivot(i, j, a):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, a, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'C_2':
                 if graph_obj.vertices[i].partner_query(j):
                     if graph_obj.get_projected_separation(i, b) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, b):
+                        if graph_obj.op_arc_pivot(i, j, b):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, b, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'D_1':
                 if graph_obj.vertices[i].partner_query(j):
                     if graph_obj.get_projected_separation(i, a) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, a):
+                        if graph_obj.op_arc_pivot(i, j, a):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, a, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'D_2':
                 if graph_obj.vertices[i].partner_query(j):
                     if graph_obj.get_projected_separation(i, b) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, b):
+                        if graph_obj.op_arc_pivot(i, j, b):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, b, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'E_1' or sub_graph.configuration == 'E_2':
                 pass
             elif sub_graph.configuration == 'F_1' or sub_graph.configuration == 'F_2':
-                k = graph_obj.weak_remove_edge(i, j, aggressive=False)
+                k = graph_obj.op_weak_arc_termination(i, j, aggressive=False)
                 if not k == -1:
                     if graph_obj.get_projected_separation(i, k) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, k):
+                        if graph_obj.op_arc_pivot(i, j, k):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, k, permute_data=False, center_view=True)
 
@@ -284,18 +284,18 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
             elif sub_graph.configuration == 'H_1':
                 if graph_obj.vertices[i].partner_query(j):
                     if graph_obj.get_projected_separation(i, a) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, a):
+                        if graph_obj.op_arc_pivot(i, j, a):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, a, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'H_2':
                 if graph_obj.vertices[i].partner_query(j):
                     if graph_obj.get_projected_separation(i, b) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, b):
+                        if graph_obj.op_arc_pivot(i, j, b):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, b, permute_data=False, center_view=True)
             elif sub_graph.configuration == 'I_1':
                 if graph_obj.get_projected_separation(i, b) < separation_cut_off:
-                    if graph_obj.permute_j_k(i, j, b):
+                    if graph_obj.op_arc_pivot(i, j, b):
                         if ui_obj is not None:
                             ui_obj.gs_atomic_graph.perturb_edge(i, j, b, permute_data=False, center_view=True)
 
@@ -313,7 +313,7 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
             elif sub_graph.configuration == 'B_1' or sub_graph.configuration == 'C_1':
                 if graph_obj.vertices[i].partner_query(j) and graph_obj.vertices[a].partner_query(b):
                     if graph_obj.get_projected_separation(i, a) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, a):
+                        if graph_obj.op_arc_pivot(i, j, a):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, a, permute_data=False, center_view=True)
 
@@ -337,7 +337,7 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
             elif sub_graph.configuration == 'B_1' or sub_graph.configuration == 'C_1':
                 if graph_obj.vertices[i].partner_query(j) and graph_obj.vertices[c].partner_query(b):
                     if graph_obj.get_projected_separation(i, c) < separation_cut_off:
-                        if graph_obj.permute_j_k(i, j, c):
+                        if graph_obj.op_arc_pivot(i, j, c):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(i, j, c, permute_data=False, center_view=True)
 
@@ -355,13 +355,13 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
 
             if sub_graph.configuration == 'A_1':
                 if graph_obj.get_projected_separation(i, d) < separation_cut_off:
-                    if graph_obj.permute_j_k(i, j, d):
+                    if graph_obj.op_arc_pivot(i, j, d):
                         if ui_obj is not None:
                             ui_obj.gs_atomic_graph.perturb_edge(i, j, d, permute_data=False, center_view=True)
 
             elif sub_graph.configuration == 'B_1':
                 if graph_obj.get_projected_separation(i, d) < separation_cut_off:
-                    if graph_obj.permute_j_k(i, j, d):
+                    if graph_obj.op_arc_pivot(i, j, d):
                         if ui_obj is not None:
                             ui_obj.gs_atomic_graph.perturb_edge(i, j, d, permute_data=False, center_view=True)
 
@@ -373,13 +373,13 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
 
             if sub_graph.configuration == 'A_1':
                 if graph_obj.get_projected_separation(i, a) < separation_cut_off:
-                    if graph_obj.permute_j_k(i, j, a):
+                    if graph_obj.op_arc_pivot(i, j, a):
                         if ui_obj is not None:
                             ui_obj.gs_atomic_graph.perturb_edge(i, j, a, permute_data=False, center_view=True)
 
             elif sub_graph.configuration == 'B_1':
                 if graph_obj.get_projected_separation(i, a) < separation_cut_off:
-                    if graph_obj.permute_j_k(i, j, a):
+                    if graph_obj.op_arc_pivot(i, j, a):
                         if ui_obj is not None:
                             ui_obj.gs_atomic_graph.perturb_edge(i, j, a, permute_data=False, center_view=True)
 
@@ -393,26 +393,26 @@ def weak_resolve(graph_obj, sub_graphs, ui_obj=None):
             d = sub_graph.meshes[1].vertex_indices[3]
 
             if sub_graph.configuration == 'A_1':
-                k = graph_obj.weak_preserve_edge(i, j)
+                k = graph_obj.op_weak_arc_preservation(i, j)
                 if not k == -1:
                     if graph_obj.get_projected_separation(i, j) < separation_cut_off:
-                        if graph_obj.permute_j_k(j, k, i):
+                        if graph_obj.op_arc_pivot(j, k, i):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(j, k, i, permute_data=False, center_view=True)
 
             elif sub_graph.configuration == 'B_1' or sub_graph.configuration == 'B_2':
-                k = graph_obj.weak_preserve_edge(i, j)
+                k = graph_obj.op_weak_arc_preservation(i, j)
                 if not k == -1:
                     if graph_obj.get_projected_separation(i, j) < separation_cut_off:
-                        if graph_obj.permute_j_k(j, k, i):
+                        if graph_obj.op_arc_pivot(j, k, i):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(j, k, i, permute_data=False, center_view=True)
 
             elif sub_graph.configuration == 'C_1':
-                k = graph_obj.weak_preserve_edge(i, j)
+                k = graph_obj.op_weak_arc_preservation(i, j)
                 if not k == -1:
                     if graph_obj.get_projected_separation(i, j) < separation_cut_off:
-                        if graph_obj.permute_j_k(j, k, i):
+                        if graph_obj.op_arc_pivot(j, k, i):
                             if ui_obj is not None:
                                 ui_obj.gs_atomic_graph.perturb_edge(j, k, i, permute_data=False, center_view=True)
 
@@ -426,7 +426,7 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
             b = sub_graph.meshes[1].vertex_indices[2]
 
             if sub_graph.configuration == 'A_1':
-                graph_obj.strong_remove_arc(i, j)
+                graph_obj.op_strong_arc_termination(i, j)
             elif sub_graph.configuration == 'B_1':
                 pass
             elif sub_graph.configuration == 'B_2':
@@ -442,7 +442,7 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
             elif sub_graph.configuration == 'E_1' or sub_graph.configuration == 'E_2':
                 pass
             elif sub_graph.configuration == 'F_1' or sub_graph.configuration == 'F_2':
-                graph_obj.strong_remove_arc(i, j)
+                graph_obj.op_strong_arc_termination(i, j)
             elif sub_graph.configuration == 'G_1':
                 pass
             elif sub_graph.configuration == 'G_2':
@@ -462,8 +462,8 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
                 pass
             elif sub_graph.configuration == 'B_1':
                 if graph_obj.vertices[i].partner_query(j) and graph_obj.vertices[a].partner_query(b):
-                    graph_obj.permute_j_k(i, j, a)
-                    graph_obj.permute_j_k(a, b, i)
+                    graph_obj.op_arc_pivot(i, j, a)
+                    graph_obj.op_arc_pivot(a, b, i)
 
         elif sub_graph.class_ == 3:
             i = sub_graph.meshes[0].vertex_indices[0]
@@ -475,8 +475,8 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
                 pass
             elif sub_graph.configuration == 'B_1':
                 if graph_obj.vertices[i].partner_query(j) and graph_obj.vertices[c].partner_query(b):
-                    graph_obj.permute_j_k(i, j, c)
-                    graph_obj.permute_j_k(c, b, i)
+                    graph_obj.op_arc_pivot(i, j, c)
+                    graph_obj.op_arc_pivot(c, b, i)
 
         elif sub_graph.class_ == 4:
             i = sub_graph.meshes[0].vertex_indices[0]
@@ -485,7 +485,7 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
 
             if sub_graph.configuration == 'A_1':
                 if graph_obj.vertices[i].partner_query(j):
-                    graph_obj.permute_j_k(i, j, d)
+                    graph_obj.op_arc_pivot(i, j, d)
 
         elif sub_graph.class_ == 5:
             i = sub_graph.meshes[0].vertex_indices[0]
@@ -494,7 +494,7 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
 
             if sub_graph.configuration == 'A_1':
                 if graph_obj.vertices[i].partner_query(j):
-                    graph_obj.permute_j_k(i, j, a)
+                    graph_obj.op_arc_pivot(i, j, a)
 
         elif sub_graph.class_ == 6:
             i = sub_graph.meshes[0].vertex_indices[0]
@@ -504,6 +504,6 @@ def strong_resolve(graph_obj, sub_graphs, ui_obj=None):
                     sub_graph.configuration == 'B_2' or sub_graph.configuration == 'C_1' or \
                     sub_graph.configuration == 'D_1' or \
                     sub_graph.configuration == 'D_2' or sub_graph.configuration == 'E_1':
-                graph_obj.strong_preserve_arc(i, j)
+                graph_obj.op_strong_arc_preservation(i, j)
 
 

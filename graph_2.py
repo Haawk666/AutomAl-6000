@@ -389,7 +389,7 @@ class Vertex:
     def reset_probability_vector_from_atomic_species(self):
         self.reset_probability_vector(bias=self.advanced_species)
 
-    def permute_j_k(self, j, k):
+    def op_arc_pivot(self, j, k):
         if j == k or j == self.i or k == self.i:
             return False
 
@@ -1240,12 +1240,12 @@ class AtomicGraph:
         self.build_local_maps()
         self.refresh_graph()
 
-    def permute_j_k(self, i, j, k):
+    def op_arc_pivot(self, i, j, k):
         if j in self.vertices[i].out_neighbourhood:
             if k in self.vertices[i].out_neighbourhood:
                 return False
             else:
-                if self.vertices[i].permute_j_k(j, k):
+                if self.vertices[i].op_arc_pivot(j, k):
                     self.vertices[i].out_neighbourhood.discard(j)
                     self.vertices[i].out_neighbourhood.add(k)
                     self.build_local_map([i] + self.vertices[i].district, build_out=False)
@@ -1255,13 +1255,13 @@ class AtomicGraph:
         else:
             return False
 
-    def permute_zeta_j_k(self, i, j, k):
-        if self.vertices[i].permute_zeta_j_k(j, k):
+    def zeta_op_arc_pivot(self, i, j, k):
+        if self.vertices[i].zeta_op_arc_pivot(j, k):
             self.vertices[i].local_zeta_map['out_neighbourhood'].discard(j)
             self.vertices[i].local_zeta_map['out_neighbourhood'].add(k)
             self.build_local_zeta_map([i] + self.vertices[i].zeta_district, build_out=False)
 
-    def weak_remove_edge(self, i, j, aggressive=False):
+    def op_weak_arc_termination(self, i, j, aggressive=False):
 
         config = self.get_column_centered_subgraph(i)
         options = []
@@ -1299,7 +1299,7 @@ class AtomicGraph:
 
         return k
 
-    def weak_preserve_edge(self, i, j):
+    def op_weak_arc_preservation(self, i, j):
 
         config = self.get_column_centered_subgraph(j)
         options = []
@@ -1319,13 +1319,13 @@ class AtomicGraph:
 
         return k
 
-    def strong_remove_arc(self, i, j):
+    def op_strong_arc_termination(self, i, j):
         self.vertices[i].put_j_last(j)
         if self.vertices[i].decrement_n():
             self.build_local_map([i] + self.vertices[i].district, build_out=True)
             return True
 
-    def strong_preserve_arc(self, i, j):
+    def op_strong_arc_preservation(self, i, j):
         self.vertices[j].put_j_above_last(i)
         if self.vertices[j].increment_n():
             self.build_local_map([j] + self.vertices[j].district, build_out=True)
@@ -1370,7 +1370,7 @@ class AtomicGraph:
         return intersecting_segments
 
     def terminate_arc(self, i, j):
-        if self.vertices[i].permute_j_k(j, self.vertices[i].district[self.vertices[i].n - 1]):
+        if self.vertices[i].op_arc_pivot(j, self.vertices[i].district[self.vertices[i].n - 1]):
             if self.vertices[i].decrement_n():
                 self.build_local_map([i] + self.vertices[i].district)
                 return True
@@ -1927,7 +1927,7 @@ class AntiGraph:
             if not vertex.is_edge_column and not vertex.void:
                 sub_graph = self.graph.get_column_centered_subgraph(vertex.i)
                 for mesh in sub_graph.meshes:
-                    self.vertices[i].permute_j_k(mesh.vertex_indices[1], mesh.vertex_indices[2])
+                    self.vertices[i].op_arc_pivot(mesh.vertex_indices[1], mesh.vertex_indices[2])
         self.graph = AtomicGraph(self.graph.scale, self.graph.species_dict)
         for vertex in self.vertices:
             self.graph.add_vertex(vertex)

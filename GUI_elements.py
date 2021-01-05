@@ -300,12 +300,12 @@ class AtomicGraph(QtWidgets.QGraphicsScene):
         """Finds the edge from i to j, and makes it point from i to k."""
         if permute_data:
             if self.mode == 'district':
-                self.ui_obj.project_instance.graph.permute_j_k(i, j, k)
+                self.ui_obj.project_instance.graph.op_arc_pivot(i, j, k)
             elif self.mode == 'zeta':
-                self.ui_obj.project_instance.graph.permute_zeta_j_k(i, j, k)
+                self.ui_obj.project_instance.graph.zeta_op_arc_pivot(i, j, k)
             else:
                 logger.warning('Unknown mode. Using district!')
-                self.ui_obj.project_instance.graph.permute_j_k(i, j, k)
+                self.ui_obj.project_instance.graph.op_arc_pivot(i, j, k)
         self.redraw_neighbourhood(i)
         if center_view:
             pass
