@@ -26,3 +26,32 @@ icon='Docs/source/logo.ico'
 as an element in the exe dict. Also edit name.
 
 pyinstaller --onefile aacc.spec
+
+
+Updated 2021:
+----------------------
+
+Install all depencies into the base python install (3.8 or higher)
+
+cd AutomAl_6000
+
+test python aacc.py
+
+pyi-makespec --onefile aacc.py
+
+edit aacc.spec with:
+	
+	edit consol=True to False and add
+
+	icon='Docs/source/logo.ico'
+
+	as an element in the exe dict. Also edit name.
+
+pyinstaller --onefile aacc.spec
+
+Add folders temp, Saves, plugins and Images to the dist folder
+
+run once to generate config.ini
+
+zip the dist folder 
+	
