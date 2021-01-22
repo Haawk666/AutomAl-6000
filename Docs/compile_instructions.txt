@@ -31,15 +31,18 @@ pyinstaller --onefile aacc.spec
 Updated 2021:
 ----------------------
 
-Install all depencies into the base python install (3.8 or higher)
+Install all dependencies into the base python install (3.8 or higher) with pip
+    (This might seem like dubious practice, but have eradicated a lot of problems with pyinstaller)
 
-cd AutomAl_6000
+with cmd.exe:
 
-test python aacc.py
+    cd AutomAl_6000
 
-pyi-makespec --onefile aacc.py
+    python aacc.py (To check that the program works)
 
-edit aacc.spec with:
+    pyi-makespec --onefile aacc.py
+
+edit aacc.spec with a text editor (not notepad):
 	
 	edit consol=True to False and add
 
@@ -47,11 +50,17 @@ edit aacc.spec with:
 
 	as an element in the exe dict. Also edit name.
 
-pyinstaller --onefile aacc.spec
+back in cmd.exe:
 
-Add folders temp, Saves, plugins and Images to the dist folder
+    pyinstaller --onefile aacc.spec
 
-run once to generate config.ini
+Add the folders "temp", "Saves", "plugins" and "Images" to the "dist" folder
 
-zip the dist folder 
+Add "default_model" file to the "dist" folder
+
+run the exe once to generate "config.ini"
+
+zip the dist folder
+
+Create an installer from the zip file with software like NSIS
 	

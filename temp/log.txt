@@ -3,5 +3,3 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file B:/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_035_control
-core: Loaded B:/OneDrive/NTNU/TFY4900 Master/Data_b/_model_haakon_035_control
