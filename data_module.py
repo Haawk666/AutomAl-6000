@@ -596,14 +596,6 @@ class VertexDataManager:
                 label='{}'.format(category),
                 s=1
             )
-        color = self.species_dict[self.category_key]['Cu_1']['color']
-        ax_scatter.scatter(
-            self.matrix_data[self.category_list.index('Cu_1')][attr_1_index, :],
-            self.matrix_data[self.category_list.index('Cu_1')][attr_2_index, :],
-            c=np.array(utils.norm_rgb_tuple(color)),
-            label='{}'.format('Cu_1'),
-            s=1
-        )
 
         ax_scatter.tick_params(
             axis='x',  # changes apply to the x-axis
