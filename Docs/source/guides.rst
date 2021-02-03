@@ -16,7 +16,7 @@ Executable
 To install AutomAl 6000, simply follow the steps below.
 
     1. Go to the **download** section of this webpage, and download the zip-file provided under **Executable** to a
-    desired location on your computer.
+    desired location on your computer. (Avoid C:Program files)
 
     2. Navigate to the downloaded zip-file on your computer, right click and select 'extract all' or something similar,
     depending on your operating system or installed compression software.
@@ -26,8 +26,7 @@ To install AutomAl 6000, simply follow the steps below.
 
 .. note::
 
-    There is not yet an executable available for the current version, as these have been very time-consuming to get
-    working. Once a semi-stable version of AutomAl 6000 is reached, we still intend to provide an executable.
+    We hope to make a proper installer in the future.
 
 Source code
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -61,6 +60,10 @@ for windows users, the software **might** also work on different systems, but th
 .. note::
 
     If pipenv for some reason does not install all the dependencies from the pipfile, manually install ``numpy``, ``scipy``, ``pillow``, ``matplotlib``, ``h5py`` and ``pyqt5``.
+
+.. note::
+
+    A ``setup.py`` is in the works, which will simplify this process.
 
 
 Keyboard shortcuts
