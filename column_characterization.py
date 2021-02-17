@@ -170,7 +170,7 @@ def calculate_precipitate_displacement(graph_obj):
                 lower_y = vertex.spatial_coor_y
 
 
-def zeta_analysis(graph_obj, starting_index):
+def zeta_analysis(graph_obj, starting_index, print_states=False):
     # First determine the matrix zeta:
     logger.info('Starting zeta analysis...')
     time_1 = time.time()
@@ -201,8 +201,10 @@ def zeta_analysis(graph_obj, starting_index):
                             votes[out_semi_partner] = 100
                         elif votes[out_semi_partner] < -100:
                             votes[out_semi_partner] = -100
+        if print_states:
+            print_state(graph_obj, votes, True, counter)
         counter += 1
-        if counter > 100:
+        if counter > 60:
             cont = False
     for vertex in graph_obj.vertices:
         if not vertex.is_in_precipitate:
@@ -240,8 +242,10 @@ def zeta_analysis(graph_obj, starting_index):
                             votes[out_semi_partner] = 100
                         elif votes[out_semi_partner] < -100:
                             votes[out_semi_partner] = -100
+        if print_states:
+            print_state(graph_obj, votes, False, counter)
         counter += 1
-        if counter > 100:
+        if counter > 60:
             cont = False
     for vertex in graph_obj.vertices:
         if votes[vertex.i] > 0:
@@ -253,6 +257,91 @@ def zeta_analysis(graph_obj, starting_index):
     graph_obj.build_local_maps()
     time_2 = time.time()
     logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
+
+
+def print_state(graph_obj, votes, matrix, cycle):
+
+    xml_string = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
+    xml_string += '<!-- Created with AutomAl 6000 (http://www.automal.org/) -->\n\n'
+
+    xml_string += '<svg\n   xmlns:xlink="http://www.w3.org/1999/xlink">\n'
+
+    xml_string += '  <g\n'
+    xml_string += '     inkscape:groupmode="layer"\n'
+    xml_string += '     inkscape:label="Atomic graph [arcs]"\n'
+    xml_string += '     id="Atomic graph [arcs]"\n'
+    xml_string += '     style="display:inline" >\n'
+
+    graph_obj.map_arcs()
+
+    for arc in graph_obj.arcs:
+
+        if arc.dual_arc:
+
+            xml_string += '    <path\n'
+            xml_string += '       id="arc{}"\n'.format(arc.j)
+            xml_string += '       d="M {},{} {},{}"\n'.format(arc.vertex_a.im_coor_x, arc.vertex_a.im_coor_y,
+                                                              arc.vertex_b.im_coor_x, arc.vertex_b.im_coor_y)
+
+            if arc.co_planar:
+
+                xml_string += '       stroke="{}"\n'.format(utils.rgb_to_hex((20, 20, 220)))
+                xml_string += '       stroke-width="4" />\n'
+
+            else:
+
+                xml_string += '       stroke="{}"\n'.format(utils.rgb_to_hex((0, 0, 0)))
+                xml_string += '       stroke-width="1" />\n'
+
+        else:
+
+            xml_string += '    <path\n'
+            xml_string += '       id="arc{}"\n'.format(arc.j)
+            xml_string += '       d="M {},{} {},{}"\n'.format(arc.vertex_a.im_coor_x, arc.vertex_a.im_coor_y,
+                                                              arc.vertex_b.im_coor_x, arc.vertex_b.im_coor_y)
+            xml_string += '       stroke="{}"\n'.format(utils.rgb_to_hex((220, 20, 20)))
+            xml_string += '       stroke-width="4" />\n'
+
+    xml_string += '  </g>\n'
+
+    xml_string += '  <g\n'
+    xml_string += '     inkscape:groupmode="layer"\n'
+    xml_string += '     inkscape:label="Atomic graph [vertices]"\n'
+    xml_string += '     id="Atomic graph [vertices]"\n'
+    xml_string += '     style="display:inline" >\n'
+
+    for vertex in graph_obj.vertices:
+
+        grey_code = int((255 / 200) * (votes[vertex.i] + 100))
+
+        print(grey_code)
+
+        xml_string += '    <circle\n'
+        xml_string += '       id="graph_vertex_{}"\n'.format(vertex.i)
+        xml_string += '       cx="{}"\n'.format(vertex.im_coor_x)
+        xml_string += '       cy="{}"\n'.format(vertex.im_coor_y)
+        xml_string += '       r="{}"\n'.format(vertex.r / 2 - 8 / graph_obj.scale)
+        xml_string += '       style="fill:{};fill-opacity:1;stroke:{};stroke-width:{};stroke-opacity:1"\n'.format(
+            utils.rgb_to_hex((grey_code, grey_code, grey_code)),
+            utils.rgb_to_hex((0, 0, 0)),
+            15 / graph_obj.scale
+        )
+
+    xml_string += '  </g>\n'
+
+    xml_string += '</svg>\n'
+
+    if matrix:
+
+        with open('snapshot_matrix_{}.svg'.format(cycle), mode='w', newline='') as f:
+            for line in xml_string.splitlines(keepends=True):
+                f.write(line)
+
+    else:
+
+        with open('snapshot_precipitate_{}.svg'.format(cycle), mode='w', newline='') as f:
+            for line in xml_string.splitlines(keepends=True):
+                f.write(line)
 
 
 def arc_intersection_denial(graph_obj):
