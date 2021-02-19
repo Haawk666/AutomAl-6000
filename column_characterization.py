@@ -9,6 +9,8 @@ import untangling_2
 import numpy as np
 import time
 import copy
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
 import logging
 # Instantiate logger:
 logger = logging.getLogger(__name__)
@@ -179,92 +181,102 @@ def zeta_analysis(graph_obj, starting_index, print_states=False):
     cont = True
     counter = 0
     while cont:
+        new_votes = copy.deepcopy(votes)
         for vertex in graph_obj.vertices:
             if not vertex.is_in_precipitate:
+                _sum = 0
                 for partner in vertex.partners:
-                    if vertex.is_edge_column:
-                        votes[partner] -= 0.1 * votes[vertex.i]
-                        if votes[partner] > 100:
-                            votes[partner] = 100
-                        elif votes[partner] < -100:
-                            votes[partner] = -100
+                    if graph_obj.vertices[partner].is_edge_column:
+                        _sum += 0.1 * votes[partner]
                     else:
-                        votes[partner] -= 0.5 * votes[vertex.i]
-                        if votes[partner] > 100:
-                            votes[partner] = 100
-                        elif votes[partner] < -100:
-                            votes[partner] = -100
-                for out_semi_partner in vertex.out_semi_partners:
-                    if not vertex.is_edge_column:
-                        votes[out_semi_partner] -= 0.1 * votes[vertex.i]
-                        if votes[out_semi_partner] > 100:
-                            votes[out_semi_partner] = 100
-                        elif votes[out_semi_partner] < -100:
-                            votes[out_semi_partner] = -100
+                        _sum += 0.5 * votes[partner]
+                for in_semi_partner in vertex.in_semi_partners:
+                    if graph_obj.vertices[in_semi_partner].is_edge_column:
+                        _sum += 0.1 * votes[in_semi_partner]
+                    else:
+                        _sum += 0.2 * votes[in_semi_partner]
+                new_votes[vertex.i] = min(100, max(-100, votes[vertex.i] - _sum))
         if print_states:
-            print_state(graph_obj, votes, True, counter)
+            print_state(graph_obj, new_votes, True, counter, starting_index)
         counter += 1
-        if counter > 60:
+        votes = copy.deepcopy(new_votes)
+        if counter > 40:
             cont = False
     for vertex in graph_obj.vertices:
         if not vertex.is_in_precipitate:
             if votes[vertex.i] > 0:
-                votes[vertex.i] = 1.0
+                votes[vertex.i] = 100
             else:
-                votes[vertex.i] = -1.0
+                votes[vertex.i] = -100
         else:
             votes[vertex.i] = 0.0
 
     # Then determine precipitate zeta:
     cont = True
-    counter = 0
+    counter = 1
     while cont:
+        new_votes = copy.deepcopy(votes)
         for vertex in graph_obj.vertices:
-            for partner in vertex.partners:
-                if graph_obj.vertices[partner].is_in_precipitate:
-                    if vertex.is_edge_column:
-                        votes[partner] -= 0.1 * votes[vertex.i]
-                        if votes[partner] > 100:
-                            votes[partner] = 100
-                        elif votes[partner] < -100:
-                            votes[partner] = -100
+            if vertex.is_in_precipitate:
+                _sum = 0
+                for partner in vertex.partners:
+                    if graph_obj.vertices[partner].is_edge_column:
+                        _sum += 0.1 * votes[partner]
                     else:
-                        votes[partner] -= 0.5 * votes[vertex.i]
-                        if votes[partner] > 100:
-                            votes[partner] = 100
-                        elif votes[partner] < -100:
-                            votes[partner] = -100
-            for out_semi_partner in vertex.out_semi_partners:
-                if graph_obj.vertices[out_semi_partner].is_in_precipitate:
-                    if not vertex.is_edge_column:
-                        votes[out_semi_partner] -= 0.1 * votes[vertex.i]
-                        if votes[out_semi_partner] > 100:
-                            votes[out_semi_partner] = 100
-                        elif votes[out_semi_partner] < -100:
-                            votes[out_semi_partner] = -100
+                        _sum += 0.5 * votes[partner]
+                for in_semi_partner in vertex.in_semi_partners:
+                    if graph_obj.vertices[in_semi_partner].is_edge_column:
+                        _sum += 0.1 * votes[in_semi_partner]
+                    else:
+                        _sum += 0.2 * votes[in_semi_partner]
+                new_votes[vertex.i] = min(100, max(-100, votes[vertex.i] - _sum))
         if print_states:
-            print_state(graph_obj, votes, False, counter)
+            print_state(graph_obj, new_votes, False, counter, starting_index)
         counter += 1
-        if counter > 60:
+        votes = copy.deepcopy(new_votes)
+        if counter > 40:
             cont = False
     for vertex in graph_obj.vertices:
         if votes[vertex.i] > 0:
+            votes[vertex.i] = 100
             vertex.set_zeta(0)
         else:
+            votes[vertex.i] = -100
             vertex.set_zeta(1)
 
     graph_obj.build_local_zeta_maps()
     graph_obj.build_local_maps()
+
+    if print_states:
+        print_state(graph_obj, votes, False, counter, starting_index, complete=True)
+
     time_2 = time.time()
     logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
 
 
-def print_state(graph_obj, votes, matrix, cycle):
+def print_state(graph_obj, votes, matrix, cycle, seed_index, complete=False):
+
+    max_x = 0
+    min_x = 0
+    max_y = 0
+    min_y = 0
+
+    for vertex in graph_obj.vertices:
+        if vertex.im_coor_x > max_x:
+            max_x = vertex.im_coor_x
+        if vertex.im_coor_x < min_x:
+            min_x = vertex.im_coor_x
+        if vertex.im_coor_y > max_y:
+            max_y = vertex.im_coor_y
+        if vertex.im_coor_y < min_y:
+            min_y = vertex.im_coor_y
 
     xml_string = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
     xml_string += '<!-- Created with AutomAl 6000 (http://www.automal.org/) -->\n\n'
 
-    xml_string += '<svg\n   xmlns:xlink="http://www.w3.org/1999/xlink">\n'
+    xml_string += '<svg\n   xmlns:xlink="http://www.w3.org/1999/xlink"\n'
+    xml_string += '   height="{}"\n'.format(max_y - min_y)
+    xml_string += '   width="{}">\n'.format(max_x - min_x)
 
     xml_string += '  <g\n'
     xml_string += '     inkscape:groupmode="layer"\n'
@@ -313,8 +325,10 @@ def print_state(graph_obj, votes, matrix, cycle):
     for vertex in graph_obj.vertices:
 
         grey_code = int((255 / 200) * (votes[vertex.i] + 100))
-
-        print(grey_code)
+        if vertex.i == seed_index:
+            boarder_colour = 220
+        else:
+            boarder_colour = 0
 
         xml_string += '    <circle\n'
         xml_string += '       id="graph_vertex_{}"\n'.format(vertex.i)
@@ -323,7 +337,7 @@ def print_state(graph_obj, votes, matrix, cycle):
         xml_string += '       r="{}"\n'.format(vertex.r / 2 - 8 / graph_obj.scale)
         xml_string += '       style="fill:{};fill-opacity:1;stroke:{};stroke-width:{};stroke-opacity:1"\n'.format(
             utils.rgb_to_hex((grey_code, grey_code, grey_code)),
-            utils.rgb_to_hex((0, 0, 0)),
+            utils.rgb_to_hex((0, boarder_colour, 0)),
             15 / graph_obj.scale
         )
 
@@ -331,17 +345,18 @@ def print_state(graph_obj, votes, matrix, cycle):
 
     xml_string += '</svg>\n'
 
-    if matrix:
+    with open('temp.svg'.format(cycle), mode='w', newline='') as f:
+        for line in xml_string.splitlines(keepends=True):
+            f.write(line)
+    drawing = svg2rlg('temp.svg')
 
-        with open('snapshot_matrix_{}.svg'.format(cycle), mode='w', newline='') as f:
-            for line in xml_string.splitlines(keepends=True):
-                f.write(line)
-
+    if complete:
+        renderPM.drawToFile(drawing, 'snapshot_result.png', fmt='PNG')
     else:
-
-        with open('snapshot_precipitate_{}.svg'.format(cycle), mode='w', newline='') as f:
-            for line in xml_string.splitlines(keepends=True):
-                f.write(line)
+        if matrix:
+            renderPM.drawToFile(drawing, 'snapshot_matrix_{}.png'.format(cycle), fmt='PNG')
+        else:
+            renderPM.drawToFile(drawing, 'snapshot_precipitate_{}.png'.format(cycle), fmt='PNG')
 
 
 def arc_intersection_denial(graph_obj):
