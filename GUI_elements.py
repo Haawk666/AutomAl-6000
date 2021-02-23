@@ -1693,29 +1693,28 @@ class ControlWindow(QtWidgets.QWidget):
 
             strings = [
                 '0 - Full column characterization algorithm',
-                '1 - Basic mappings...',
-                '2 - ...The rest',
-                '3 - Spatial mapping',
-                '4 - Identify edge columns',
-                '5 - Not in use',
-                '6 - Zeta analysis',
+                '1 - Initialization section...',
+                '2 - recurring section...',
+                '3 - Finalization section...',
+                '4 - Spatial mapping',
+                '5 - Edge detection',
+                '6 - Graph mapping',
                 '7 - Apply alpha model',
-                '8 - Particle detection',
-                '9 - Calculate normalized gamma',
-                '10 - Evaluate sub-species',
-                '11 - Apply composite model',
-                '12 - Reset probability vectors',
-                '13 - Reset user-set columns',
-                '14 - Search for intersections',
-                '15 - Not in use',
-                '16 - Map vertex connectivity',
-                '17 - Map vertex in-connectivity',
-                '18 - Untangling algorithm',
-                '19 - Weak untangling',
-                '20 - Not in use',
-                '21 - Not in use',
-                '22 - Not in use',
-                '23 - Plot gamma'
+                '8 - Apply full model',
+                '9 - Precipitate detection',
+                '10 - Calculate normalized gamma',
+                '11 - Zeta-analysis',
+                '12 - Weak untangling',
+                '13 - Strong untangling',
+                '14 - Evaluate advanced species',
+                '15 - Reset probability vectors',
+                '16 - Reset user-set columns',
+                '17 - Find intersections',
+                '18 - Map in-neighbourhoods',
+                '19 - Calculate area gamma',
+                '20 - Refresh graph',
+                '21 - not in use',
+                '22 - temp'
             ]
 
             string, ok_pressed = QtWidgets.QInputDialog.getItem(self, "Set", "Search step", strings, 0, False)
@@ -1735,9 +1734,9 @@ class ControlWindow(QtWidgets.QWidget):
                         starting_column = self.ui_obj.selected_column
 
                     if self.widgets['column_characterization']['chb_show_graphics']['widget'].isChecked():
-                        self.ui_obj.project_instance.column_characterization(starting_column, choice, ui_obj=self)
+                        self.ui_obj.project_instance.column_characterization_2(starting_column, sub_method=choice, ui_obj=self)
                     else:
-                        self.ui_obj.project_instance.column_characterization(starting_column, choice)
+                        self.ui_obj.project_instance.column_characterization_2(starting_column, sub_method=choice)
                     self.ui_obj.update_display()
                 else:
                     logger.error('Invalid selection. Was not able to start column detection.')

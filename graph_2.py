@@ -1602,6 +1602,22 @@ class AtomicGraph:
     def determine_temp_index(mesh):
         return utils.make_int_from_list(utils.cyclic_sort(mesh.vertex_indices))
 
+    def calc_chi(self):
+        # Calc size
+        self.size = 0
+        for vertex in self.vertices:
+            self.size += len(vertex.out_neighbourhood)
+
+        # Calc chi (# weak arcs / # num strong arcs)
+        num_weak_arcs = 0
+        for vertex in self.vertices:
+            if not vertex.is_edge_column:
+                num_weak_arcs += len(vertex.out_semi_partners)
+        if not self.size == 0:
+            self.chi = num_weak_arcs / self.size
+        else:
+            self.chi = 0
+
     def summarize_stats(self):
         # Calc order
         self.order = len(self.vertices)

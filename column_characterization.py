@@ -18,8 +18,6 @@ logger.setLevel(logging.DEBUG)
 
 
 def find_edge_columns(graph_obj, im_width, im_height):
-    logger.info('Detecting edge columns')
-    time_1 = time.time()
     for vertex in graph_obj.vertices:
         x_coor = vertex.im_coor_x
         y_coor = vertex.im_coor_y
@@ -28,34 +26,25 @@ def find_edge_columns(graph_obj, im_width, im_height):
             graph_obj.vertices[vertex.i].is_edge_column = True
         else:
             graph_obj.vertices[vertex.i].is_edge_column = False
-    time_2 = time.time()
-    logger.info('Found edge columns in {} seconds'.format(time_2 - time_1))
 
 
 def calc_separation_matrix(graph_obj):
-    logger.info('Starting separation calculation.\n    This could take some time, especially if there are many columns')
-    time_1 = time.time()
     projected_separation_matrix = np.zeros([graph_obj.order, graph_obj.order], dtype=float)
     for i in range(0, len(graph_obj.vertices) - 1):
         for j in range(i + 1, len(graph_obj.vertices)):
             dist = graph_obj.get_projected_separation(i, j)
             projected_separation_matrix[j, i] = dist
             projected_separation_matrix[i, j] = dist
-    time_2 = time.time()
-    logger.info('Distance calculations took {} seconds.\n'.format(time_2 - time_1))
     return projected_separation_matrix
 
 
 def determine_districts(graph_obj, search_list=None):
-    logger.info('Determining districts based on projected separations..')
     if graph_obj.projected_separation_matrix is None:
-        logger.info('    The projected separation matrix was None, calculating matrix..')
         graph_obj.projected_separation_matrix = calc_separation_matrix(graph_obj)
 
     if not graph_obj.projected_separation_matrix.shape == (len(graph_obj.vertices), len(graph_obj.vertices)):
-        logger.warning('    The projected separation matrix dimensions does not match the graph order.')
+        logger.warning('The projected separation matrix dimensions does not match the graph order.')
 
-    time_1 = time.time()
     if search_list is None:
         search_list = graph_obj.vertices
     else:
@@ -63,8 +52,6 @@ def determine_districts(graph_obj, search_list=None):
     for vertex in search_list:
         vertex.projected_separation_district = np.argsort(graph_obj.projected_separation_matrix[vertex.i, :])[1:graph_obj.district_size + 1].tolist()
         vertex.district = copy.deepcopy(vertex.projected_separation_district)
-    time_2 = time.time()
-    logger.info('Sorting took {} seconds.'.format(time_2 - time_1))
 
 
 def particle_detection(graph_obj):
@@ -174,8 +161,6 @@ def calculate_precipitate_displacement(graph_obj):
 
 def zeta_analysis(graph_obj, starting_index, print_states=False):
     # First determine the matrix zeta:
-    logger.info('Starting zeta analysis...')
-    time_1 = time.time()
     votes = [0.0] * graph_obj.order
     votes[starting_index] = 1.0
     cont = True
@@ -200,7 +185,7 @@ def zeta_analysis(graph_obj, starting_index, print_states=False):
             print_state(graph_obj, new_votes, True, counter, starting_index)
         counter += 1
         votes = copy.deepcopy(new_votes)
-        if counter > 40:
+        if counter > int(0.05 * graph_obj.order):
             cont = False
     for vertex in graph_obj.vertices:
         if not vertex.is_in_precipitate:
@@ -234,7 +219,7 @@ def zeta_analysis(graph_obj, starting_index, print_states=False):
             print_state(graph_obj, new_votes, False, counter, starting_index)
         counter += 1
         votes = copy.deepcopy(new_votes)
-        if counter > 40:
+        if counter > int(0.05 * graph_obj.order):
             cont = False
     for vertex in graph_obj.vertices:
         if votes[vertex.i] > 0:
@@ -249,9 +234,6 @@ def zeta_analysis(graph_obj, starting_index, print_states=False):
 
     if print_states:
         print_state(graph_obj, votes, False, counter, starting_index, complete=True)
-
-    time_2 = time.time()
-    logger.info('Zeta analysis completed in {} seconds'.format(time_2 - time_1))
 
 
 def print_state(graph_obj, votes, matrix, cycle, seed_index, complete=False):
@@ -360,7 +342,6 @@ def print_state(graph_obj, votes, matrix, cycle, seed_index, complete=False):
 
 
 def arc_intersection_denial(graph_obj):
-    time_1 = time.time()
     intersections = graph_obj.find_intersections()
     for intersection in intersections:
         if not graph_obj.vertices[intersection[0]].partner_query(intersection[1]):
@@ -391,8 +372,6 @@ def arc_intersection_denial(graph_obj):
                 if not graph_obj.terminate_arc(intersection[0], intersection[1]):
                     logger.info('Could not remove intersection {}'.format(intersection))
     graph_obj.build_local_maps()
-    time_3 = time.time()
-    logger.info('Performed arc intersection denial in {} seconds'.format(time_3 - time_1))
 
 
 def apply_alpha_model(graph_obj, model=None, alpha_selection_type='zeta'):
@@ -474,17 +453,18 @@ def apply_composite_model(graph_obj, model=None, alpha_selection_type='zeta'):
 def untangle(graph_obj, ui_obj=None, strong=True):
 
     # Untangling:
-    for vertex in graph_obj.vertices:
-        if not vertex.is_edge_column and not vertex.void:
-            if len(vertex.out_semi_partners) > 0:
-                district_copy = copy.deepcopy(vertex.district)
-                for citizen in district_copy:
-                    if citizen in vertex.out_semi_partners:
-                        sub_graph = graph_obj.get_arc_centered_subgraph(vertex.i, citizen)
-                        untangling_2.determine_sub_graph_class([sub_graph])
-                        untangling_2.determine_sub_graph_configuration(graph_obj, [sub_graph])
-                        untangling_2.weak_resolve(graph_obj, [sub_graph], ui_obj=ui_obj)
-    if strong:
+    if not strong:
+        for vertex in graph_obj.vertices:
+            if not vertex.is_edge_column and not vertex.void:
+                if len(vertex.out_semi_partners) > 0:
+                    district_copy = copy.deepcopy(vertex.district)
+                    for citizen in district_copy:
+                        if citizen in vertex.out_semi_partners:
+                            sub_graph = graph_obj.get_arc_centered_subgraph(vertex.i, citizen)
+                            untangling_2.determine_sub_graph_class([sub_graph])
+                            untangling_2.determine_sub_graph_configuration(graph_obj, [sub_graph])
+                            untangling_2.weak_resolve(graph_obj, [sub_graph], ui_obj=ui_obj)
+    else:
         for vertex in graph_obj.vertices:
             if not vertex.is_edge_column and not vertex.void:
                 if len(vertex.out_semi_partners) > 0:

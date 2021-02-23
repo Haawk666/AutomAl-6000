@@ -448,6 +448,261 @@ class Project:
 
             plt.show()
 
+    def column_characterization_2(self, starting_index, sub_method=0, ui_obj=None, indent=''):
+        """The full algorithm consist of many peocess, which through the interface of this method,
+        can be accsessed as a full sequence, or induvitiualliy if needed.
+
+        Calling this method will do one of the following things:
+
+        ------------    --------------              --------------
+        sub_method      Method title                descripiton
+        ------------    --------------              --------------
+        o               Full algorithm              Applies the full algorithm as intended
+        1               Initialization              Applies the nessercary initialization of the image
+        2               recurring section           Graphs and statistics will battle for convergence
+        3               Finalization section        Make summaries and checks the integrity of the data
+        4
+
+
+
+        """
+
+        sys.setrecursionlimit(10000)
+
+        # Full column characterization algorithm:
+        if sub_method == 0:
+            time_1 = time.time()
+            logger.info('Running full column characterization algorithm with seed vertex {}.'.format(starting_index))
+            # Run initialization
+            self.column_characterization_2(starting_index=starting_index, sub_method=1, ui_obj=ui_obj, indent='    ')
+            # Run recurring section
+            for i in range(0, 3):
+                self.column_characterization_2(starting_index=starting_index, sub_method=2, ui_obj=ui_obj, indent='    ')
+            # Run clean up and summary
+            self.column_characterization_2(starting_index=starting_index, sub_method=3, ui_obj=ui_obj, indent='    ')
+            time_2 = time.time()
+            self.graph.calc_chi()
+            logger.info('Full column characterization complete in {:.1f} seconds. Chi is {:.4f}'.format(time_2 - time_1, self.graph.chi))
+
+        # Initialization part
+        elif sub_method == 1:
+            time_1 = time.time()
+            logger.info('{}Running initialization part...'.format(indent))
+            # Run spatial mapping
+            self.column_characterization_2(starting_index=starting_index, sub_method=4, ui_obj=ui_obj, indent=indent + '    ')
+            # Run edge detection
+            self.column_characterization_2(starting_index=starting_index, sub_method=5, ui_obj=ui_obj, indent=indent + '    ')
+            # Run graph mapping
+            self.column_characterization_2(starting_index=starting_index, sub_method=6, ui_obj=ui_obj, indent=indent + '    ')
+            # Run zeta analysis
+            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
+            # Run alpha model
+            self.column_characterization_2(starting_index=starting_index, sub_method=7, ui_obj=ui_obj, indent=indent + '    ')
+            # Run graph mapping
+            self.column_characterization_2(starting_index=starting_index, sub_method=6, ui_obj=ui_obj, indent=indent + '    ')
+            # Run zeta analysis
+            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
+            time_2 = time.time()
+            self.graph.calc_chi()
+            logger.info('{}Initialization complete in {:.1f} seconds, Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
+
+        # Recurring part
+        elif sub_method == 2:
+            time_1 = time.time()
+            logger.info('{}Running recurring section...'.format(indent))
+            # Run precipitate detection
+            self.column_characterization_2(starting_index=starting_index, sub_method=9, ui_obj=ui_obj, indent=indent + '    ')
+            # Calculate gamma
+            self.column_characterization_2(starting_index=starting_index, sub_method=10, ui_obj=ui_obj, indent=indent + '    ')
+            # Run zeta analysis
+            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
+            # Run weak untangling
+            self.column_characterization_2(starting_index=starting_index, sub_method=12, ui_obj=ui_obj, indent=indent + '    ')
+            # Run weak untangling
+            self.column_characterization_2(starting_index=starting_index, sub_method=12, ui_obj=ui_obj, indent=indent + '    ')
+            # Run strong untangling
+            self.column_characterization_2(starting_index=starting_index, sub_method=13, ui_obj=ui_obj, indent=indent + '    ')
+            # Apply full model
+            self.column_characterization_2(starting_index=starting_index, sub_method=8, ui_obj=ui_obj, indent=indent + '    ')
+            time_2 = time.time()
+            self.graph.calc_chi()
+            logger.info('{}Recurring part complete in {:.1f} seconds. Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
+
+        # Final part
+        elif sub_method == 3:
+            time_1 = time.time()
+            logger.info('{}Running finalization part...'.format(indent))
+            # Detect intersections
+            self.column_characterization_2(starting_index=starting_index, sub_method=17, ui_obj=ui_obj, indent=indent + '    ')
+            # Precipitate detection
+            self.column_characterization_2(starting_index=starting_index, sub_method=9, ui_obj=ui_obj, indent=indent + '    ')
+            # Calculate gamma
+            self.column_characterization_2(starting_index=starting_index, sub_method=10, ui_obj=ui_obj, indent=indent + '    ')
+            # Zeta-analysis
+            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
+            # Refresh graph
+            self.column_characterization_2(starting_index=starting_index, sub_method=20, ui_obj=ui_obj, indent=indent + '    ')
+            time_2 = time.time()
+            logger.info('{}Finalization complete in {:.1f} seconds. Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
+
+        # Spatial mapping
+        elif sub_method == 4:
+            time_1 = time.time()
+            logger.info('{}Running spatial mapping...'.format(indent))
+            column_characterization.determine_districts(self.graph)
+            time_2 = time.time()
+            logger.info('{}Spatial mapping complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Edge detection
+        elif sub_method == 5:
+            time_1 = time.time()
+            logger.info('{}Running edge detection...'.format(indent))
+            column_characterization.find_edge_columns(self.graph, self.im_width, self.im_height)
+            for vertex in self.graph.vertices:
+                if vertex.is_edge_column:
+                    self.graph.set_advanced_species(vertex.i, 'Al_1')
+            time_2 = time.time()
+            logger.info('{}Edge detection complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Graph mapping
+        elif sub_method == 6:
+            time_1 = time.time()
+            logger.info('{}Mapping graph...'.format(indent))
+            self.graph.build_local_maps(build_out=True)
+            self.graph.build_local_zeta_maps(build_out=True)
+            time_2 = time.time()
+            logger.info('{}Graph mapping complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Alpha model
+        elif sub_method == 7:
+            time_1 = time.time()
+            logger.info('{}Applying alpha model...'.format(indent))
+            column_characterization.apply_alpha_model(self.graph)
+            time_2 = time.time()
+            logger.info('{}Alpha model applied in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Full model
+        elif sub_method == 8:
+            time_1 = time.time()
+            logger.info('{}Applying full attribute model...'.format(indent))
+            column_characterization.apply_composite_model(self.graph)
+            time_2 = time.time()
+            logger.info('{}Full attribute model applied in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Precipitate detection
+        elif sub_method == 9:
+            time_1 = time.time()
+            logger.info('{}Running precipitate detection...'.format(indent))
+            column_characterization.particle_detection(self.graph)
+            time_2 = time.time()
+            logger.info('{}Precipitate detection complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Calculate gamma
+        elif sub_method == 10:
+            time_1 = time.time()
+            logger.info('{}Calculating gamma...'.format(indent))
+            self.normalize_gamma()
+            time_2 = time.time()
+            logger.info('{}Gamma calculated in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Zeta-analysis
+        elif sub_method == 11:
+            time_1 = time.time()
+            logger.info('{}Running zeta-analysis...'.format(indent))
+            column_characterization.zeta_analysis(self.graph, starting_index=starting_index, print_states=False)
+            time_2 = time.time()
+            logger.info('{}Zeta-analysis complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Weak untangling
+        elif sub_method == 12:
+            time_1 = time.time()
+            logger.info('{}Running weak untangling...'.format(indent))
+            column_characterization.untangle(self.graph, ui_obj=ui_obj, strong=False)
+            time_2 = time.time()
+            logger.info('{}Weak untangling complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Strong untangling
+        elif sub_method == 13:
+            time_1 = time.time()
+            logger.info('{}Running strong untangling...'.format(indent))
+            column_characterization.untangle(self.graph, ui_obj=ui_obj, strong=True)
+            time_2 = time.time()
+            logger.info('{}Strong untangling complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Evaluate advanced species
+        elif sub_method == 14:
+            time_1 = time.time()
+            logger.info('{}Evaluating advanced species...'.format(indent))
+            self.graph.evaluate_sub_categories()
+            time_2 = time.time()
+            logger.info('{}Advanced species evaluated in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Reset probability vectors
+        elif sub_method == 15:
+            time_1 = time.time()
+            logger.info('{}Resetting probability vectors...'.format(indent))
+            for vertex in self.graph.vertices:
+                if not vertex.is_set_by_user and not vertex.is_edge_column:
+                    vertex.reset_probability_vector()
+            time_2 = time.time()
+            logger.info('{}Probability vectors reset in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Reset user-set columns
+        elif sub_method == 16:
+            time_1 = time.time()
+            logger.info('{}Resetting user-set columns...'.format(indent))
+            for i in range(0, self.num_columns):
+                if self.graph.vertices[i].is_set_by_user:
+                    self.graph.vertices[i].is_set_by_user = False
+            time_2 = time.time()
+            logger.info('{}User-set columns reset in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Find intersections
+        elif sub_method == 17:
+            time_1 = time.time()
+            logger.info('{}Looking for intersections...'.format(indent))
+            intersections = self.graph.find_intersections()
+            num_intersections = len(intersections)
+            column_characterization.arc_intersection_denial(self.graph)
+            intersections = self.graph.find_intersections()
+            if ui_obj is not None:
+                ui_obj.update_overlay()
+                ui_obj.update_graph()
+            logger.info('{}    Found {} intersections'.format(indent, num_intersections))
+            logger.info('{}    {} literal intersections still remain'.format(indent, len(intersections)))
+            time_2 = time.time()
+            logger.info('{}Intersections analyzed in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Map in-neighbourhoods only
+        elif sub_method == 18:
+            time_1 = time.time()
+            logger.info('{}Mapping in-neighbourhoods...'.format(indent))
+            self.graph.build_local_maps(build_out=False)
+            self.graph.build_local_zeta_maps(build_out=False)
+            time_2 = time.time()
+            logger.info('{}In-neighbourhoods mapped in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Calculate area gamma
+        elif sub_method == 19:
+            time_1 = time.time()
+            logger.info('{}Calculating area gamma...'.format(indent))
+            self.calc_area_gamma()
+            time_2 = time.time()
+            logger.info('{}Area gamma calculated in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+        # Refresh graph
+        elif sub_method == 20:
+            time_1 = time.time()
+            logger.info('{}Refreshing atomic graph...'.format(indent))
+            self.graph.refresh_graph()
+            time_2 = time.time()
+            logger.info('{}Atomic graph refreshed in {:.1f} seconds.'.format(indent, time_2 - time_1))
+
+         #
+
+        else:
+            logger.info('Unknown sub-method!')
+
     def column_characterization(self, starting_index, search_type=0, ui_obj=None):
         """Column characterization algorithm.
 
@@ -668,7 +923,49 @@ class Project:
             logger.info('Area gamma calculated')
 
         elif search_type == 22:
-            pass
+            # Thesis version
+            # Spatial map:
+            self.column_characterization(starting_index, search_type=3, ui_obj=ui_obj)
+            # Detect edges:
+            self.column_characterization(starting_index, search_type=4, ui_obj=ui_obj)
+            # Map connectivity:
+            self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
+            # Advanced zeta analysis:
+            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
+            # Alpha model:
+            self.column_characterization(starting_index, search_type=7, ui_obj=ui_obj)
+            # Map connectivity:
+            self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
+            # Advanced zeta analysis:
+            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
+            # Find particle:
+            self.column_characterization(starting_index, search_type=8, ui_obj=ui_obj)
+            # Untangle:
+            self.column_characterization(starting_index, search_type=19, ui_obj=ui_obj)
+            self.column_characterization(starting_index, search_type=18, ui_obj=ui_obj)
+            # Advanced zeta analysis:
+            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
+            # Composite model:
+            self.column_characterization(starting_index, search_type=11, ui_obj=ui_obj)
+            # Map connectivity:
+            self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
+            # Find particle:
+            self.column_characterization(starting_index, search_type=8, ui_obj=ui_obj)
+            # Untangle:
+            self.column_characterization(starting_index, search_type=19, ui_obj=ui_obj)
+            self.column_characterization(starting_index, search_type=18, ui_obj=ui_obj)
+            # Advanced zeta analysis:
+            self.column_characterization(starting_index, search_type=6, ui_obj=ui_obj)
+            # Composite model:
+            self.column_characterization(starting_index, search_type=11, ui_obj=ui_obj)
+            # Map connectivity:
+            self.column_characterization(starting_index, search_type=16, ui_obj=ui_obj)
+            # Find particle:
+            self.column_characterization(starting_index, search_type=8, ui_obj=ui_obj)
+            # Calc gamma:
+            self.column_characterization(starting_index, search_type=9, ui_obj=ui_obj)
+            # Refresh graph parameters
+            self.graph.refresh_graph()
 
         elif search_type == 23:
             pass
