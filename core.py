@@ -449,21 +449,37 @@ class Project:
             plt.show()
 
     def column_characterization_2(self, starting_index, sub_method=0, ui_obj=None, indent=''):
-        """The full algorithm consist of many peocess, which through the interface of this method,
+        """The full algorithm consist of many pieces, which through the interface of this method,
         can be accsessed as a full sequence, or induvitiualliy if needed.
 
         Calling this method will do one of the following things:
 
-        ------------    --------------              --------------
+        --------------- --------------------------- -----------------------------------------------------------------
         sub_method      Method title                descripiton
-        ------------    --------------              --------------
-        o               Full algorithm              Applies the full algorithm as intended
+        --------------- --------------------------- -----------------------------------------------------------------
+        o (default)     Full algorithm              Applies the full algorithm as intended
         1               Initialization              Applies the nessercary initialization of the image
         2               recurring section           Graphs and statistics will battle for convergence
         3               Finalization section        Make summaries and checks the integrity of the data
-        4
-
-
+        4               Spatial mapping             Calculate projected separation matrix
+        5               Edge detection              Label vertices close to the edge of the graph
+        6               Graph mapping               Assign out-neighbourhoods
+        7               Apply alpha model           Predict adv. species from alpha angles
+        8               Apply full model            Predict adv. species from all attributes
+        9               Precipitate detection       Find precipitate
+        10              Calculate gamma             Calculate normalized gamma
+        11              Zeta-analysis               Determine zeta values (plane association)
+        12              Weak untangling             Run weak untangling
+        13              Strong untangling           Run strong untangling
+        14              Evaluate adv. species       Determine adv. species from at. species
+        15              Reset probability vectors   Reset probability vectors
+        16              Reset user-set columns      Unset all user species determinations
+        17              Find intersections          Find and terminate arc intersections
+        18              Graph mapping               Map in-neighbourhoods only
+        19              Calculate area gamma        Calculate alternative intensity measure
+        20              Refresh graph               Refresh graph parameters
+        21              version 1                   A legacy version of the algorithm sequence
+        --------------- --------------------------- -----------------------------------------------------------------
 
         """
 
@@ -698,7 +714,15 @@ class Project:
             time_2 = time.time()
             logger.info('{}Atomic graph refreshed in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
-         #
+        # version 1
+        elif sub_method == 21:
+            sequence = [4, 5, 6, 11, 7, 6, 11, 9, 10, 12, 13, 11, 8, 6, 9, 10, 12, 13, 11, 20]
+            logger.info('{}Running version 1 algorithm...'.format(indent))
+            time_1 = time.time()
+            for sub_method in sequence:
+                self.column_characterization_2(starting_index, sub_method=sub_method, ui_obj=ui_obj, indent=indent + '    ')
+            time_2 = time.time()
+            logger.info('{}Version 1 complete in {:.1f} seconds'.format(indent, time_2 - time_1))
 
         else:
             logger.info('Unknown sub-method!')

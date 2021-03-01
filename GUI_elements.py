@@ -9,6 +9,7 @@ import GUI_tooltips
 import GUI
 import utils
 import data_module
+import test_column_characterization
 # External imports:
 import numpy as np
 import copy
@@ -1713,8 +1714,7 @@ class ControlWindow(QtWidgets.QWidget):
                 '18 - Map in-neighbourhoods',
                 '19 - Calculate area gamma',
                 '20 - Refresh graph',
-                '21 - not in use',
-                '22 - temp'
+                '21 - Version 1 algorithm'
             ]
 
             string, ok_pressed = QtWidgets.QInputDialog.getItem(self, "Set", "Search step", strings, 0, False)
@@ -2111,16 +2111,13 @@ class ControlWindow(QtWidgets.QWidget):
             )
 
     def btn_test_trigger(self):
-        if self.ui_obj.project_instance is not None:
-            for vertex in self.ui_obj.project_instance.graph.vertices:
-                if vertex.theta_angle_mean < 0.5 and not vertex.is_edge_column:
-                    print(vertex.i)
+        test_column_characterization.TestColumnCharacterizationAlgorithm(['temp/0_Smart_aligned_Qprime_columns'], ['temp/0_Smart_aligned_Qprime_control'])
 
     def btn_crash_trigger(self):
         raise IndexError
 
     def btn_test_data_manager_trigger(self):
-        GUI.test_module.test_statistical_basics()
+        pass
 
     def btn_show_prediction_trigger(self):
         if self.ui_obj.project_instance is not None and not self.ui_obj.selected_column == -1:
