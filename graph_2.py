@@ -48,14 +48,21 @@ class Vertex:
 
     al_lattice_const = 404.95
     empty_map = {
+        'district': [],
         'out_neighbourhood': set(),
         'in_neighbourhood': set(),
         'neighbourhood': set(),
-        'anti_neighbourhood': set(),
         'partners': set(),
         'semi_partners': set(),
         'out_semi_partners': set(),
         'in_semi_partners': set(),
+        'anti_out_neighbourhood': set(),
+        'anti_in_neighbourhood': set(),
+        'anti_neighbourhood': set(),
+        'anti_partners': set(),
+        'anti_semi_partners': set(),
+        'anti_out_semi_partners': set(),
+        'anti_in_semi_partners': set()
     }
     numerical_attributes = {
         'peak_gamma',
@@ -260,6 +267,31 @@ class Vertex:
         string += '        Semi-partners: {}\n'.format(self.semi_partners)
         string += '        Out-semi-partners: {}\n'.format(self.out_semi_partners)
         string += '        In-semi-partners: {}\n'.format(self.in_semi_partners)
+        string += '    Local zeta-graph mapping:\n'
+        string += '        Projected separation district: {}\n'.format(self.projected_separation_district)
+        string += '        District: {}\n'.format(self.local_zeta_map['district'])
+        string += '        In-neighbourhood: {}\n'.format(self.local_zeta_map['in_neighbourhood'])
+        string += '        Out-neighbourhood: {}\n'.format(self.local_zeta_map['out_neighbourhood'])
+        string += '        Neighbourhood: {}\n'.format(self.local_zeta_map['neighbourhood'])
+        string += '        Partners: {}\n'.format(self.local_zeta_map['partners'])
+        string += '        Semi-partners: {}\n'.format(self.local_zeta_map['semi_partners'])
+        string += '        Out-semi-partners: {}\n'.format(self.local_zeta_map['out_semi_partners'])
+        string += '        In-semi-partners: {}\n'.format(self.local_zeta_map['in_semi_partners'])
+        string += '    Local anti-zeta-graph mapping:\n'
+        if 'anti_in_neighbourhood' in self.local_zeta_map:
+            string += '        In-neighbourhood: {}\n'.format(self.local_zeta_map['anti_in_neighbourhood'])
+        if 'anti_out_neighbourhood' in self.local_zeta_map:
+            string += '        Out-neighbourhood: {}\n'.format(self.local_zeta_map['anti_out_neighbourhood'])
+        if 'anti_neighbourhood' in self.local_zeta_map:
+            string += '        Neighbourhood: {}\n'.format(self.local_zeta_map['anti_neighbourhood'])
+        if 'anti_partners' in self.local_zeta_map:
+            string += '        Partners: {}\n'.format(self.local_zeta_map['anti_partners'])
+        if 'anti_semi_partners' in self.local_zeta_map:
+            string += '        Semi-partners: {}\n'.format(self.local_zeta_map['anti_semi_partners'])
+        if 'anti_out_semi_partners' in self.local_zeta_map:
+            string += '        Out-semi-partners: {}\n'.format(self.local_zeta_map['anti_out_semi_partners'])
+        if 'anti_in_semi_partners' in self.local_zeta_map:
+            string += '        In-semi-partners: {}\n'.format(self.local_zeta_map['anti_in_semi_partners'])
         string += '    Settings:\n'
         string += '        Is in precipitate: {}\n'.format(str(self.is_in_precipitate))
         string += '        Is edge column: {}\n'.format(str(self.is_edge_column))
@@ -823,6 +855,70 @@ class AtomicGraph:
 
         return alpha
 
+    def get_zeta_alpha_angles(self, i):
+        pivot = (self.vertices[i].im_coor_x, self.vertices[i].im_coor_y)
+        district = self.vertices[i].local_zeta_map['district']
+        if len(district) == 0:
+            return []
+
+        j = []
+        for citizen in district:
+            if not self.vertices[citizen].zeta == self.vertices[i].zeta:
+                j.append(citizen)
+            if len(j) == 3:
+                break
+        else:
+            for citizen in district:
+                if citizen not in j:
+                    j.append(citizen)
+                if len(j) == 3:
+                    break
+        j.append(j[0])
+        for k, index in enumerate(j):
+            j[k] = (self.vertices[index].im_coor_x, self.vertices[index].im_coor_y)
+
+        alpha = []
+        for k in range(0, 3):
+            alpha.append(utils.find_angle_from_points(j[k], j[k + 1], pivot))
+
+        if sum(alpha) > 6.5:
+            for x in range(0, 3):
+                alpha[x] = 2 * np.pi - alpha[x]
+
+        return alpha
+
+    def get_anti_zeta_alpha_angles(self, i):
+        pivot = (self.vertices[i].im_coor_x, self.vertices[i].im_coor_y)
+        district = self.vertices[i].local_zeta_map['district']
+        if len(district) == 0:
+            return []
+
+        j = []
+        for citizen in district:
+            if self.vertices[citizen].zeta == self.vertices[i].zeta:
+                j.append(citizen)
+            if len(j) == 3:
+                break
+        else:
+            for citizen in district:
+                if citizen not in j:
+                    j.append(citizen)
+                if len(j) == 3:
+                    break
+        j.append(j[0])
+        for k, index in enumerate(j):
+            j[k] = (self.vertices[index].im_coor_x, self.vertices[index].im_coor_y)
+
+        alpha = []
+        for k in range(0, 3):
+            alpha.append(utils.find_angle_from_points(j[k], j[k + 1], pivot))
+
+        if sum(alpha) > 6.5:
+            for x in range(0, 3):
+                alpha[x] = 2 * np.pi - alpha[x]
+
+        return alpha
+
     def get_theta_angles(self, i, selection_type='normal'):
         if selection_type == 'normal':
             sub_graph = self.get_column_centered_subgraph(i)
@@ -836,6 +932,12 @@ class AtomicGraph:
                 if mesh.order == 4:
                     theta.append(mesh.angles[0])
         return theta
+
+    def get_zeta_theta_angles(self, i):
+        pass
+
+    def get_anti_zeta_theta_angles(self, i):
+        pass
 
     def get_redshift(self, i, j):
         hard_sphere_separation = self.get_hard_sphere_separation(i, j)
@@ -1105,6 +1207,8 @@ class AtomicGraph:
             for citizen in vertex.district:
                 if self.vertices[citizen].zeta == vertex.anti_zeta():
                     vertex.zeta_district.append(citizen)
+            if 'district' not in vertex.local_zeta_map:
+                vertex.local_zeta_map['district'] = vertex.projected_separation_district
 
     def build_local_maps(self, build_out=True):
         self.build_local_map([vertex.i for vertex in self.vertices], build_out=build_out)
@@ -1166,55 +1270,40 @@ class AtomicGraph:
         if build_out:
             for vertex in self.get_vertex_objects_from_indices(indices):
                 vertex.local_zeta_map['out_neighbourhood'] = set()
-                if not vertex.void:
-                    counter = 0
-                    for zeta_citizen in vertex.zeta_district:
-                        vertex.local_zeta_map['out_neighbourhood'].add(zeta_citizen)
+                counter = 0
+                for citizen in vertex.local_zeta_map['district']:
+                    if self.vertices[citizen].zeta == vertex.anti_zeta():
+                        vertex.local_zeta_map['out_neighbourhood'].add(citizen)
                         counter += 1
+                    if counter == vertex.n:
+                        break
+                else:
+                    for citizen in vertex.local_zeta_map['district']:
+                        if citizen not in vertex.local_zeta_map['out_neighbourhood']:
+                            vertex.local_zeta_map['out_neighbourhood'].add(citizen)
+                            counter += 1
                         if counter == vertex.n:
                             break
-                    else:
-                        for alternative_citizen in vertex.district:
-                            if alternative_citizen not in vertex.local_zeta_map['out_neighbourhood']:
-                                vertex.local_zeta_map['out_neighbourhood'].add(alternative_citizen)
-                                counter += 1
-                            if counter == vertex.n:
-                                break
         # Determine in_neighbourhoods:
         for vertex in self.get_vertex_objects_from_indices(indices):
             vertex.local_zeta_map['in_neighbourhood'] = set()
-            if not vertex.void:
-                for candidate in self.vertices:
-                    if vertex.i in candidate.local_zeta_map['out_neighbourhood']:
-                        vertex.local_zeta_map['in_neighbourhood'].add(candidate.i)
+            for candidate in self.vertices:
+                if vertex.i in candidate.local_zeta_map['out_neighbourhood']:
+                    vertex.local_zeta_map['in_neighbourhood'].add(candidate.i)
         # Determine neighbourhood:
         for vertex in self.get_vertex_objects_from_indices(indices):
             vertex.local_zeta_map['neighbourhood'] = set()
-            if not vertex.void:
-                vertex.local_zeta_map['neighbourhood'] = \
-                    vertex.local_zeta_map['out_neighbourhood'].union(vertex.local_zeta_map['in_neighbourhood'])
-        # Determine anti_neighbourhood:
-        for vertex in self.get_vertex_objects_from_indices(indices):
-            vertex.local_zeta_map['anti_neighbourhood'] = set()
-            if not vertex.void:
-                for citizen in vertex.zeta_district:
-                    if citizen not in vertex.local_zeta_map['neighbourhood']:
-                        vertex.local_zeta_map['anti_neighbourhood'].add(citizen)
+            vertex.local_zeta_map['neighbourhood'] = vertex.local_zeta_map['out_neighbourhood'].union(vertex.local_zeta_map['in_neighbourhood'])
         # Determine partners and semi-partners:
         for vertex in self.get_vertex_objects_from_indices(indices):
             vertex.local_zeta_map['partners'] = set()
             vertex.local_zeta_map['semi_partners'] = set()
             vertex.local_zeta_map['in_semi_partners'] = set()
             vertex.local_zeta_map['out_semi_partners'] = set()
-            if not vertex.void:
-                vertex.local_zeta_map['partners'] = \
-                    vertex.local_zeta_map['out_neighbourhood'].intersection(vertex.local_zeta_map['in_neighbourhood'])
-                vertex.local_zeta_map['semi_partners'] = \
-                    vertex.local_zeta_map['neighbourhood'] - vertex.local_zeta_map['partners']
-                vertex.local_zeta_map['out_semi_partners'] = \
-                    vertex.local_zeta_map['semi_partners'].intersection(vertex.local_zeta_map['out_neighbourhood'])
-                vertex.local_zeta_map['in_semi_partners'] = \
-                    vertex.local_zeta_map['semi_partners'].intersection(vertex.local_zeta_map['in_neighbourhood'])
+            vertex.local_zeta_map['partners'] = vertex.local_zeta_map['out_neighbourhood'].intersection(vertex.local_zeta_map['in_neighbourhood'])
+            vertex.local_zeta_map['semi_partners'] = vertex.local_zeta_map['neighbourhood'] - vertex.local_zeta_map['partners']
+            vertex.local_zeta_map['out_semi_partners'] = vertex.local_zeta_map['semi_partners'].intersection(vertex.local_zeta_map['out_neighbourhood'])
+            vertex.local_zeta_map['in_semi_partners'] = vertex.local_zeta_map['semi_partners'].intersection(vertex.local_zeta_map['in_neighbourhood'])
 
     def build_cities(self):
         for vertex in self.vertices:
@@ -1226,19 +1315,16 @@ class AtomicGraph:
                     vertex.city.add(extended_citizen)
 
     def match_zeta_graph(self):
-        self.build_local_zeta_maps()
-        logger.info('Matching the atomic graph to the zeta graph..')
         for vertex in self.vertices:
             reordered_district = []
-            for zeta_citizen in vertex.zeta_district:
-                reordered_district.append(zeta_citizen)
-            for citizen in vertex.district:
-                if citizen not in reordered_district:
-                    reordered_district.append(citizen)
+            for zeta_citizen in vertex.local_zeta_map['district']:
+                if vertex.zeta == self.vertices[zeta_citizen].anti_zeta():
+                    reordered_district.append(zeta_citizen)
+            for zeta_citizen in vertex.local_zeta_map['district']:
+                if zeta_citizen not in reordered_district:
+                    reordered_district.append(zeta_citizen)
             vertex.district = reordered_district
-        logger.info('Matched zeta graph')
         self.build_local_maps()
-        self.refresh_graph()
 
     def op_arc_pivot(self, i, j, k):
         if j in self.vertices[i].out_neighbourhood:
@@ -1369,6 +1455,105 @@ class AtomicGraph:
 
         return intersecting_segments
 
+    def find_zeta_intersections(self):
+
+        intersecting_segments = []
+
+        for a in self.vertices:
+            a_coor = a.im_pos()
+            a_coor = (a_coor[0], a_coor[1])
+            for b in [self.vertices[index] for index in a.local_zeta_map['out_neighbourhood']]:
+                if not a.is_edge_column and not b.is_edge_column:
+                    b_coor = b.im_pos()
+                    b_coor = (b_coor[0], b_coor[1])
+                    for c in [self.vertices[index] for index in a.local_zeta_map['out_neighbourhood']]:
+                        if not c.i == b.i:
+                            c_coor = c.im_pos()
+                            c_coor = (c_coor[0], c_coor[1])
+                            for d in [self.vertices[index] for index in c.local_zeta_map['out_neighbourhood']]:
+                                d_coor = d.im_pos()
+                                d_coor = (d_coor[0], d_coor[1])
+                                intersects = utils.closed_segment_intersect(a_coor, b_coor, c_coor, d_coor)
+                                if intersects:
+                                    if (a.i, b.i, c.i, d.i) not in intersecting_segments and \
+                                            (a.i, b.i, d.i, c.i) not in intersecting_segments and \
+                                            (b.i, a.i, c.i, d.i) not in intersecting_segments and \
+                                            (b.i, a.i, d.i, c.i) not in intersecting_segments and \
+                                            (c.i, d.i, a.i, b.i) not in intersecting_segments and \
+                                            (c.i, d.i, b.i, a.i) not in intersecting_segments and \
+                                            (d.i, c.i, a.i, b.i) not in intersecting_segments and \
+                                            (d.i, c.i, b.i, a.i) not in intersecting_segments:
+                                        intersecting_segments.append((a.i, b.i, c.i, d.i))
+                    for c in [self.vertices[index] for index in a.local_zeta_map['out_neighbourhood']]:
+                        for d in [self.vertices[index] for index in c.local_zeta_map['out_neighbourhood']]:
+                            d_coor = d.im_pos()
+                            d_coor = (d_coor[0], d_coor[1])
+                            for e in [self.vertices[index] for index in d.local_zeta_map['out_neighbourhood']]:
+                                e_coor = e.im_pos()
+                                e_coor = (e_coor[0], e_coor[1])
+                                intersects = utils.closed_segment_intersect(a_coor, b_coor, d_coor, e_coor)
+                                if intersects:
+                                    if (a.i, b.i, d.i, e.i) not in intersecting_segments and \
+                                            (a.i, b.i, e.i, d.i) not in intersecting_segments and \
+                                            (b.i, a.i, d.i, e.i) not in intersecting_segments and \
+                                            (b.i, a.i, e.i, d.i) not in intersecting_segments and \
+                                            (d.i, e.i, a.i, b.i) not in intersecting_segments and \
+                                            (d.i, e.i, b.i, a.i) not in intersecting_segments and \
+                                            (e.i, d.i, a.i, b.i) not in intersecting_segments and \
+                                            (e.i, d.i, b.i, a.i) not in intersecting_segments:
+                                        intersecting_segments.append((a.i, b.i, d.i, e.i))
+
+        return intersecting_segments
+
+    def find_anti_zeta_intersections(self):
+        intersecting_segments = []
+
+        for a in self.vertices:
+            a_coor = a.im_pos()
+            a_coor = (a_coor[0], a_coor[1])
+            for b in [self.vertices[index] for index in a.local_zeta_map['anti_out_neighbourhood']]:
+                if not a.is_edge_column and not b.is_edge_column:
+                    b_coor = b.im_pos()
+                    b_coor = (b_coor[0], b_coor[1])
+                    for c in [self.vertices[index] for index in a.local_zeta_map['out_neighbourhood']]:
+                        if not c.i == b.i:
+                            c_coor = c.im_pos()
+                            c_coor = (c_coor[0], c_coor[1])
+                            for d in [self.vertices[index] for index in c.local_zeta_map['out_neighbourhood']]:
+                                d_coor = d.im_pos()
+                                d_coor = (d_coor[0], d_coor[1])
+                                intersects = utils.closed_segment_intersect(a_coor, b_coor, c_coor, d_coor)
+                                if intersects:
+                                    if (a.i, b.i, c.i, d.i) not in intersecting_segments and \
+                                            (a.i, b.i, d.i, c.i) not in intersecting_segments and \
+                                            (b.i, a.i, c.i, d.i) not in intersecting_segments and \
+                                            (b.i, a.i, d.i, c.i) not in intersecting_segments and \
+                                            (c.i, d.i, a.i, b.i) not in intersecting_segments and \
+                                            (c.i, d.i, b.i, a.i) not in intersecting_segments and \
+                                            (d.i, c.i, a.i, b.i) not in intersecting_segments and \
+                                            (d.i, c.i, b.i, a.i) not in intersecting_segments:
+                                        intersecting_segments.append((a.i, b.i, c.i, d.i))
+                    for c in [self.vertices[index] for index in a.local_zeta_map['anti_out_neighbourhood']]:
+                        for d in [self.vertices[index] for index in c.local_zeta_map['out_neighbourhood']]:
+                            d_coor = d.im_pos()
+                            d_coor = (d_coor[0], d_coor[1])
+                            for e in [self.vertices[index] for index in d.local_zeta_map['out_neighbourhood']]:
+                                e_coor = e.im_pos()
+                                e_coor = (e_coor[0], e_coor[1])
+                                intersects = utils.closed_segment_intersect(a_coor, b_coor, d_coor, e_coor)
+                                if intersects:
+                                    if (a.i, b.i, d.i, e.i) not in intersecting_segments and \
+                                            (a.i, b.i, e.i, d.i) not in intersecting_segments and \
+                                            (b.i, a.i, d.i, e.i) not in intersecting_segments and \
+                                            (b.i, a.i, e.i, d.i) not in intersecting_segments and \
+                                            (d.i, e.i, a.i, b.i) not in intersecting_segments and \
+                                            (d.i, e.i, b.i, a.i) not in intersecting_segments and \
+                                            (e.i, d.i, a.i, b.i) not in intersecting_segments and \
+                                            (e.i, d.i, b.i, a.i) not in intersecting_segments:
+                                        intersecting_segments.append((a.i, b.i, d.i, e.i))
+
+        return intersecting_segments
+
     def terminate_arc(self, i, j):
         if self.vertices[i].op_arc_pivot(j, self.vertices[i].district[self.vertices[i].n - 1]):
             if self.vertices[i].decrement_n():
@@ -1381,14 +1566,28 @@ class AtomicGraph:
 
     def calc_vertex_parameters(self, i):
         vertex = self.vertices[i]
-        vertex.alpha_angles = self.get_alpha_angles(i)
+        vertex.alpha_angles = self.get_alpha_angles(i, selection_type='partners')
         if vertex.alpha_angles is not None and not len(vertex.alpha_angles) == 0:
             vertex.alpha_max = max(vertex.alpha_angles)
             vertex.alpha_min = min(vertex.alpha_angles)
         else:
             vertex.alpha_max = 0
             vertex.alpha_min = 0
-        vertex.theta_angles = self.get_theta_angles(i, selection_type='selective')
+        vertex.zeta_alpha_angles = self.get_zeta_alpha_angles(i)
+        if vertex.zeta_alpha_angles is not None and not len(vertex.zeta_alpha_angles) == 0:
+            vertex.zeta_alpha_max = max(vertex.zeta_alpha_angles)
+            vertex.zeta_alpha_min = min(vertex.zeta_alpha_angles)
+        else:
+            vertex.zeta_alpha_max = 0
+            vertex.zeta_alpha_min = 0
+        vertex.anti_zeta_alpha_angles = self.get_anti_zeta_alpha_angles(i)
+        if vertex.anti_zeta_alpha_angles is not None and not len(vertex.anti_zeta_alpha_angles) == 0:
+            vertex.anti_zeta_alpha_max = max(vertex.anti_zeta_alpha_angles)
+            vertex.anti_zeta_alpha_min = min(vertex.anti_zeta_alpha_angles)
+        else:
+            vertex.anti_zeta_alpha_max = 0
+            vertex.anti_zeta_alpha_min = 0
+        vertex.theta_angles = self.get_theta_angles(i, selection_type='normal')
         if vertex.theta_angles is not None and not len(vertex.theta_angles) == 0:
             vertex.theta_max = max(vertex.theta_angles)
             vertex.theta_min = min(vertex.theta_angles)
@@ -1483,18 +1682,11 @@ class AtomicGraph:
                 logger.info('    {}'.format(vertex.i))
 
     def refresh_graph(self):
-        logger.info('Refreshing graph...')
-        logger.info('    Building maps...')
         self.build_local_maps()
-        logger.info('    Calculating parameters...')
         self.calc_all_parameters()
-        logger.info('    Evaluating sub-categories...')
         self.evaluate_sub_categories()
-        logger.info('    Mapping arcs...')
         self.map_arcs()
-        logger.info('    Summarizing stats...')
         self.summarize_stats()
-        logger.info('Graph refreshed!')
 
     def evaluate_sub_categories(self):
         for vertex in self.vertices:
@@ -1616,7 +1808,7 @@ class AtomicGraph:
         if not self.size == 0:
             self.chi = num_weak_arcs / self.size
         else:
-            self.chi = 0
+            self.chi = 1
 
     def summarize_stats(self):
         # Calc order

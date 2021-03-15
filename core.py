@@ -250,7 +250,7 @@ class Project:
 
         pass
 
-    def save(self, filename_full):
+    def save(self, filename_full, supress_logging=False):
         """Save the current project as a pickle file.
 
         :param filename_full: Path and name of save-file. The project will be pickled as *filename_full* without any
@@ -263,13 +263,14 @@ class Project:
             self.debug_obj = None
             self.version_saved = self.version
             pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
-        logger.info('Saved {}'.format(filename_full))
+        if not supress_logging:
+            logger.info('Saved {}'.format(filename_full))
 
     def experimental_save(self, filename_full):
         pass
 
     @staticmethod
-    def load(filename_full):
+    def load(filename_full, supress_logging=False):
         """Load an instance from a pickle-file.
 
         :param filename_full: Path-name of the file to be loaded.
@@ -294,7 +295,8 @@ class Project:
                     else:
                         logger.info('Conversion successful, loaded {}'.format(filename_full))
                 else:
-                    logger.info('Loaded {}'.format(filename_full))
+                    if not supress_logging:
+                        logger.info('Loaded {}'.format(filename_full))
         return obj
 
     @staticmethod
@@ -448,7 +450,7 @@ class Project:
 
             plt.show()
 
-    def column_characterization_2(self, starting_index, sub_method=0, ui_obj=None, indent=''):
+    def column_characterization_2(self, starting_index, sub_method=0, ui_obj=None, indent='', supress_logging=False):
         """The full algorithm consist of many pieces, which through the interface of this method,
         can be accsessed as a full sequence, or induvitiualliy if needed.
 
@@ -478,7 +480,11 @@ class Project:
         18              Graph mapping               Map in-neighbourhoods only
         19              Calculate area gamma        Calculate alternative intensity measure
         20              Refresh graph               Refresh graph parameters
-        21              version 1                   A legacy version of the algorithm sequence
+        21              test version                Experimental version
+        22              Zeta untangling             Zeta untangling
+        23              Alpha (district)            Alpha model from district angles
+        24              Alpha (partners)            Alpha model from partner angles
+        25              Alpha (Out)                 Alpha model from out-neighbour angles
         --------------- --------------------------- -----------------------------------------------------------------
 
         """
@@ -488,7 +494,8 @@ class Project:
         # Full column characterization algorithm:
         if sub_method == 0:
             time_1 = time.time()
-            logger.info('Running full column characterization algorithm with seed vertex {}.'.format(starting_index))
+            if not supress_logging:
+                logger.info('Running full column characterization algorithm with seed vertex {}.'.format(starting_index))
             # Run initialization
             self.column_characterization_2(starting_index=starting_index, sub_method=1, ui_obj=ui_obj, indent='    ')
             # Run recurring section
@@ -498,12 +505,14 @@ class Project:
             self.column_characterization_2(starting_index=starting_index, sub_method=3, ui_obj=ui_obj, indent='    ')
             time_2 = time.time()
             self.graph.calc_chi()
-            logger.info('Full column characterization complete in {:.1f} seconds. Chi is {:.4f}'.format(time_2 - time_1, self.graph.chi))
+            if not supress_logging:
+                logger.info('Full column characterization complete in {:.1f} seconds. Chi is {:.4f}'.format(time_2 - time_1, self.graph.chi))
 
         # Initialization part
         elif sub_method == 1:
             time_1 = time.time()
-            logger.info('{}Running initialization part...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running initialization part...'.format(indent))
             # Run spatial mapping
             self.column_characterization_2(starting_index=starting_index, sub_method=4, ui_obj=ui_obj, indent=indent + '    ')
             # Run edge detection
@@ -520,12 +529,14 @@ class Project:
             self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
             time_2 = time.time()
             self.graph.calc_chi()
-            logger.info('{}Initialization complete in {:.1f} seconds, Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
+            if not supress_logging:
+                logger.info('{}Initialization complete in {:.1f} seconds, Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
 
         # Recurring part
         elif sub_method == 2:
             time_1 = time.time()
-            logger.info('{}Running recurring section...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running recurring section...'.format(indent))
             # Run precipitate detection
             self.column_characterization_2(starting_index=starting_index, sub_method=9, ui_obj=ui_obj, indent=indent + '    ')
             # Calculate gamma
@@ -542,12 +553,14 @@ class Project:
             self.column_characterization_2(starting_index=starting_index, sub_method=8, ui_obj=ui_obj, indent=indent + '    ')
             time_2 = time.time()
             self.graph.calc_chi()
-            logger.info('{}Recurring part complete in {:.1f} seconds. Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
+            if not supress_logging:
+                logger.info('{}Recurring part complete in {:.1f} seconds. Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
 
         # Final part
         elif sub_method == 3:
             time_1 = time.time()
-            logger.info('{}Running finalization part...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running finalization part...'.format(indent))
             # Detect intersections
             self.column_characterization_2(starting_index=starting_index, sub_method=17, ui_obj=ui_obj, indent=indent + '    ')
             # Precipitate detection
@@ -559,124 +572,152 @@ class Project:
             # Refresh graph
             self.column_characterization_2(starting_index=starting_index, sub_method=20, ui_obj=ui_obj, indent=indent + '    ')
             time_2 = time.time()
-            logger.info('{}Finalization complete in {:.1f} seconds. Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
+            if not supress_logging:
+                logger.info('{}Finalization complete in {:.1f} seconds. Chi is {:.4f}'.format(indent, time_2 - time_1, self.graph.chi))
 
         # Spatial mapping
         elif sub_method == 4:
             time_1 = time.time()
-            logger.info('{}Running spatial mapping...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running spatial mapping...'.format(indent))
             column_characterization.determine_districts(self.graph)
             time_2 = time.time()
-            logger.info('{}Spatial mapping complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Spatial mapping complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Edge detection
         elif sub_method == 5:
             time_1 = time.time()
-            logger.info('{}Running edge detection...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running edge detection...'.format(indent))
             column_characterization.find_edge_columns(self.graph, self.im_width, self.im_height)
             for vertex in self.graph.vertices:
                 if vertex.is_edge_column:
                     self.graph.set_advanced_species(vertex.i, 'Al_1')
             time_2 = time.time()
-            logger.info('{}Edge detection complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Edge detection complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Graph mapping
         elif sub_method == 6:
             time_1 = time.time()
-            logger.info('{}Mapping graph...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Mapping graph...'.format(indent))
             self.graph.build_local_maps(build_out=True)
             self.graph.build_local_zeta_maps(build_out=True)
             time_2 = time.time()
-            logger.info('{}Graph mapping complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Graph mapping complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Alpha model
         elif sub_method == 7:
             time_1 = time.time()
-            logger.info('{}Applying alpha model...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Applying alpha model...'.format(indent))
             column_characterization.apply_alpha_model(self.graph)
             time_2 = time.time()
-            logger.info('{}Alpha model applied in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Alpha model applied in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Full model
         elif sub_method == 8:
             time_1 = time.time()
-            logger.info('{}Applying full attribute model...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Applying full attribute model...'.format(indent))
             column_characterization.apply_composite_model(self.graph)
             time_2 = time.time()
-            logger.info('{}Full attribute model applied in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Full attribute model applied in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Precipitate detection
         elif sub_method == 9:
             time_1 = time.time()
-            logger.info('{}Running precipitate detection...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running precipitate detection...'.format(indent))
             column_characterization.particle_detection(self.graph)
             time_2 = time.time()
-            logger.info('{}Precipitate detection complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Precipitate detection complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Calculate gamma
         elif sub_method == 10:
             time_1 = time.time()
-            logger.info('{}Calculating gamma...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Calculating gamma...'.format(indent))
             self.normalize_gamma()
             time_2 = time.time()
-            logger.info('{}Gamma calculated in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Gamma calculated in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Zeta-analysis
         elif sub_method == 11:
             time_1 = time.time()
-            logger.info('{}Running zeta-analysis...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running zeta-analysis...'.format(indent))
             column_characterization.zeta_analysis(self.graph, starting_index=starting_index, print_states=False)
             time_2 = time.time()
-            logger.info('{}Zeta-analysis complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Zeta-analysis complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Weak untangling
         elif sub_method == 12:
             time_1 = time.time()
-            logger.info('{}Running weak untangling...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running weak untangling...'.format(indent))
             column_characterization.untangle(self.graph, ui_obj=ui_obj, strong=False)
             time_2 = time.time()
-            logger.info('{}Weak untangling complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Weak untangling complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Strong untangling
         elif sub_method == 13:
             time_1 = time.time()
-            logger.info('{}Running strong untangling...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running strong untangling...'.format(indent))
             column_characterization.untangle(self.graph, ui_obj=ui_obj, strong=True)
             time_2 = time.time()
-            logger.info('{}Strong untangling complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Strong untangling complete in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Evaluate advanced species
         elif sub_method == 14:
             time_1 = time.time()
-            logger.info('{}Evaluating advanced species...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Evaluating advanced species...'.format(indent))
             self.graph.evaluate_sub_categories()
             time_2 = time.time()
-            logger.info('{}Advanced species evaluated in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Advanced species evaluated in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Reset probability vectors
         elif sub_method == 15:
             time_1 = time.time()
-            logger.info('{}Resetting probability vectors...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Resetting probability vectors...'.format(indent))
             for vertex in self.graph.vertices:
                 if not vertex.is_set_by_user and not vertex.is_edge_column:
                     vertex.reset_probability_vector()
             time_2 = time.time()
-            logger.info('{}Probability vectors reset in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Probability vectors reset in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Reset user-set columns
         elif sub_method == 16:
             time_1 = time.time()
-            logger.info('{}Resetting user-set columns...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Resetting user-set columns...'.format(indent))
             for i in range(0, self.num_columns):
                 if self.graph.vertices[i].is_set_by_user:
                     self.graph.vertices[i].is_set_by_user = False
             time_2 = time.time()
-            logger.info('{}User-set columns reset in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}User-set columns reset in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Find intersections
         elif sub_method == 17:
             time_1 = time.time()
-            logger.info('{}Looking for intersections...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Looking for intersections...'.format(indent))
             intersections = self.graph.find_intersections()
             num_intersections = len(intersections)
             column_characterization.arc_intersection_denial(self.graph)
@@ -684,45 +725,95 @@ class Project:
             if ui_obj is not None:
                 ui_obj.update_overlay()
                 ui_obj.update_graph()
-            logger.info('{}    Found {} intersections'.format(indent, num_intersections))
-            logger.info('{}    {} literal intersections still remain'.format(indent, len(intersections)))
+            if not supress_logging:
+                logger.info('{}    Found {} intersections'.format(indent, num_intersections))
+                logger.info('{}    {} literal intersections still remain'.format(indent, len(intersections)))
             time_2 = time.time()
-            logger.info('{}Intersections analyzed in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Intersections analyzed in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Map in-neighbourhoods only
         elif sub_method == 18:
             time_1 = time.time()
-            logger.info('{}Mapping in-neighbourhoods...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Mapping in-neighbourhoods...'.format(indent))
             self.graph.build_local_maps(build_out=False)
             self.graph.build_local_zeta_maps(build_out=False)
             time_2 = time.time()
-            logger.info('{}In-neighbourhoods mapped in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}In-neighbourhoods mapped in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Calculate area gamma
         elif sub_method == 19:
             time_1 = time.time()
-            logger.info('{}Calculating area gamma...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Calculating area gamma...'.format(indent))
             self.calc_area_gamma()
             time_2 = time.time()
-            logger.info('{}Area gamma calculated in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Area gamma calculated in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
         # Refresh graph
         elif sub_method == 20:
             time_1 = time.time()
-            logger.info('{}Refreshing atomic graph...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Refreshing atomic graph...'.format(indent))
             self.graph.refresh_graph()
             time_2 = time.time()
-            logger.info('{}Atomic graph refreshed in {:.1f} seconds.'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Atomic graph refreshed in {:.1f} seconds.'.format(indent, time_2 - time_1))
 
-        # version 1
+        # test version
         elif sub_method == 21:
             sequence = [4, 5, 6, 11, 7, 6, 11, 9, 10, 12, 13, 11, 8, 6, 9, 10, 12, 13, 11, 20]
-            logger.info('{}Running version 1 algorithm...'.format(indent))
+            if not supress_logging:
+                logger.info('{}Running test version algorithm...'.format(indent))
             time_1 = time.time()
             for sub_method in sequence:
                 self.column_characterization_2(starting_index, sub_method=sub_method, ui_obj=ui_obj, indent=indent + '    ')
             time_2 = time.time()
-            logger.info('{}Version 1 complete in {:.1f} seconds'.format(indent, time_2 - time_1))
+            if not supress_logging:
+                logger.info('{}Test version complete in {:.1f} seconds'.format(indent, time_2 - time_1))
+
+        # Zeta untangling
+        elif sub_method == 22:
+            if not supress_logging:
+                logger.info('{}Running zeta untangling...'.format(indent))
+            time_1 = time.time()
+            column_characterization.zeta_untangle(self.graph)
+            time_2 = time.time()
+            if not supress_logging:
+                logger.info('{}Zeta untangling complete in {:.1f} seconds'.format(indent, time_2 - time_1))
+
+        # District alpha model:
+        elif sub_method == 23:
+            if not supress_logging:
+                logger.info('{}Applying district based alpha model...'.format(indent))
+            time_1 = time.time()
+            column_characterization.apply_alpha_model(self.graph, alpha_selection_type='district')
+            time_2 = time.time()
+            if not supress_logging:
+                logger.info('{}District based alpha applied in {:.1f} seconds'.format(indent, time_2 - time_1))
+
+        # Partner alpha model:
+        elif sub_method == 24:
+            if not supress_logging:
+                logger.info('{}Applying partner based alpha model...'.format(indent))
+            time_1 = time.time()
+            column_characterization.apply_alpha_model(self.graph, alpha_selection_type='partners')
+            time_2 = time.time()
+            if not supress_logging:
+                logger.info('{}Partner based alpha applied in {:.1f} seconds'.format(indent, time_2 - time_1))
+
+        # Out alpha model:
+        elif sub_method == 25:
+            if not supress_logging:
+                logger.info('{}Applying out based alpha model...'.format(indent))
+            time_1 = time.time()
+            column_characterization.apply_alpha_model(self.graph, alpha_selection_type='out')
+            time_2 = time.time()
+            if not supress_logging:
+                logger.info('{}Out based alpha applied in {:.1f} seconds'.format(indent, time_2 - time_1))
 
         else:
             logger.info('Unknown sub-method!')
@@ -1080,6 +1171,21 @@ class Project:
         self.graph = graph_2.AtomicGraph(self.scale, active_model=None, species_dict=self.species_dict, district_size=self.district_size)
         self.search_mat = copy.deepcopy(self.im_mat)
         self.starting_index = None
+
+    def reset_graph_information(self):
+        """Reset graph (except all vertices and their 2D position)"""
+        logger.info('Resetting graph...')
+        vertices = self.graph.vertices
+        self.graph = graph_2.AtomicGraph(self.scale, active_model=None, species_dict=self.species_dict, district_size=self.district_size)
+        for vertex in vertices:
+            new_vertex = graph_2.Vertex(vertex.i, vertex.im_coor_x, vertex.im_coor_y, self.r, self.scale, parent_graph=self.graph)
+            new_vertex.avg_gamma, new_vertex.peak_gamma = utils.circular_average(self.im_mat, int(new_vertex.im_coor_x), int(new_vertex.im_coor_y), self.r)
+            self.graph.add_vertex(new_vertex)
+        if self.starting_index is not None:
+            self.graph.vertices[self.starting_index].reset_probability_vector(bias='Al_1')
+        self.find_edge_columns()
+        self.redraw_search_mat()
+        logger.info('Graph reset.')
 
     def get_im_length_from_spatial(self, spatial_length):
         """Returns the a spatial length in image pixel length.

@@ -672,48 +672,46 @@ class MainUI(QtWidgets.QMainWindow):
 
     def menu_display_deviations_trigger(self):
         if self.project_instance is not None and self.control_instance is not None and self.project_instance.num_columns > 0:
-            if not len(self.project_instance.graph.vertices) == len(self.control_instance.graph.vertices):
-                msg = 'Could not compare instances!'
-                deviation_indices = []
-            else:
-                deviations = 0
-                symmetry_deviations = 0
-                precipitate_columns = 0
-                deviation_indices = []
-                for vertex, control_vertex in zip(self.project_instance.graph.vertices, self.control_instance.graph.vertices):
-                    if control_vertex.is_in_precipitate:
-                        precipitate_columns += 1
-                        if vertex.atomic_species == control_vertex.atomic_species:
-                            pass
-                        elif vertex.atomic_species == 'Si' and control_vertex.atomic_species == 'Cu':
-                            deviations += 1
-                            deviation_indices.append(vertex.i)
-                        elif vertex.atomic_species == 'Cu' and control_vertex.atomic_species == 'Si':
-                            deviations += 1
-                            deviation_indices.append(vertex.i)
-                        else:
-                            deviations += 1
-                            symmetry_deviations += 1
-                            deviation_indices.append(vertex.i)
+            num_errors = 0
+            num_precipitate_errors = 0
+            num_columns = 0
+            num_precipitate_columns = 0
 
-                msg = 'Control comparison of precipitate:----------\n    Deviations: {} ({} %) \n    Symmetry deviations: {} ({} %)'.format(deviations, 100 * deviations / precipitate_columns, symmetry_deviations, 100 * symmetry_deviations / precipitate_columns)
-            message = QtWidgets.QMessageBox()
-            message.setText(msg)
-            message.exec_()
-            for index in deviation_indices:
-                msg += '\n        {}'.format(index)
-            logger.info(msg)
+            for vertex in self.project_instance.graph.vertices:
+                if not vertex.is_edge_column:
+                    if not vertex.atomic_species == self.control_instance.graph.vertices[vertex.i].atomic_species:
+                        num_errors += 1
+                        if vertex.is_in_precipitate:
+                            num_precipitate_errors += 1
+                            num_precipitate_columns += 1
+                    else:
+                        if vertex.is_in_precipitate:
+                            num_precipitate_columns += 1
+                    num_columns += 1
+
+            if not num_columns == 0:
+                percent_error = 100 * (num_errors / num_columns)
+            else:
+                percent_error = 0
+
+            if not num_precipitate_columns == 0:
+                percent_precipitate_error = 100 * (num_precipitate_errors / num_precipitate_columns)
+            else:
+                percent_precipitate_error = 0
+
+            string = 'Control comparison:\n'
+            string += '    precipitate errors (#): {}\n'.format(num_precipitate_errors)
+            string += '    precipitate error (%): {}\n\n'.format(percent_precipitate_error)
+            string += '    total errors (#): {}\n'.format(num_errors)
+            string += '    total error (%): {}\n'.format(percent_error)
+
+            logger.info(string)
 
     def menu_test_consistency_trigger(self):
         pass
 
     def menu_ad_hoc_trigger(self):
-        if self.project_instance is not None:
-            self.project_instance.species_dict = core.Project.default_dict
-            self.project_instance.graph.species_dict = core.Project.default_dict
-            default_model = data_module.VertexDataManager.load('default_model')
-            default_model.species_dict = core.Project.default_dict
-            default_model.save()
+        pass
 
     def menu_toggle_tooltips_trigger(self, state):
         self.control_window.mode_tooltip(state)

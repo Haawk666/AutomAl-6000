@@ -1714,7 +1714,11 @@ class ControlWindow(QtWidgets.QWidget):
                 '18 - Map in-neighbourhoods',
                 '19 - Calculate area gamma',
                 '20 - Refresh graph',
-                '21 - Version 1 algorithm'
+                '21 - Test version algorithm',
+                '22 - Zeta untangling',
+                '23 - Alpha (district)',
+                '24 - Alpha (partners)',
+                '25 - Alpha (out)'
             ]
 
             string, ok_pressed = QtWidgets.QInputDialog.getItem(self, "Set", "Search step", strings, 0, False)
@@ -1742,13 +1746,19 @@ class ControlWindow(QtWidgets.QWidget):
                     logger.error('Invalid selection. Was not able to start column detection.')
 
     def btn_reset_column_characterization_trigger(self):
-        pass
+        if self.ui_obj.project_instance is not None and self.ui_obj.project_instance.num_columns > 0:
+            self.ui_obj.sys_message('Working...')
+            self.ui_obj.project_instance.reset_graph_information()
+            self.ui_obj.update_display()
+            self.ui_obj.sys_message('Ready.')
 
     def btn_invert_zeta_trigger(self):
         if self.ui_obj.project_instance is not None:
+            self.ui_obj.sys_message('Working...')
             self.ui_obj.project_instance.graph.invert_levels()
             self.ui_obj.update_central_widget()
             self.select_column()
+            self.ui_obj.sys_message('Ready.')
 
     def chb_precipitate_column_trigger(self, state):
         if self.ui_obj.project_instance is not None and not self.ui_obj.selected_column == -1:
@@ -2111,7 +2121,7 @@ class ControlWindow(QtWidgets.QWidget):
             )
 
     def btn_test_trigger(self):
-        test_column_characterization.TestColumnCharacterizationAlgorithm(['temp/0_Smart_aligned_Qprime_columns'], ['temp/0_Smart_aligned_Qprime_control'])
+        test_column_characterization.test_algorithm()
 
     def btn_crash_trigger(self):
         raise IndexError

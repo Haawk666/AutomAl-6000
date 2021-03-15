@@ -52,6 +52,7 @@ def determine_districts(graph_obj, search_list=None):
     for vertex in search_list:
         vertex.projected_separation_district = np.argsort(graph_obj.projected_separation_matrix[vertex.i, :])[1:graph_obj.district_size + 1].tolist()
         vertex.district = copy.deepcopy(vertex.projected_separation_district)
+        vertex.local_zeta_map['district'] = copy.deepcopy(vertex.projected_separation_district)
 
 
 def particle_detection(graph_obj):
@@ -399,6 +400,7 @@ def apply_alpha_model(graph_obj, model=None, alpha_selection_type='zeta'):
             vertex.advanced_probability_vector['Un_1'] = 0.0
             vertex.determine_species_from_probability_vector()
     graph_obj.build_local_maps()
+    graph_obj.build_local_zeta_maps()
 
 
 def apply_composite_model(graph_obj, model=None, alpha_selection_type='zeta'):
@@ -430,7 +432,6 @@ def apply_composite_model(graph_obj, model=None, alpha_selection_type='zeta'):
             dict_ = {
                 'alpha_max': vertex.alpha_max,
                 'alpha_min': vertex.alpha_min,
-                'theta_angle_mean': vertex.theta_angle_mean,
                 'normalized_peak_gamma': vertex.normalized_peak_gamma,
                 'normalized_avg_gamma': vertex.normalized_peak_gamma
             }
@@ -477,6 +478,176 @@ def untangle(graph_obj, ui_obj=None, strong=True):
                             untangling_2.strong_resolve(graph_obj, [sub_graph], ui_obj=ui_obj)
 
 
+def zeta_untangle(graph_obj):
+    for k in [0, 1]:
+        zeta_intersections = graph_obj.find_zeta_intersections()
+        for intersection in zeta_intersections:
+            vertex_a = graph_obj.vertices[intersection[0]]
+            vertex_b = graph_obj.vertices[intersection[1]]
+            vertex_c = graph_obj.vertices[intersection[2]]
+            vertex_d = graph_obj.vertices[intersection[3]]
+            if vertex_b.i in vertex_a.local_zeta_map['out_neighbourhood'] and vertex_a.i not in vertex_b.local_zeta_map['out_neighbourhood']:
+                # type 1
+                if vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i not in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant a
+                    if k > 0:
+                        if graph_obj.get_projected_separation(vertex_a.i, vertex_b.i) < graph_obj.get_projected_separation(vertex_c.i, vertex_d.i):
+                            if not vertex_c.is_edge_column:
+                                vertex_c.decrement_n()
+                        else:
+                            if not vertex_a.is_edge_column:
+                                vertex_a.decrement_n()
+                elif vertex_d.i not in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant b
+                    if k > 0:
+                        if graph_obj.get_projected_separation(vertex_a.i, vertex_b.i) < graph_obj.get_projected_separation(vertex_c.i, vertex_d.i):
+                            if not vertex_d.is_edge_column:
+                                vertex_d.decrement_n()
+                        else:
+                            if not vertex_a.is_edge_column:
+                                vertex_a.decrement_n()
+                elif vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant c
+                    if not vertex_a.is_edge_column:
+                        vertex_a.decrement_n()
+            elif vertex_b.i not in vertex_a.local_zeta_map['out_neighbourhood'] and vertex_a.i in vertex_b.local_zeta_map['out_neighbourhood']:
+                # type 2
+                if vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i not in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant a
+                    if k > 0:
+                        if graph_obj.get_projected_separation(vertex_a.i, vertex_b.i) < graph_obj.get_projected_separation(vertex_c.i, vertex_d.i):
+                            if not vertex_c.is_edge_column:
+                                vertex_c.decrement_n()
+                        else:
+                            if not vertex_b.is_edge_column:
+                                vertex_b.decrement_n()
+                elif vertex_d.i not in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant b
+                    if k > 0:
+                        if graph_obj.get_projected_separation(vertex_a.i, vertex_b.i) < graph_obj.get_projected_separation(vertex_c.i, vertex_d.i):
+                            if not vertex_d.is_edge_column:
+                                vertex_d.decrement_n()
+                        else:
+                            if not vertex_b.is_edge_column:
+                                vertex_b.decrement_n()
+                elif vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant c
+                    if not vertex_b.is_edge_column:
+                        vertex_b.decrement_n()
+            elif vertex_b.i in vertex_a.local_zeta_map['out_neighbourhood'] and vertex_a.i in vertex_b.local_zeta_map['out_neighbourhood']:
+                # type 3
+                if vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i not in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant a
+                    if not vertex_c.is_edge_column:
+                        vertex_c.decrement_n()
+                elif vertex_d.i not in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant b
+                    if not vertex_d.is_edge_column:
+                        vertex_d.decrement_n()
+                elif vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant c
+                    if graph_obj.get_projected_separation(vertex_a.i, vertex_b.i) < graph_obj.get_projected_separation(vertex_c.i, vertex_d.i):
+                        if not vertex_c.is_edge_column:
+                            vertex_c.decrement_n()
+                        if not vertex_d.is_edge_column:
+                            vertex_d.decrement_n()
+                    else:
+                        if not vertex_a.is_edge_column:
+                            vertex_a.decrement_n()
+                        if not vertex_b.is_edge_column:
+                            vertex_b.decrement_n()
+        graph_obj.build_local_zeta_maps()
+    for k in [0, 1]:
+        zeta_intersections = graph_obj.find_anti_zeta_intersections()
+        for intersection in zeta_intersections:
+            print(intersection)
+            vertex_a = graph_obj.vertices[intersection[0]]
+            vertex_b = graph_obj.vertices[intersection[1]]
+            vertex_c = graph_obj.vertices[intersection[2]]
+            vertex_d = graph_obj.vertices[intersection[3]]
+            if vertex_b.i in vertex_a.local_zeta_map['anti_out_neighbourhood'] and vertex_a.i not in vertex_b.local_zeta_map['anti_out_neighbourhood']:
+                # type 1
+                if vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i not in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant a
+                    pass
+                elif vertex_d.i not in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant b
+                    pass
+                elif vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant c
+                    for index in vertex_a.local_zeta_map['district']:
+                        if index in vertex_a.local_zeta_map['anti_in_semi_partners']:
+                            j = vertex_b.i
+                            k = index
+                            if not j == k:
+                                pos_j = -1
+                                pos_k = -1
+                                if j in vertex_a.local_zeta_map['district']:
+                                    pos_j = vertex_a.local_zeta_map['district'].index(j)
+                                if k in vertex_a.local_zeta_map['district']:
+                                    pos_k = vertex_a.local_zeta_map['district'].index(k)
+
+                                if pos_j == -1 and pos_k == -1:
+                                    vertex_a.local_zeta_map['district'][-1] = k
+                                    break
+                                elif not pos_j == -1 and not pos_k == -1:
+                                    vertex_a.local_zeta_map['district'][pos_j], vertex_a.local_zeta_map['district'][pos_k] = vertex_a.local_zeta_map['district'][pos_k], vertex_a.local_zeta_map['district'][pos_j]
+                                    break
+                                elif pos_j == -1:
+                                    break
+                                else:
+                                    vertex_a.local_zeta_map['district'][-1] = k
+                                    vertex_a.local_zeta_map['district'][pos_j], vertex_a.local_zeta_map['district'][pos_k] = vertex_a.local_zeta_map['district'][pos_k], vertex_a.local_zeta_map['district'][pos_j]
+                                    break
+
+            elif vertex_b.i not in vertex_a.local_zeta_map['anti_out_neighbourhood'] and vertex_a.i in vertex_b.local_zeta_map['anti_out_neighbourhood']:
+                # type 2
+                if vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i not in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant a
+                    pass
+                elif vertex_d.i not in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant b
+                    pass
+                elif vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant c
+                    for index in vertex_b.local_zeta_map['district']:
+                        if index in vertex_b.local_zeta_map['anti_in_semi_partners']:
+                            j = vertex_a.i
+                            k = index
+                            if not j == k:
+                                pos_j = -1
+                                pos_k = -1
+                                if j in vertex_a.local_zeta_map['district']:
+                                    pos_j = vertex_a.local_zeta_map['district'].index(j)
+                                if k in vertex_a.local_zeta_map['district']:
+                                    pos_k = vertex_a.local_zeta_map['district'].index(k)
+
+                                if pos_j == -1 and pos_k == -1:
+                                    vertex_a.local_zeta_map['district'][-1] = k
+                                    break
+                                elif not pos_j == -1 and not pos_k == -1:
+                                    vertex_a.local_zeta_map['district'][pos_j], vertex_a.local_zeta_map['district'][pos_k] = vertex_a.local_zeta_map['district'][pos_k], vertex_a.local_zeta_map['district'][pos_j]
+                                    break
+                                elif pos_j == -1:
+                                    break
+                                else:
+                                    vertex_a.local_zeta_map['district'][-1] = k
+                                    vertex_a.local_zeta_map['district'][pos_j], vertex_a.local_zeta_map['district'][pos_k] = vertex_a.local_zeta_map['district'][pos_k], vertex_a.local_zeta_map['district'][pos_j]
+                                    break
+            elif vertex_b.i in vertex_a.local_zeta_map['anti_out_neighbourhood'] and vertex_a.i in vertex_b.local_zeta_map['anti_out_neighbourhood']:
+                # type 3
+                if vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i not in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant a
+                    pass
+                elif vertex_d.i not in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant b
+                    pass
+                elif vertex_d.i in vertex_c.local_zeta_map['out_neighbourhood'] and vertex_c.i in vertex_d.local_zeta_map['out_neighbourhood']:
+                    # variant c
+                    pass
+        graph_obj.build_local_zeta_maps()
+    graph_obj.match_zeta_graph()
+    graph_obj.build_local_maps()
 
 
 
