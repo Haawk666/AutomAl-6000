@@ -30,11 +30,17 @@ base_filenames = [
 
 # base_filenames = [
 #     'test_set/prepared/0_Small_L',
+#     'test_set/prepared/0_Small_L'
 # ]
 
 results_filename = 'test_set/test_results'
 
+current_sequence = [
+    [16, 11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 20]
+]
+
 sequences = [
+    [16, 11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 20],
     [16, 24, 6, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 11, 9, 10, 20],
     [16, 11, 7, 6, 11, 9, 10, 12, 13, 11, 8, 6, 9, 10, 12, 13, 11, 20],
     [16, 11, 7, 6, 23, 12, 13, 9, 10, 11, 20]
@@ -62,21 +68,13 @@ def plot_results(results):
     ax = []
     row = 0
     column = 0
-    if grid_size == 1:
-        ax.append(fig.add_subplot(gs[0, 0]))
-    elif grid_size == 2:
-        ax.append(fig.add_subplot(gs[0, 0]))
-        ax.append(fig.add_subplot(gs[0, 1]))
-        ax.append(fig.add_subplot(gs[1, 0]))
-        ax.append(fig.add_subplot(gs[1, 1]))
-    else:
-        for grid in range(grid_size ** 2):
-            ax.append(fig.add_subplot(gs[row, column]))
-            if np.mod(grid, grid_size - 1) == 0 and grid > 0:
-                row += 1
-                column = 0
-            else:
-                column += 1
+    for grid in range(grid_size ** 2):
+        ax.append(fig.add_subplot(gs[row, column]))
+        if column == grid_size - 1:
+            row += 1
+            column = 0
+        else:
+            column += 1
     ax = ax[0:len(results)]
     ax_2 = []
     for axis in ax:
@@ -123,9 +121,15 @@ def compare(instance, control_instance):
     num_precipitate_errors = 0
     num_columns = 0
     num_precipitate_columns = 0
+    num_zeta_errors = 0
+    num_precipitate_zeta_errors = 0
 
     for vertex in instance.graph.vertices:
         if not vertex.is_edge_column:
+            if not vertex.zeta == control_instance.graph.vertices[vertex.i].zeta:
+                num_zeta_errors += 1
+                if vertex.is_in_precipitate:
+                    num_precipitate_zeta_errors += 1
             if not vertex.atomic_species == control_instance.graph.vertices[vertex.i].atomic_species:
                 num_errors += 1
                 if vertex.is_in_precipitate:
@@ -138,15 +142,26 @@ def compare(instance, control_instance):
 
     if not num_columns == 0:
         percent_error = 100 * (num_errors / num_columns)
+        percent_zeta_error = 100 * (num_zeta_errors / num_columns)
+        if percent_zeta_error > 50:
+            percent_zeta_error = 100 - percent_zeta_error
+            num_zeta_errors = num_columns - num_zeta_errors
     else:
         percent_error = 100
+        percent_zeta_error = 100
 
     if not num_precipitate_columns == 0:
         percent_precipitate_error = 100 * (num_precipitate_errors / num_precipitate_columns)
+        percent_precipitate_zeta_error = 100 * (num_precipitate_zeta_errors / num_precipitate_columns)
+        if percent_precipitate_zeta_error > 50:
+            percent_precipitate_zeta_error = 100 - percent_precipitate_zeta_error
+            num_precipitate_zeta_errors = num_precipitate_columns - num_precipitate_zeta_errors
     else:
         percent_precipitate_error = 100
+        percent_precipitate_zeta_error = 100
 
-    return [num_precipitate_errors, percent_precipitate_error, num_errors, percent_error]
+    return [num_precipitate_errors, percent_precipitate_error, num_errors, percent_error, num_precipitate_zeta_errors,
+            percent_precipitate_zeta_error, num_zeta_errors, percent_zeta_error]
 
 
 def test_algorithm():
