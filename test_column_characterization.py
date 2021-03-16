@@ -17,9 +17,10 @@ base_filenames = [
     'test_set/prepared/0_Medium_Qprime',
     'test_set/prepared/0_multi_phase',
     'test_set/prepared/0_Small_L',
-    'test_set/prepared/0_Smart_aligned_Qprime',
     'test_set/prepared/023',
-    'test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT'
+    'test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT',
+    'test_set/prepared/haakon_037',
+    'test_set/prepared/012a'
 ]
 
 # base_filenames = [
@@ -35,15 +36,13 @@ base_filenames = [
 
 results_filename = 'test_set/test_results'
 
-current_sequence = [
-    [16, 11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 20]
-]
 
 sequences = [
     [16, 11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 20],
-    [16, 24, 6, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 11, 9, 10, 20],
+    [16, 11, 7, 12, 12, 13, 9, 10, 11, 8, 12, 12, 13, 9, 10, 11, 20],
+    [16, 11, 7, 12, 12, 13, 9, 10, 11, 8, 12, 12, 13, 9, 10, 11, 8, 23, 12, 13, 9, 10, 11, 20],
     [16, 11, 7, 6, 11, 9, 10, 12, 13, 11, 8, 6, 9, 10, 12, 13, 11, 20],
-    [16, 11, 7, 6, 23, 12, 13, 9, 10, 11, 20]
+    [16, 11, 7, 12, 13, 9, 10, 11, 12, 13, 8, 12, 13, 9, 10, 11, 20]
 ]
 
 poor_sequences = [
@@ -53,7 +52,7 @@ poor_sequences = [
 colors = [
     (0.9, 0.1, 0.1, 1.0),
     (0.1, 0.9, 0.1, 1.0),
-    (0.1, 0.1, 0.9, 1.0),
+    (0.2, 0.2, 0.9, 1.0),
     (0.9, 0.9, 0.1, 1.0),
     (0.9, 0.1, 0.9, 1.0),
     (0.1, 0.9, 0.9, 1.0)
@@ -106,14 +105,71 @@ def plot_results(results):
             )
 
         ax[im].set_title(im_title)
+        ax[im].set_ylim([0, 100])
         ax[im].set_ylabel('Error (%)')
         ax_2[im].set_ylabel('Chi (1)')
+        ax_2[im].set_ylim([0, 0.15])
         ax[im].set_xlabel('Step (#)')
         ax[im].legend()
 
-    fig.suptitle('Algorithm test results')
+    fig.suptitle('Algorithm test - results pr image')
 
-    plt.savefig(results_filename, bbox_inches='tight')
+    plt.savefig(results_filename + '_pr_image', bbox_inches='tight')
+
+    grid_size = int(np.ceil(np.abs(np.sqrt(len(sequences)))))
+    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=300)
+    gs = GridSpec(grid_size, grid_size, figure=fig)
+    ax = []
+    row = 0
+    column = 0
+    for grid in range(grid_size ** 2):
+        ax.append(fig.add_subplot(gs[row, column]))
+        if column == grid_size - 1:
+            row += 1
+            column = 0
+        else:
+            column += 1
+    ax = ax[0:len(sequences)]
+    ax_2 = []
+    for axis in ax:
+        ax_2.append(axis.twinx())
+
+    for v, version in enumerate(sequences):
+
+        for im, im_title in enumerate(base_filenames):
+
+            ax[v].plot(
+                [i for i in range(len(version))],
+                [results[im][v][i][3] for i in range(len(version))],
+                c=colors[im],
+                linestyle='solid',
+                label='im{} (Error (%))'.format(im)
+            )
+
+            ax_2[v].plot(
+                [i for i in range(len(version))],
+                [results[im][v][i][2] for i in range(len(version))],
+                c=colors[im],
+                linestyle='dotted',
+            )
+            ax[v].plot(
+                np.nan,
+                c=colors[im],
+                linestyle='dotted',
+                label='im{} (chi)'.format(im)
+            )
+
+        ax[v].set_title('Version {}'.format(v))
+        ax[v].set_ylabel('Error (%)')
+        ax[v].set_ylim([0, 100])
+        ax_2[v].set_ylabel('Chi (1)')
+        ax_2[v].set_ylim([0, 0.15])
+        ax[v].set_xlabel('Step (#)')
+        # ax[v].legend()
+
+    fig.suptitle('Algorithm test - results pr version')
+
+    plt.savefig(results_filename + '_pr_version', bbox_inches='tight')
 
 
 def compare(instance, control_instance):
@@ -198,23 +254,24 @@ def test_algorithm():
                 total_time += time_2 - time_1
                 errors = compare(this_init, control)
                 this_init.graph.calc_chi()
-                version_result.append([step, total_time, this_init.graph.chi, errors[1], errors[3]])
+                version_result.append([step, total_time, this_init.graph.chi, errors[1], errors[3], errors[5], errors[7]])
 
             version_results.append(version_result)
 
             if results_filename:
-                this_init.save(base_filename + '_result_v{}'.format(s), supress_logging=True)
+                pass
+                # this_init.save(base_filename + '_result_v{}'.format(s), supress_logging=True)
 
         results.append(version_results)
 
     time_all_2 = time.time()
     summary = 'Testing complete in {:.1f} seconds. Summary:\n'.format(time_all_2 - time_all_1)
     for im, image_result in enumerate(results):
-        summary += '    Image {}:\n'.format(im)
-        summary += '                     Seconds      chi           total error      precipitate error\n'
-        summary += '        -----------------------------------------------------------------------------------------\n'
+        summary += '    Image {}:\n'.format(base_filenames[im])
+        summary += '                     Seconds      chi           total error      precipitate error       zeta error\n'
+        summary += '        -------------------------------------------------------------------------------------------------------\n'
         for v, version in enumerate(image_result):
-            summary += '        Version {}: {:5.0f}         {:7.4f}      {:7.1f}          {:7.1f}\n'.format(v, version[-1][1], version[-1][2], version[-1][3], version[-1][4])
+            summary += '        Version {}: {:5.0f}         {:7.4f}      {:7.1f}          {:7.1f}                 {:7.1f}\n'.format(v, version[-1][1], version[-1][2], version[-1][3], version[-1][4], version[-1][6])
 
     logger.info(summary)
 

@@ -3,82 +3,102 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-test_column_characterization: Testing algorithm versions...
-test_column_characterization:     Analyzing image test_set/prepared/0_Medium_Qprime:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:         With algorithm version 1
-test_column_characterization:         With algorithm version 2
-test_column_characterization:         With algorithm version 3
-test_column_characterization:     Analyzing image test_set/prepared/0_multi_phase:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:         With algorithm version 1
-test_column_characterization:         With algorithm version 2
-test_column_characterization:         With algorithm version 3
-test_column_characterization:     Analyzing image test_set/prepared/0_Small_L:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:         With algorithm version 1
-test_column_characterization:         With algorithm version 2
-test_column_characterization:         With algorithm version 3
-test_column_characterization:     Analyzing image test_set/prepared/0_Smart_aligned_Qprime:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:         With algorithm version 1
-test_column_characterization:         With algorithm version 2
-test_column_characterization:         With algorithm version 3
-test_column_characterization:     Analyzing image test_set/prepared/023:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:         With algorithm version 1
-test_column_characterization:         With algorithm version 2
-test_column_characterization:         With algorithm version 3
-test_column_characterization:     Analyzing image test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:         With algorithm version 1
-test_column_characterization:         With algorithm version 2
-test_column_characterization:         With algorithm version 3
-test_column_characterization: Testing complete in 2983.9 seconds. Summary:
-    Image 0:
-                     Seconds      chi           total error      precipitate error
-        -----------------------------------------------------------------------------------------
-        Version 0:   111          0.0069          9.4              2.2
-        Version 1:   113          0.0041          7.8              1.7
-        Version 2:    73          0.0052         19.5              4.2
-        Version 3:    85          0.0036          7.3              1.7
-    Image 1:
-                     Seconds      chi           total error      precipitate error
-        -----------------------------------------------------------------------------------------
-        Version 0:    73          0.0007          5.0              0.5
-        Version 1:    80          0.0006          4.4              0.4
-        Version 2:    59          0.0014         17.5              1.8
-        Version 3:    83          0.0006          4.5              0.4
-    Image 2:
-                     Seconds      chi           total error      precipitate error
-        -----------------------------------------------------------------------------------------
-        Version 0:    13          0.0017          0.0              0.0
-        Version 1:     8          0.0017          0.0              0.0
-        Version 2:     5          0.0009         15.1              1.8
-        Version 3:     7          0.0017          0.0              0.0
-    Image 3:
-                     Seconds      chi           total error      precipitate error
-        -----------------------------------------------------------------------------------------
-        Version 0:   204          0.0134         37.9             11.9
-        Version 1:   219          0.0122         41.1             11.7
-        Version 2:   144          0.0081         17.6              5.5
-        Version 3:   206          0.0123         39.2             11.9
-    Image 4:
-                     Seconds      chi           total error      precipitate error
-        -----------------------------------------------------------------------------------------
-        Version 0:    72          0.0035          6.7              1.2
-        Version 1:    89          0.0025          6.0              1.1
-        Version 2:    55          0.0025         19.3              3.2
-        Version 3:    69          0.0025          6.1              1.1
-    Image 5:
-                     Seconds      chi           total error      precipitate error
-        -----------------------------------------------------------------------------------------
-        Version 0:   300          0.0015          8.2              0.9
-        Version 1:   311          0.0013          7.3              0.8
-        Version 2:   261          0.0018         16.8              1.8
-        Version 3:   287          0.0012          6.9              0.7
-
-GUI: Opening file C:/Users/haakot/AutomAl/test_set/prepared/0_Smart_aligned_Qprime_control
-core: Loaded C:/Users/haakot/AutomAl/test_set/prepared/0_Smart_aligned_Qprime_control
-GUI: Opening file C:/Users/haakot/AutomAl/test_set/prepared/0_Smart_aligned_Qprime_init
-core: Loaded C:/Users/haakot/AutomAl/test_set/prepared/0_Smart_aligned_Qprime_init
+core: Up-sampling image to prevent over-granulation in column detection!
+core: Generated instance from B:/EmpyreanLogic/AutomAl_6000/test_set/012a.dm3
+core: Starting column detection. Search mode is 't'
+core: Column detection complete! Found 2309 columns in 116.35552263259888 seconds.
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/012a_control
+core: Running full column characterization algorithm with seed vertex 447.
+core:     Running initialization part...
+core:         Running spatial mapping...
+core:         Spatial mapping complete in 12.4 seconds.
+core:         Running edge detection...
+core:         Edge detection complete in 4.5 seconds.
+core:         Mapping graph...
+core:         Graph mapping complete in 1.6 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 2.6 seconds.
+core:         Applying alpha model...
+core:         Alpha model applied in 2.2 seconds.
+core:         Mapping graph...
+core:         Graph mapping complete in 1.6 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 2.7 seconds.
+core:     Initialization complete in 27.5 seconds, Chi is 0.0135
+core:     Running recurring section...
+core:         Running precipitate detection...
+core:         Precipitate detection complete in 0.0 seconds.
+core:         Calculating gamma...
+core:         Gamma calculated in 0.0 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 2.6 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.5 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.2 seconds.
+core:         Running strong untangling...
+core:         Strong untangling complete in 0.2 seconds.
+core:         Applying full attribute model...
+core:         Full attribute model applied in 8.6 seconds.
+core:     Recurring part complete in 12.1 seconds. Chi is 0.0078
+core:     Running recurring section...
+core:         Running precipitate detection...
+core:         Precipitate detection complete in 0.0 seconds.
+core:         Calculating gamma...
+core:         Gamma calculated in 0.0 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 2.6 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.2 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.1 seconds.
+core:         Running strong untangling...
+core:         Strong untangling complete in 0.1 seconds.
+core:         Applying full attribute model...
+core:         Full attribute model applied in 8.7 seconds.
+core:     Recurring part complete in 11.7 seconds. Chi is 0.0064
+core:     Running recurring section...
+core:         Running precipitate detection...
+core:         Precipitate detection complete in 0.0 seconds.
+core:         Calculating gamma...
+core:         Gamma calculated in 0.0 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 2.6 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.1 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.1 seconds.
+core:         Running strong untangling...
+core:         Strong untangling complete in 0.1 seconds.
+core:         Applying full attribute model...
+core:         Full attribute model applied in 8.7 seconds.
+core:     Recurring part complete in 11.6 seconds. Chi is 0.0062
+core:     Running finalization part...
+core:         Looking for intersections...
+core:             Found 0 intersections
+core:             0 literal intersections still remain
+core:         Intersections analyzed in 9.9 seconds.
+core:         Running precipitate detection...
+core:         Precipitate detection complete in 0.0 seconds.
+core:         Calculating gamma...
+core:         Gamma calculated in 0.0 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 2.7 seconds.
+core:         Refreshing atomic graph...
+core:         Atomic graph refreshed in 50.0 seconds.
+core:     Finalization complete in 62.6 seconds. Chi is 0.0062
+core: Full column characterization complete in 125.5 seconds. Chi is 0.0062
+core: Resetting user-set columns...
+core: User-set columns reset in 0.0 seconds.
+core: Refreshing atomic graph...
+core: Atomic graph refreshed in 31.5 seconds.
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/012a_control
+core: Resetting graph...
+core: Graph reset.
+core: Running spatial mapping...
+core: Spatial mapping complete in 12.2 seconds.
+core: Running edge detection...
+core: Edge detection complete in 4.5 seconds.
+core: Mapping graph...
+core: Graph mapping complete in 1.6 seconds.
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/012a_init
