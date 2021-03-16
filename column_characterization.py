@@ -160,6 +160,11 @@ def calculate_precipitate_displacement(graph_obj):
                 lower_y = vertex.spatial_coor_y
 
 
+def experimental_zeta_analysis(graph_obj):
+
+    pass
+
+
 def zeta_analysis(graph_obj, starting_index, print_states=False):
     # First determine the matrix zeta:
     votes = [0.0] * graph_obj.order

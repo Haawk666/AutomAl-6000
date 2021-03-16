@@ -125,21 +125,6 @@ def test_statistical_basics():
     test_vertex_data_manager(data)
 
 
-def test_grid_population(grid_length):
-
-    grid_size = int(np.ceil(np.abs(np.sqrt(grid_length))))
-    print('grid length {} | grid size {}'.format(grid_length, grid_size))
-
-    row = 0
-    column = 0
-
-    for grid in range(grid_size ** 2):
-        print('grid {} | row {} | column {}'.format(grid, row, column))
-        if column == grid_size - 1:
-            row += 1
-            column = 0
-        else:
-            column += 1
 
 
 

@@ -23,25 +23,10 @@ base_filenames = [
     'test_set/prepared/012a'
 ]
 
-# base_filenames = [
-#     'test_set/prepared/0_Medium_Qprime',
-#     'test_set/prepared/0_multi_phase',
-#     'test_set/prepared/0_Small_L',
-# ]
-
-# base_filenames = [
-#     'test_set/prepared/0_Small_L',
-#     'test_set/prepared/0_Small_L'
-# ]
-
 results_filename = 'test_set/test_results'
-
 
 sequences = [
     [16, 11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 20],
-    [16, 11, 7, 12, 12, 13, 9, 10, 11, 8, 12, 12, 13, 9, 10, 11, 20],
-    [16, 11, 7, 12, 12, 13, 9, 10, 11, 8, 12, 12, 13, 9, 10, 11, 8, 23, 12, 13, 9, 10, 11, 20],
-    [16, 11, 7, 6, 11, 9, 10, 12, 13, 11, 8, 6, 9, 10, 12, 13, 11, 20],
     [16, 11, 7, 12, 13, 9, 10, 11, 12, 13, 8, 12, 13, 9, 10, 11, 20]
 ]
 
@@ -55,7 +40,8 @@ colors = [
     (0.2, 0.2, 0.9, 1.0),
     (0.9, 0.9, 0.1, 1.0),
     (0.9, 0.1, 0.9, 1.0),
-    (0.1, 0.9, 0.9, 1.0)
+    (0.1, 0.9, 0.9, 1.0),
+    (0.1, 0.1, 0.1, 1.0)
 ]
 
 
@@ -277,5 +263,10 @@ def test_algorithm():
 
     if results_filename:
         plot_results(results)
+
+
+def test_zeta_analysis():
+
+    pass
 
 
