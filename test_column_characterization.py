@@ -26,12 +26,7 @@ base_filenames = [
 results_filename = 'test_set/test_results'
 
 sequences = [
-    [16, 11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 20],
-    [16, 11, 7, 12, 13, 9, 10, 11, 12, 13, 8, 12, 13, 9, 10, 11, 20]
-]
-
-poor_sequences = [
-    [16, 11, 7, 6, 11, 12, 12, 13, 9, 10, 8, 6, 11, 12, 13, 6, 9, 10, 11, 20]
+    [11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 17, 11, 20]
 ]
 
 colors = [
@@ -41,7 +36,9 @@ colors = [
     (0.9, 0.9, 0.1, 1.0),
     (0.9, 0.1, 0.9, 1.0),
     (0.1, 0.9, 0.9, 1.0),
-    (0.1, 0.1, 0.1, 1.0)
+    (0.1, 0.1, 0.1, 1.0),
+    (0.5, 0.5, 0.5, 1.0),
+    (0.9, 0.5, 0.1, 1.0)
 ]
 
 
@@ -90,6 +87,7 @@ def plot_results(results):
                 label='v{} (chi)'.format(v)
             )
 
+        ax[im].vlines([0, 6, 12, 18, 24], linestyles='dashed')
         ax[im].set_title(im_title)
         ax[im].set_ylim([0, 100])
         ax[im].set_ylabel('Error (%)')
@@ -145,6 +143,7 @@ def plot_results(results):
                 label='im{} (chi)'.format(im)
             )
 
+        ax[v].vlines([0, 6, 12, 18, 24], linestyles='dashed')
         ax[v].set_title('Version {}'.format(v))
         ax[v].set_ylabel('Error (%)')
         ax[v].set_ylim([0, 100])
@@ -268,5 +267,6 @@ def test_algorithm():
 def test_zeta_analysis():
 
     pass
+
 
 

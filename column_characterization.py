@@ -191,7 +191,7 @@ def zeta_analysis(graph_obj, starting_index, print_states=False):
             print_state(graph_obj, new_votes, True, counter, starting_index)
         counter += 1
         votes = copy.deepcopy(new_votes)
-        if counter > int(0.05 * graph_obj.order):
+        if counter > int(0.20 * graph_obj.order):
             cont = False
     for vertex in graph_obj.vertices:
         if not vertex.is_in_precipitate:
@@ -225,7 +225,7 @@ def zeta_analysis(graph_obj, starting_index, print_states=False):
             print_state(graph_obj, new_votes, False, counter, starting_index)
         counter += 1
         votes = copy.deepcopy(new_votes)
-        if counter > int(0.05 * graph_obj.order):
+        if counter > int(0.20 * graph_obj.order):
             cont = False
     for vertex in graph_obj.vertices:
         if votes[vertex.i] > 0:

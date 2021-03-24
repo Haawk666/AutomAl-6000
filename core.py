@@ -499,8 +499,7 @@ class Project:
             # Run initialization
             self.column_characterization_2(starting_index=starting_index, sub_method=1, ui_obj=ui_obj, indent='    ')
             # Run recurring section
-            for i in range(0, 3):
-                self.column_characterization_2(starting_index=starting_index, sub_method=2, ui_obj=ui_obj, indent='    ')
+            self.column_characterization_2(starting_index=starting_index, sub_method=2, ui_obj=ui_obj, indent='    ')
             # Run clean up and summary
             self.column_characterization_2(starting_index=starting_index, sub_method=3, ui_obj=ui_obj, indent='    ')
             time_2 = time.time()
@@ -510,23 +509,15 @@ class Project:
 
         # Initialization part
         elif sub_method == 1:
-            time_1 = time.time()
             if not supress_logging:
                 logger.info('{}Running initialization part...'.format(indent))
+            time_1 = time.time()
             # Run spatial mapping
             self.column_characterization_2(starting_index=starting_index, sub_method=4, ui_obj=ui_obj, indent=indent + '    ')
             # Run edge detection
             self.column_characterization_2(starting_index=starting_index, sub_method=5, ui_obj=ui_obj, indent=indent + '    ')
             # Run graph mapping
             self.column_characterization_2(starting_index=starting_index, sub_method=6, ui_obj=ui_obj, indent=indent + '    ')
-            # Run zeta analysis
-            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
-            # Run alpha model
-            self.column_characterization_2(starting_index=starting_index, sub_method=7, ui_obj=ui_obj, indent=indent + '    ')
-            # Run graph mapping
-            self.column_characterization_2(starting_index=starting_index, sub_method=6, ui_obj=ui_obj, indent=indent + '    ')
-            # Run zeta analysis
-            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
             time_2 = time.time()
             self.graph.calc_chi()
             if not supress_logging:
@@ -534,23 +525,25 @@ class Project:
 
         # Recurring part
         elif sub_method == 2:
-            time_1 = time.time()
             if not supress_logging:
                 logger.info('{}Running recurring section...'.format(indent))
-            # Run precipitate detection
-            self.column_characterization_2(starting_index=starting_index, sub_method=9, ui_obj=ui_obj, indent=indent + '    ')
-            # Calculate gamma
-            self.column_characterization_2(starting_index=starting_index, sub_method=10, ui_obj=ui_obj, indent=indent + '    ')
-            # Run zeta analysis
-            self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
-            # Run weak untangling
-            self.column_characterization_2(starting_index=starting_index, sub_method=12, ui_obj=ui_obj, indent=indent + '    ')
-            # Run weak untangling
-            self.column_characterization_2(starting_index=starting_index, sub_method=12, ui_obj=ui_obj, indent=indent + '    ')
-            # Run strong untangling
-            self.column_characterization_2(starting_index=starting_index, sub_method=13, ui_obj=ui_obj, indent=indent + '    ')
-            # Apply full model
-            self.column_characterization_2(starting_index=starting_index, sub_method=8, ui_obj=ui_obj, indent=indent + '    ')
+            time_1 = time.time()
+            for i in range(2):
+                # Zeta analysis
+                self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
+                # Model
+                if i == 0:
+                    self.column_characterization_2(starting_index=starting_index, sub_method=7, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
+                else:
+                    self.column_characterization_2(starting_index=starting_index, sub_method=8, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
+                # weak untangle
+                self.column_characterization_2(starting_index=starting_index, sub_method=12, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
+                # strong untangle
+                self.column_characterization_2(starting_index=starting_index, sub_method=13, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
+                # Precipitate detection
+                self.column_characterization_2(starting_index=starting_index, sub_method=9, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
+                # Calc gamma
+                self.column_characterization_2(starting_index=starting_index, sub_method=10, ui_obj=ui_obj, indent=indent + '    ', supress_logging=supress_logging)
             time_2 = time.time()
             self.graph.calc_chi()
             if not supress_logging:
@@ -563,10 +556,6 @@ class Project:
                 logger.info('{}Running finalization part...'.format(indent))
             # Detect intersections
             self.column_characterization_2(starting_index=starting_index, sub_method=17, ui_obj=ui_obj, indent=indent + '    ')
-            # Precipitate detection
-            self.column_characterization_2(starting_index=starting_index, sub_method=9, ui_obj=ui_obj, indent=indent + '    ')
-            # Calculate gamma
-            self.column_characterization_2(starting_index=starting_index, sub_method=10, ui_obj=ui_obj, indent=indent + '    ')
             # Zeta-analysis
             self.column_characterization_2(starting_index=starting_index, sub_method=11, ui_obj=ui_obj, indent=indent + '    ')
             # Refresh graph
