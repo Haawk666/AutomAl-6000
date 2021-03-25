@@ -87,7 +87,7 @@ def plot_results(results):
                 label='v{} (chi)'.format(v)
             )
 
-        ax[im].vlines([0, 6, 12, 18, 24], linestyles='dashed')
+        ax[im].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed')
         ax[im].set_title(im_title)
         ax[im].set_ylim([0, 100])
         ax[im].set_ylabel('Error (%)')
@@ -143,7 +143,7 @@ def plot_results(results):
                 label='im{} (chi)'.format(im)
             )
 
-        ax[v].vlines([0, 6, 12, 18, 24], linestyles='dashed')
+        ax[v].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed')
         ax[v].set_title('Version {}'.format(v))
         ax[v].set_ylabel('Error (%)')
         ax[v].set_ylim([0, 100])

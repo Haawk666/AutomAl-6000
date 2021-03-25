@@ -3,21 +3,47 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file B:/EmpyreanLogic/AutomAl_6000/test_set/034_control
-core: Loaded B:/EmpyreanLogic/AutomAl_6000/test_set/034_control
-core: Running zeta-analysis...
-core: Zeta-analysis complete in 59.5 seconds.
-core: Running precipitate detection...
-core: Precipitate detection complete in 0.0 seconds.
-core: Calculating gamma...
-core: Gamma calculated in 0.0 seconds.
-core: Evaluating advanced species...
-core: Advanced species evaluated in 21.9 seconds.
-core: Resetting user-set columns...
-core: User-set columns reset in 0.0 seconds.
-core: Refreshing atomic graph...
-core: Atomic graph refreshed in 306.3 seconds.
-core: Running zeta-analysis...
-core: Zeta-analysis complete in 53.8 seconds.
-core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/034_control
-core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/034_control
+test_column_characterization: Testing algorithm versions...
+test_column_characterization:     Analyzing image test_set/prepared/0_Medium_Qprime:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/prepared/0_multi_phase:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/prepared/0_Small_L:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/prepared/023:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/prepared/haakon_037:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/prepared/012a:
+test_column_characterization:         With algorithm version 0
+test_column_characterization: Testing complete in 1179.7 seconds. Summary:
+    Image test_set/prepared/0_Medium_Qprime:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   164          0.0022          4.7              1.0                    17.4
+    Image test_set/prepared/0_multi_phase:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   141          0.0006          4.5              0.4                     0.0
+    Image test_set/prepared/0_Small_L:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:    17          0.0021          3.8              0.7                     0.5
+    Image test_set/prepared/023:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   131          0.0011          4.0              0.7                     1.4
+    Image test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   430          0.0009          4.1              0.5                     0.0
+    Image test_set/prepared/haakon_037:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   144          0.0029         10.6              2.3                     0.1
+    Image test_set/prepared/012a:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   137          0.0058          3.1              0.3                     0.1
