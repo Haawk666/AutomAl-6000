@@ -1649,8 +1649,7 @@ class AtomicGraph:
 
     def calc_all_parameters(self):
         for vertex in self.vertices:
-            if not vertex.void:
-                self.calc_vertex_parameters(vertex.i)
+            self.calc_vertex_parameters(vertex.i)
         self.calc_normalized_gamma()
         self.calc_redshifts()
 
@@ -1814,20 +1813,8 @@ class AtomicGraph:
         # Calc order
         self.order = len(self.vertices)
 
-        # Calc size
-        self.size = 0
-        for vertex in self.vertices:
-            self.size += len(vertex.out_neighbourhood)
-
-        # Calc chi (# weak arcs / # num strong arcs)
-        num_weak_arcs = 0
-        for vertex in self.vertices:
-            if not vertex.is_edge_column:
-                num_weak_arcs += len(vertex.out_semi_partners)
-        if not self.size == 0:
-            self.chi = num_weak_arcs / self.size
-        else:
-            self.chi = 0
+        # Calc size and chi
+        self.calc_chi()
 
         # Calc average degree
         counted_columns = 0

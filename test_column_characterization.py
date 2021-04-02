@@ -14,16 +14,17 @@ logger.setLevel(logging.DEBUG)
 plt.rcParams.update({'font.size': 12})
 
 base_filenames = [
-    'test_set/prepared/0_Medium_Qprime',
-    'test_set/prepared/0_multi_phase',
-    'test_set/prepared/0_Small_L',
-    'test_set/prepared/023',
-    'test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT',
-    'test_set/prepared/haakon_037',
-    'test_set/prepared/012a'
+    'test_set/0_Medium_Qprime',
+    'test_set/0_multi_phase',
+    'test_set/0_Small_L',
+    'test_set/023',
+    'test_set/b_ARM_FICAL_150C_20h_WQ_006_IFFT'
+    'test_set/c_Kenji_No1_exMgCu_64min_250C_009_IFFT',
+    'test_set/haakon_037',
+    'test_set/012a'
 ]
 
-results_filename = 'test_set/test_results'
+results_filename = 'test_set/results/test_results'
 
 sequences = [
     [11, 7, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 11, 8, 12, 13, 9, 10, 17, 11, 20]
@@ -38,7 +39,10 @@ colors = [
     (0.1, 0.9, 0.9, 1.0),
     (0.1, 0.1, 0.1, 1.0),
     (0.5, 0.5, 0.5, 1.0),
-    (0.9, 0.5, 0.1, 1.0)
+    (0.9, 0.5, 0.1, 1.0),
+    (0.3, 0.5, 0.9, 1.0),
+    (0.9, 0.5, 0.3, 1.0),
+    (0.1, 0.3, 0.9, 1.0)
 ]
 
 
@@ -250,23 +254,25 @@ def test_algorithm():
         results.append(version_results)
 
     time_all_2 = time.time()
+    avg_precipitate_error_percent = [0] * len(sequences)
     summary = 'Testing complete in {:.1f} seconds. Summary:\n'.format(time_all_2 - time_all_1)
     for im, image_result in enumerate(results):
         summary += '    Image {}:\n'.format(base_filenames[im])
         summary += '                     Seconds      chi           total error      precipitate error       zeta error\n'
         summary += '        -------------------------------------------------------------------------------------------------------\n'
         for v, version in enumerate(image_result):
-            summary += '        Version {}: {:5.0f}         {:7.4f}      {:7.1f}          {:7.1f}                 {:7.1f}\n'.format(v, version[-1][1], version[-1][2], version[-1][3], version[-1][4], version[-1][6])
+            avg_precipitate_error_percent[v] += version[-1][3]
+            summary += '        Version {}: {:5.0f}         {:7.4f}      {:7.1f}          {:7.1f}                 {:7.1f}\n'.format(v, version[-1][1], version[-1][2], version[-1][4], version[-1][3], version[-1][6])
+    summary += '\n    Average algorithm performance (average precipitate error percent):\n'
+    for v, version in enumerate(sequences):
+        summary += '        Version {}: {:7.1f}\n'.format(v, avg_precipitate_error_percent[v] / len(results))
 
     logger.info(summary)
 
     if results_filename:
+        with open(results_filename + 'txt', 'w') as f:
+            f.write(summary)
         plot_results(results)
-
-
-def test_zeta_analysis():
-
-    pass
 
 
 

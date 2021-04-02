@@ -597,6 +597,15 @@ class VertexDataManager:
                 s=1
             )
 
+        if 'Cu_1' in self.category_list:
+            color = self.species_dict[self.category_key]['Cu_1']['color']
+            ax_scatter.scatter(
+                self.matrix_data[self.category_list.index('Cu_1')][attr_1_index, :],
+                self.matrix_data[self.category_list.index('Cu_1')][attr_2_index, :],
+                c=np.array(utils.norm_rgb_tuple(color)),
+                s=1
+            )
+
         ax_scatter.tick_params(
             axis='x',  # changes apply to the x-axis
             which='both',  # both major and minor ticks are affected

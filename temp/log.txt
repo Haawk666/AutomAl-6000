@@ -3,47 +3,68 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-test_column_characterization: Testing algorithm versions...
-test_column_characterization:     Analyzing image test_set/prepared/0_Medium_Qprime:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:     Analyzing image test_set/prepared/0_multi_phase:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:     Analyzing image test_set/prepared/0_Small_L:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:     Analyzing image test_set/prepared/023:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:     Analyzing image test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:     Analyzing image test_set/prepared/haakon_037:
-test_column_characterization:         With algorithm version 0
-test_column_characterization:     Analyzing image test_set/prepared/012a:
-test_column_characterization:         With algorithm version 0
-test_column_characterization: Testing complete in 1179.7 seconds. Summary:
-    Image test_set/prepared/0_Medium_Qprime:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:   164          0.0022          4.7              1.0                    17.4
-    Image test_set/prepared/0_multi_phase:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:   141          0.0006          4.5              0.4                     0.0
-    Image test_set/prepared/0_Small_L:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:    17          0.0021          3.8              0.7                     0.5
-    Image test_set/prepared/023:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:   131          0.0011          4.0              0.7                     1.4
-    Image test_set/prepared/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:   430          0.0009          4.1              0.5                     0.0
-    Image test_set/prepared/haakon_037:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:   144          0.0029         10.6              2.3                     0.1
-    Image test_set/prepared/012a:
-                     Seconds      chi           total error      precipitate error       zeta error
-        -------------------------------------------------------------------------------------------------------
-        Version 0:   137          0.0058          3.1              0.3                     0.1
+core: Up-sampling image to prevent over-granulation in column detection!
+core: Generated instance from B:/EmpyreanLogic/AutomAl_6000/test_set/018_Ba.dm3
+core: Starting column detection. Search mode is 't'
+core: Column detection complete! Found 2295 columns in 111.31041431427002 seconds.
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/018_Ba_columns
+GUI: Successfully exported raw image to file!
+core: Running full column characterization algorithm with seed vertex 950.
+core:     Running initialization part...
+core:         Running spatial mapping...
+core:         Spatial mapping complete in 13.3 seconds.
+core:         Running edge detection...
+core:         Edge detection complete in 3.3 seconds.
+core:         Mapping graph...
+core:         Graph mapping complete in 1.4 seconds.
+core:     Initialization complete in 18.1 seconds, Chi is 0.1023
+core:     Running recurring section...
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 5.7 seconds.
+core:         Applying alpha model...
+core:         Alpha model applied in 2.3 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.4 seconds.
+core:         Running strong untangling...
+core:         Strong untangling complete in 0.0 seconds.
+core:         Running precipitate detection...
+core:         Precipitate detection complete in 0.0 seconds.
+core:         Calculating gamma...
+core:         Gamma calculated in 0.0 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 5.8 seconds.
+core:         Applying full attribute model...
+core:         Full attribute model applied in 8.5 seconds.
+core:         Running weak untangling...
+core:         Weak untangling complete in 0.1 seconds.
+core:         Running strong untangling...
+core:         Strong untangling complete in 0.0 seconds.
+core:         Running precipitate detection...
+core:         Precipitate detection complete in 0.0 seconds.
+core:         Calculating gamma...
+core:         Gamma calculated in 0.0 seconds.
+core:     Recurring part complete in 22.9 seconds. Chi is 0.0000
+core:     Running finalization part...
+core:         Looking for intersections...
+core:             Found 0 intersections
+core:             0 literal intersections still remain
+core:         Intersections analyzed in 10.2 seconds.
+core:         Running zeta-analysis...
+core:         Zeta-analysis complete in 5.8 seconds.
+core:         Refreshing atomic graph...
+core:         Atomic graph refreshed in 47.0 seconds.
+core:     Finalization complete in 63.0 seconds. Chi is 0.0000
+core: Full column characterization complete in 104.0 seconds. Chi is 0.0000
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/018_Ba_result
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/018_Ba_control
+core: Resetting graph...
+core: Graph reset.
+core: Running initialization part...
+core:     Running spatial mapping...
+core:     Spatial mapping complete in 12.1 seconds.
+core:     Running edge detection...
+core:     Edge detection complete in 3.2 seconds.
+core:     Mapping graph...
+core:     Graph mapping complete in 1.5 seconds.
+core: Initialization complete in 16.7 seconds, Chi is 0.1024
+core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/018_Ba_init

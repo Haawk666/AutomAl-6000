@@ -122,8 +122,8 @@ class Project:
         # These are hyper-parameters of the algorithms. See the documentation.
         self.threshold = 0.2586
         self.search_size = 10
-        self.r = int(100 / self.scale)
-        self.overhead = int(7 * (self.r / 10))
+        self.r = round(100 / self.scale)
+        self.overhead = round((163.133 / self.scale) - self.r)
 
         # Initialize an empty graph
         self.graph = graph_2.AtomicGraph(self.scale, active_model=None, species_dict=self.species_dict, district_size=self.district_size)
