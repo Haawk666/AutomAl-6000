@@ -18,6 +18,7 @@ base_filenames = [
     'test_set/0_multi_phase',
     'test_set/0_Small_L',
     'test_set/023',
+    'test_set/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT'
     'test_set/b_ARM_FICAL_150C_20h_WQ_006_IFFT'
     'test_set/c_Kenji_No1_exMgCu_64min_250C_009_IFFT',
     'test_set/haakon_037',
