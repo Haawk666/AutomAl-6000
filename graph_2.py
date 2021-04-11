@@ -780,7 +780,7 @@ class AtomicGraph:
                 vertices.append(self.vertices[index])
         return vertices
 
-    def get_alpha_angles(self, i, selection_type='district'):
+    def get_alpha_angles(self, i, selection_type='zeta'):
         pivot = (self.vertices[i].im_coor_x, self.vertices[i].im_coor_y)
         district = self.vertices[i].district
         if len(district) == 0:
@@ -1566,28 +1566,14 @@ class AtomicGraph:
 
     def calc_vertex_parameters(self, i):
         vertex = self.vertices[i]
-        vertex.alpha_angles = self.get_alpha_angles(i, selection_type='partners')
+        vertex.alpha_angles = self.get_alpha_angles(i, selection_type='zeta')
         if vertex.alpha_angles is not None and not len(vertex.alpha_angles) == 0:
             vertex.alpha_max = max(vertex.alpha_angles)
             vertex.alpha_min = min(vertex.alpha_angles)
         else:
             vertex.alpha_max = 0
             vertex.alpha_min = 0
-        vertex.zeta_alpha_angles = self.get_zeta_alpha_angles(i)
-        if vertex.zeta_alpha_angles is not None and not len(vertex.zeta_alpha_angles) == 0:
-            vertex.zeta_alpha_max = max(vertex.zeta_alpha_angles)
-            vertex.zeta_alpha_min = min(vertex.zeta_alpha_angles)
-        else:
-            vertex.zeta_alpha_max = 0
-            vertex.zeta_alpha_min = 0
-        vertex.anti_zeta_alpha_angles = self.get_anti_zeta_alpha_angles(i)
-        if vertex.anti_zeta_alpha_angles is not None and not len(vertex.anti_zeta_alpha_angles) == 0:
-            vertex.anti_zeta_alpha_max = max(vertex.anti_zeta_alpha_angles)
-            vertex.anti_zeta_alpha_min = min(vertex.anti_zeta_alpha_angles)
-        else:
-            vertex.anti_zeta_alpha_max = 0
-            vertex.anti_zeta_alpha_min = 0
-        vertex.theta_angles = self.get_theta_angles(i, selection_type='normal')
+        vertex.theta_angles = self.get_theta_angles(i, selection_type='selective')
         if vertex.theta_angles is not None and not len(vertex.theta_angles) == 0:
             vertex.theta_max = max(vertex.theta_angles)
             vertex.theta_min = min(vertex.theta_angles)
@@ -1602,23 +1588,17 @@ class AtomicGraph:
     def calc_normalized_gamma(self):
         peak_gammas = []
         avg_gammas = []
-        area_gammas = []
         for vertex in self.vertices:
-            if not vertex.void:
-                if not vertex.is_in_precipitate and vertex.atomic_species == 'Al':
-                    peak_gammas.append(vertex.peak_gamma)
-                    avg_gammas.append(vertex.avg_gamma)
-                    area_gammas.append(vertex.area_gamma)
+            if not vertex.is_in_precipitate and vertex.atomic_species == 'Al':
+                peak_gammas.append(vertex.peak_gamma)
+                avg_gammas.append(vertex.avg_gamma)
         peak_mean = utils.mean_val(peak_gammas)
         avg_mean = utils.mean_val(avg_gammas)
-        area_mean = utils.mean_val(area_gammas)
         peak_mean_diff = peak_mean - 0.3
         avg_mean_diff = avg_mean - 0.3
-        area_mean_diff = area_mean - 0.3
         for vertex in self.vertices:
             vertex.normalized_peak_gamma = vertex.peak_gamma - peak_mean_diff
             vertex.normalized_avg_gamma = vertex.avg_gamma - avg_mean_diff
-            vertex.normalized_area_gamma = vertex.area_gamma - area_mean_diff
 
     def calc_redshifts(self):
         self.total_redshift = 0
@@ -1651,10 +1631,6 @@ class AtomicGraph:
         for vertex in self.vertices:
             self.calc_vertex_parameters(vertex.i)
         self.calc_normalized_gamma()
-        self.calc_redshifts()
-
-    def calc_model_predictions(self):
-        pass
 
     def check_species(self):
         for vertex in self.vertices:
@@ -1761,12 +1737,10 @@ class AtomicGraph:
         self.arcs = []
         self.size = 0
         for vertex in self.vertices:
-            if not vertex.void:
-                for out_neighbour in self.get_vertex_objects_from_indices(vertex.out_neighbourhood):
-                    if not out_neighbour.void:
-                        arc = Arc(len(self.arcs), vertex, out_neighbour)
-                        self.arcs.append(arc)
-                        self.size += 1
+            for out_neighbour in self.get_vertex_objects_from_indices(vertex.out_neighbourhood):
+                arc = Arc(len(self.arcs), vertex, out_neighbour)
+                self.arcs.append(arc)
+                self.size += 1
 
     def map_meshes(self):
         """Automatically generate a connected relational map of all meshes in graph.

@@ -17,12 +17,15 @@ base_filenames = [
     'test_set/0_Medium_Qprime',
     'test_set/0_multi_phase',
     'test_set/0_Small_L',
+    'test_set/008',
+    'test_set/012a',
+    'test_set/018_Ba',
     'test_set/023',
-    'test_set/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT'
-    'test_set/b_ARM_FICAL_150C_20h_WQ_006_IFFT'
+    'test_set/030',
+    'test_set/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT',
+    'test_set/b_ARM_FICAL_150C_20h_WQ_006_IFFT',
     'test_set/c_Kenji_No1_exMgCu_64min_250C_009_IFFT',
-    'test_set/haakon_037',
-    'test_set/012a'
+    'test_set/haakon_016'
 ]
 
 results_filename = 'test_set/results/test_results'
@@ -256,22 +259,23 @@ def test_algorithm():
 
     time_all_2 = time.time()
     avg_precipitate_error_percent = [0] * len(sequences)
-    summary = 'Testing complete in {:.1f} seconds. Summary:\n'.format(time_all_2 - time_all_1)
+    summary = 'Testing complete in {:.1f} seconds.\n'.format(time_all_2 - time_all_1)
+    summary += '\n    Average algorithm performance (average precipitate error percent):\n'
+    for v, version in enumerate(sequences):
+        summary += '        Version {}: {:7.1f}\n'.format(v, avg_precipitate_error_percent[v] / len(results))
+    summary += '\n    All results:\n'
     for im, image_result in enumerate(results):
         summary += '    Image {}:\n'.format(base_filenames[im])
-        summary += '                     Seconds      chi           total error      precipitate error       zeta error\n'
+        summary += '                     Seconds      chi             total error      precipitate error       zeta error\n'
         summary += '        -------------------------------------------------------------------------------------------------------\n'
         for v, version in enumerate(image_result):
             avg_precipitate_error_percent[v] += version[-1][3]
             summary += '        Version {}: {:5.0f}         {:7.4f}      {:7.1f}          {:7.1f}                 {:7.1f}\n'.format(v, version[-1][1], version[-1][2], version[-1][4], version[-1][3], version[-1][6])
-    summary += '\n    Average algorithm performance (average precipitate error percent):\n'
-    for v, version in enumerate(sequences):
-        summary += '        Version {}: {:7.1f}\n'.format(v, avg_precipitate_error_percent[v] / len(results))
 
     logger.info(summary)
 
     if results_filename:
-        with open(results_filename + 'txt', 'w') as f:
+        with open(results_filename + '.txt', 'w') as f:
             f.write(summary)
         plot_results(results)
 

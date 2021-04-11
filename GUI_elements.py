@@ -2133,27 +2133,32 @@ class ControlWindow(QtWidgets.QWidget):
         if self.ui_obj.project_instance is not None and not self.ui_obj.selected_column == -1:
             vertex = self.ui_obj.project_instance.graph.vertices[self.ui_obj.selected_column]
             model = data_module.VertexDataManager.load(self.ui_obj.project_instance.graph.active_model)
-            attributes = model.attribute_keys
             self.ui_obj.project_instance.graph.calc_vertex_parameters(self.ui_obj.selected_column)
-            data_line = {}
-            for attribute in attributes:
-                data_line[attribute] = eval('vertex.{}'.format(attribute))
+
             if model.category_key == 'advanced_species':
                 species_list = self.ui_obj.project_instance.graph.get_advanced_species_list()
             else:
                 species_list = self.ui_obj.project_instance.graph.get_atomic_species_list()
-            prediction = model.calc_prediction(data_line, species_list)
-            prediction = utils.normalize_dict(prediction, 1)
-            alpha_data = {}
-            for key in data_line:
-                if key == 'alpha_max' or key == 'alpha_min':
-                    alpha_data[key] = data_line[key]
-            alpha_prediction = model.calc_prediction(alpha_data, species_list)
+
+            prediction = model.calc_prediction(
+                {
+                    'alpha_max': vertex.alpha_max,
+                    'alpha_min': vertex.alpha_min,
+                    'normalized_peak_gamma': vertex.normalized_peak_gamma,
+                    'normalized_avg_gamma': vertex.normalized_avg_gamma
+                },
+                species_list
+            )
+
+            alpha_prediction = model.calc_prediction(
+                {
+                    'alpha_max': vertex.alpha_max,
+                    'alpha_min': vertex.alpha_min
+                },
+                species_list
+            )
 
             string = 'Model prediction for vertex {}:\n'.format(vertex.i)
-            string += '    Attributes:\n'
-            for key, value in data_line.items():
-                string += '        {}: {}\n'.format(key, value)
             string += '    Alpha prediction:\n'
             for key, value in alpha_prediction.items():
                 string += '        {}: {}\n'.format(key, value)

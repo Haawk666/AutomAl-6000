@@ -466,7 +466,7 @@ class Project:
         4               Spatial mapping             Calculate projected separation matrix
         5               Edge detection              Label vertices close to the edge of the graph
         6               Graph mapping               Assign out-neighbourhoods
-        7               Apply alpha model           Predict adv. species from alpha angles
+        7               Apply alpha model           Predict adv. species from alpha angles (zeta selected)
         8               Apply full model            Predict adv. species from all attributes
         9               Precipitate detection       Find precipitate
         10              Calculate gamma             Calculate normalized gamma

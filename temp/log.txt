@@ -3,85 +3,80 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
-GUI: Opening file B:/EmpyreanLogic/AutomAl_6000/test_set/haakon_016_columns
-core: Loaded B:/EmpyreanLogic/AutomAl_6000/test_set/haakon_016_columns
-core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/haakon_016_columns
-core: Running full column characterization algorithm with seed vertex 1494.
-core:     Running initialization part...
-core:         Running spatial mapping...
-core:         Spatial mapping complete in 12.8 seconds.
-core:         Running edge detection...
-core:         Edge detection complete in 5.1 seconds.
-core:         Mapping graph...
-core:         Graph mapping complete in 1.8 seconds.
-core:     Initialization complete in 19.7 seconds, Chi is 0.0844
-core:     Running recurring section...
-core:         Running zeta-analysis...
-core:         Zeta-analysis complete in 7.0 seconds.
-core:         Applying alpha model...
-core:         Alpha model applied in 2.5 seconds.
-core:         Running weak untangling...
-core:         Weak untangling complete in 1.0 seconds.
-core:         Running strong untangling...
-core:         Strong untangling complete in 0.1 seconds.
-core:         Running precipitate detection...
-core:         Precipitate detection complete in 0.0 seconds.
-core:         Calculating gamma...
-core:         Gamma calculated in 0.0 seconds.
-core:         Running zeta-analysis...
-core:         Zeta-analysis complete in 6.4 seconds.
-core:         Applying full attribute model...
-core:         Full attribute model applied in 9.1 seconds.
-core:         Running weak untangling...
-core:         Weak untangling complete in 0.3 seconds.
-core:         Running strong untangling...
-core:         Strong untangling complete in 0.1 seconds.
-core:         Running precipitate detection...
-core:         Precipitate detection complete in 0.0 seconds.
-core:         Calculating gamma...
-core:         Gamma calculated in 0.0 seconds.
-core:     Recurring part complete in 26.6 seconds. Chi is 0.0046
-core:     Running finalization part...
-core:         Looking for intersections...
-core:             Found 0 intersections
-core:             0 literal intersections still remain
-core:         Intersections analyzed in 11.0 seconds.
-core:         Running zeta-analysis...
-core:         Zeta-analysis complete in 6.4 seconds.
-core:         Refreshing atomic graph...
-core:         Atomic graph refreshed in 50.6 seconds.
-core:     Finalization complete in 68.0 seconds. Chi is 0.0046
-core: Full column characterization complete in 114.4 seconds. Chi is 0.0046
-core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/haakon_016_result
-core: Resetting user-set columns...
-core: User-set columns reset in 0.0 seconds.
-core: Running precipitate detection...
-core: Precipitate detection complete in 0.0 seconds.
-core: Running finalization part...
-core:     Looking for intersections...
-core:         Found 0 intersections
-core:         0 literal intersections still remain
-core:     Intersections analyzed in 10.9 seconds.
-core:     Running zeta-analysis...
-core:     Zeta-analysis complete in 6.5 seconds.
-core:     Refreshing atomic graph...
-core:     Atomic graph refreshed in 33.7 seconds.
-core: Finalization complete in 51.0 seconds. Chi is 0.0015
-core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/haakon_016_control
-core: Resetting graph...
-core: Graph reset.
-core: Running initialization part...
-core:     Running spatial mapping...
-core:     Spatial mapping complete in 12.5 seconds.
-core:     Running edge detection...
-core:     Edge detection complete in 4.3 seconds.
-core:     Mapping graph...
-core:     Graph mapping complete in 1.6 seconds.
-core: Initialization complete in 18.5 seconds, Chi is 0.0842
-core: Saved B:/EmpyreanLogic/AutomAl_6000/test_set/haakon_016_init
-GUI: Opening file B:/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT_control
-core: Loaded B:/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT_control
-GUI: Successfully exported overlay image to file!
-GUI: Opening file B:/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT_result
-core: Loaded B:/OneDrive/NTNU/TFY4900 Master/Paper/Data/demo_set/Final/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT_result
-GUI: Successfully exported overlay image to file!
+test_column_characterization: Testing algorithm versions...
+test_column_characterization:     Analyzing image test_set/0_Medium_Qprime:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/0_multi_phase:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/0_Small_L:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/008:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/012a:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/018_Ba:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/023:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/030:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/b_ARM_FICAL_150C_20h_WQ_006_IFFT:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
+test_column_characterization:         With algorithm version 0
+test_column_characterization:     Analyzing image test_set/haakon_016:
+test_column_characterization:         With algorithm version 0
+test_column_characterization: Testing complete in 1747.3 seconds. Summary:
+    Image test_set/0_Medium_Qprime:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   135          0.0032          0.9              4.4                     8.4
+    Image test_set/0_multi_phase:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   115          0.0006          0.4              4.5                     0.1
+    Image test_set/0_Small_L:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:    15          0.0017          0.0              0.0                     0.0
+    Image test_set/008:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   110          0.0013          0.8              4.5                     0.0
+    Image test_set/012a:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   110          0.0060          0.3              2.6                     0.1
+    Image test_set/018_Ba:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   115          0.0000          0.0              0.0                     0.0
+    Image test_set/023:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   112          0.0018          1.0              5.7                     3.1
+    Image test_set/030:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   114          0.0012          0.6              6.5                     0.0
+    Image test_set/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   115          0.0021          0.1              0.9                     0.0
+    Image test_set/b_ARM_FICAL_150C_20h_WQ_006_IFFT:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   336          0.0009          0.2              2.3                     0.0
+    Image test_set/c_Kenji_No1_exMgCu_64min_250C_009_IFFT:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   334          0.0005          0.0              0.3                     0.0
+    Image test_set/haakon_016:
+                     Seconds      chi           total error      precipitate error       zeta error
+        -------------------------------------------------------------------------------------------------------
+        Version 0:   108          0.0043          0.8              3.6                     0.1
+
+    Average algorithm performance (average precipitate error percent):
+        Version 0:     2.9

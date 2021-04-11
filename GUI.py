@@ -260,6 +260,7 @@ class MainUI(QtWidgets.QMainWindow):
         if void:
             graphic_ = self.no_graphic
         else:
+            utils.im_out_static(self.project_instance.search_mat.astype(np.float64), 'Images\Outputs\Buffers\search_image.png')
             graphic_ = QtGui.QPixmap('Images\Outputs\Buffers\search_image.png')
         scene = GUI_elements.StaticImage(ui_obj=self, background=graphic_)
         self.gv_search_matrix.setScene(scene)

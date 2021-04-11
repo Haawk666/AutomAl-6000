@@ -440,10 +440,10 @@ class VertexDataManager:
         for c, category in enumerate(self.category_list):
             if category in species_list:
                 prediction[category] = self.composite_model[c].prediction(dict_)
-        prediction = utils.normalize_dict(prediction, 1)
         for species in species_list:
             if species not in prediction:
                 prediction[species] = 0.0
+        prediction = utils.normalize_dict(prediction, 1)
         return prediction
 
     def single_plot(self, attr):
