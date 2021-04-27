@@ -44,8 +44,8 @@ colors = [
     (0.1, 0.1, 0.1, 1.0),
     (0.5, 0.5, 0.5, 1.0),
     (0.9, 0.5, 0.1, 1.0),
-    (0.3, 0.5, 0.9, 1.0),
-    (0.9, 0.5, 0.3, 1.0),
+    (0.6, 0.5, 0.7, 1.0),
+    (0.8, 0.9, 0.3, 1.0),
     (0.1, 0.3, 0.9, 1.0)
 ]
 
@@ -53,7 +53,7 @@ colors = [
 def plot_results(results):
 
     grid_size = int(np.ceil(np.abs(np.sqrt(len(results)))))
-    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=300)
+    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=400)
     gs = GridSpec(grid_size, grid_size, figure=fig)
     ax = []
     row = 0
@@ -95,7 +95,7 @@ def plot_results(results):
                 label='v{} (chi)'.format(v)
             )
 
-        ax[im].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed')
+        ax[im].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed', colors='k')
         ax[im].set_title(im_title)
         ax[im].set_ylim([0, 100])
         ax[im].set_ylabel('Error (%)')
@@ -109,7 +109,7 @@ def plot_results(results):
     plt.savefig(results_filename + '_pr_image', bbox_inches='tight')
 
     grid_size = int(np.ceil(np.abs(np.sqrt(len(sequences)))))
-    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=300)
+    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=400)
     gs = GridSpec(grid_size, grid_size, figure=fig)
     ax = []
     row = 0
@@ -135,7 +135,7 @@ def plot_results(results):
                 [results[im][v][i][3] for i in range(len(version))],
                 c=colors[im],
                 linestyle='solid',
-                label='im{} (Error (%))'.format(im)
+                label='image {}'.format(im)
             )
 
             ax_2[v].plot(
@@ -144,25 +144,56 @@ def plot_results(results):
                 c=colors[im],
                 linestyle='dotted',
             )
-            ax[v].plot(
-                np.nan,
-                c=colors[im],
-                linestyle='dotted',
-                label='im{} (chi)'.format(im)
-            )
+            # ax[v].plot(
+            #     np.nan,
+            #     c=colors[im],
+            #     linestyle='dotted',
+            #     label='im{} (chi)'.format(im)
+            # )
 
-        ax[v].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed')
+        ax[v].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed', colors='k')
         ax[v].set_title('Version {}'.format(v))
         ax[v].set_ylabel('Error (%)')
         ax[v].set_ylim([0, 100])
         ax_2[v].set_ylabel('Chi (1)')
         ax_2[v].set_ylim([0, 0.15])
         ax[v].set_xlabel('Step (#)')
-        # ax[v].legend()
-
-    fig.suptitle('Algorithm test - results pr version')
+        ax[v].legend()
 
     plt.savefig(results_filename + '_pr_version', bbox_inches='tight')
+
+    grid_size = int(np.ceil(np.abs(np.sqrt(len(sequences)))))
+    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=400)
+    gs = GridSpec(grid_size, grid_size, figure=fig)
+    ax = []
+    row = 0
+    column = 0
+    for grid in range(grid_size ** 2):
+        ax.append(fig.add_subplot(gs[row, column]))
+        if column == grid_size - 1:
+            row += 1
+            column = 0
+        else:
+            column += 1
+    ax = ax[0:len(sequences)]
+
+    for v, version in enumerate(sequences):
+
+        for im, im_title in enumerate(base_filenames):
+            ax[v].plot(
+                [i for i in range(len(version))],
+                [results[im][v][i][3] for i in range(len(version))],
+                c=colors[im],
+                linestyle='solid',
+                label='im{} (Error (%))'.format(im)
+            )
+
+        ax[v].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed', colors='k')
+        ax[v].set_ylim([0, 50])
+        ax[v].set_xticks([0, 6, 12, 18, 24], False)
+        ax[v].set_xticks([1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26], True)
+
+    plt.savefig(results_filename + '_pr_version_error_only', bbox_inches='tight')
 
 
 def compare(instance, control_instance):
@@ -259,17 +290,23 @@ def test_algorithm():
 
     time_all_2 = time.time()
     avg_precipitate_error_percent = [0] * len(sequences)
+    var_precipitate_error_percent = [0] * len(sequences)
+    for image_result in results:
+        for v, version in enumerate(image_result):
+            avg_precipitate_error_percent[v] += version[-1][3]
+    for image_result in results:
+        for v, version in enumerate(image_result):
+            var_precipitate_error_percent[v] += (version[-1][3] - avg_precipitate_error_percent[v] / len(results)) ** 2
     summary = 'Testing complete in {:.1f} seconds.\n'.format(time_all_2 - time_all_1)
     summary += '\n    Average algorithm performance (average precipitate error percent):\n'
     for v, version in enumerate(sequences):
-        summary += '        Version {}: {:7.1f}\n'.format(v, avg_precipitate_error_percent[v] / len(results))
+        summary += '        Version {}: avg: {:7.1f}    var: {:7.1f}\n'.format(v, avg_precipitate_error_percent[v] / len(results), var_precipitate_error_percent[v] / (len(results) - 1))
     summary += '\n    All results:\n'
     for im, image_result in enumerate(results):
         summary += '    Image {}:\n'.format(base_filenames[im])
         summary += '                     Seconds      chi             total error      precipitate error       zeta error\n'
         summary += '        -------------------------------------------------------------------------------------------------------\n'
         for v, version in enumerate(image_result):
-            avg_precipitate_error_percent[v] += version[-1][3]
             summary += '        Version {}: {:5.0f}         {:7.4f}      {:7.1f}          {:7.1f}                 {:7.1f}\n'.format(v, version[-1][1], version[-1][2], version[-1][4], version[-1][3], version[-1][6])
 
     logger.info(summary)
