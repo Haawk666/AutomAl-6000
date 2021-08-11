@@ -3,3 +3,39 @@ GUI: version: 0.2.1
 GUI: Build: Alpha 2.0
 GUI: See http://automal.org for help
 ------------------------
+GUI: Opening file /run/user/1000/doc/573b48cf/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT_control
+core: Loaded /run/user/1000/doc/573b48cf/a_ARM_FICAL_6005_185C_2h_WQ_045_IFFT_control
+core: Project summary:
+    General:
+        Number of columns: 2317
+        Alloy: Al-Mg-Si
+        Precipitate column composition:
+            Al:	0.2661
+            Si:	0.3670
+            Mg:	0.3670
+        Precipitate plane zeta=0 number composition:
+            Si:	48
+            Al:	34
+            Mg:	32
+        Precipitate plane zeta=1 number composition:
+            Al:	24
+            Si:	32
+            Mg:	48
+        Image column composition:
+            Al:	0.9309
+            Si:	0.0345
+            Mg:	0.0345
+    Image:
+        Dimension (height, width): (1024, 1024)
+        Average pixel intensity: 0.4273
+        Scale (pm/pixel): 9.4115436
+    Atomic graph:
+        Order: 2317
+        Size: 9268
+        Chi: 0.001
+        Average degree: 4.007
+        Matrix redshift: 0.000
+        Particle redshift: 0.000
+        Total redshift: 0.000
+
+GUI: Successfully exported overlay image to file!

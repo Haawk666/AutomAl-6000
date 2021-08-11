@@ -148,6 +148,13 @@ class Project:
         string += '        Precipitate column composition:\n'
         for key, value in self.get_precipitate_composition().items():
             string += '            {}:\t{:.4f}\n'.format(key, value)
+        string += '        Precipitate plane zeta=0 number composition:\n'
+        plane_0_comp, plane_1_comp = self.get_precipitate_plane_composition()
+        for key, value in plane_0_comp.items():
+            string += '            {}:\t{}\n'.format(key, value)
+        string += '        Precipitate plane zeta=1 number composition:\n'
+        for key, value in plane_1_comp.items():
+            string += '            {}:\t{}\n'.format(key, value)
         string += '        Image column composition:\n'
         for key, value in self.get_image_composition().items():
             string += '            {}:\t{:.4f}\n'.format(key, value)
@@ -241,6 +248,30 @@ class Project:
             precipitate_composition[key] = precipitate_composition[key] / precipitate_columns
 
         return precipitate_composition
+
+    def get_precipitate_plane_composition(self):
+
+        precipitate_plane_0_composition = dict()
+        precipitate_plane_0_columns = 0
+        precipitate_plane_1_composition = dict()
+        precipitate_plane_1_columns = 0
+
+        for vertex in self.graph.vertices:
+            if vertex.is_in_precipitate:
+                if vertex.zeta == 0:
+                    if vertex.atomic_species in precipitate_plane_0_composition:
+                        precipitate_plane_0_composition[vertex.atomic_species] += 1
+                    else:
+                        precipitate_plane_0_composition[vertex.atomic_species] = 1
+                    precipitate_plane_0_columns += 1
+                else:
+                    if vertex.atomic_species in precipitate_plane_1_composition:
+                        precipitate_plane_1_composition[vertex.atomic_species] += 1
+                    else:
+                        precipitate_plane_1_composition[vertex.atomic_species] = 1
+                    precipitate_plane_1_columns += 1
+
+        return precipitate_plane_0_composition, precipitate_plane_1_composition
 
     def get_precipitate_packing_fraction(self):
 
