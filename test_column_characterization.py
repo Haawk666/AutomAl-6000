@@ -135,7 +135,7 @@ def plot_results(results):
                 [results[im][v][i][3] for i in range(len(version))],
                 c=colors[im],
                 linestyle='solid',
-                label='image {}'.format(im)
+                label='Image {}'.format(im)
             )
 
             ax_2[v].plot(
@@ -144,6 +144,7 @@ def plot_results(results):
                 c=colors[im],
                 linestyle='dotted',
             )
+
             # ax[v].plot(
             #     np.nan,
             #     c=colors[im],
@@ -151,7 +152,6 @@ def plot_results(results):
             #     label='im{} (chi)'.format(im)
             # )
 
-        ax[v].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed', colors='k')
         ax[v].set_title('Version {}'.format(v))
         ax[v].set_ylabel('Error (%)')
         ax[v].set_ylim([0, 100])
@@ -163,7 +163,7 @@ def plot_results(results):
     plt.savefig(results_filename + '_pr_version', bbox_inches='tight')
 
     grid_size = int(np.ceil(np.abs(np.sqrt(len(sequences)))))
-    fig = plt.figure(constrained_layout=True, figsize=(6 * grid_size, 5 * grid_size), dpi=400)
+    fig = plt.figure(constrained_layout=True, figsize=(9 * grid_size, 5 * grid_size), dpi=400)
     gs = GridSpec(grid_size, grid_size, figure=fig)
     ax = []
     row = 0
@@ -189,7 +189,7 @@ def plot_results(results):
             )
 
         ax[v].vlines([0, 6, 12, 18, 24], 0, 100, linestyles='dashed', colors='k')
-        ax[v].set_ylim([0, 50])
+        ax[v].set_ylim([0, 30])
         ax[v].set_xticks([0, 6, 12, 18, 24], False)
         ax[v].set_xticks([1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26], True)
 

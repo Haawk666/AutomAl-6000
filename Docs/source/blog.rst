@@ -1,15 +1,22 @@
 Blog
 ---------------------------------------------
 
-**17th international conference on aluminium alloys (ICAA) 2020: AutomAl 6000 poster presentation (TBA)**
+**Paper on AutomAl 6000 now out in Ultramicroscopy**
+Our paper on the underlying details of the AutomAl 6000 column characterization algorithm is now available as an open-source publication
+in Ultramicroscopy. If you find AutomAl 6000 useful in your own work, we would appreciate your consideration to cite our paper.
+Link: `https://doi.org/10.1016/j.ultramic.2022.113493 <https://doi.org/10.1016/j.ultramic.2022.113493>`_.
 
+**Quickstart tutorial now available on Youtube**
+I was finally able to get around to making a tutorial on the basic usage of AutomAl 6000. I believe this was long overdue.
+Link: `https://youtu.be/wBv2JyNsqWI <https://youtu.be/wBv2JyNsqWI>`_.
+
+**17th international conference on aluminium alloys (ICAA) 2020: AutomAl 6000 poster presentation (TBA)**
 The 17th ICAA was converted to an online conference due to the covid situation. I made a brief presentation of AutomAl 6000 (link).
 Updating this web-page, commenting source code, writing tutorials and fixing bugs and incomplete features is now a full time job,
 as we are slowly starting to promote the software to the community.
 
 
 **New version (29.09.2020)**
-
 After the master thesis was submitted, I've had the time to do some much needed work on the software. The current
 version is available from the source code, and has most features completed. I have not made an executable though, since
 this has proved way too time-consuming to get working, but I intend to provide one at a later stage. Main changes:
@@ -27,7 +34,6 @@ Compatibility with older save-files has been discontinued with this version, but
 
 
 **New internal review version in the works (27.02.2020)**
-
 As the work intensifies once again in tandem with the master thesis, there is a new version coming in a few weeks. This
 version will carry some changes that are based on some initial feedback on the first internal review version. This
 includes, amongst other:
@@ -43,7 +49,6 @@ better harmonize with the theoretical graph framework that is being developed fo
 
 
 **Internal review version available (18.11.2019)**
-
 As promised, I've made an executable available for internal review. Those who were present on the Al-meeting on 15.
 Nov 2019, will have received an e-mail. I've termed this version 'alpha 1.0'. The slides from the live demo are included
 here in the mail.

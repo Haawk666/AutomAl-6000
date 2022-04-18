@@ -26,13 +26,11 @@ AutomAl 6000 is a stand-alone software tool for semi-automatic labelling of HAAD
    - Exports csv, png and svg file formats
    - Open-source
 
-To find out more about the underlying methodology, take a look at the general presentation or the master
-thesis, available under the **links** section. A paper is also in the works, and will be cited here when available.
+To find out more about the underlying methodology, take a look at the master thesis, or the AutomAl 6000 paper in
+Ultramicroscopy, available under the **links** section.
 
 To get started with AutomAl, check out the guides provided on this web-site, or the youtube tutorial-series, also under
 the **links** section.
-
-This web-page is currently under construction.
 
 
 .. toctree::
