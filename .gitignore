@@ -10,7 +10,6 @@ AACC.iml
 .idea/
 
 # Sphinx stuff
-Docs/build/
 
 # AACC-generated stuff:
 log_test.log
