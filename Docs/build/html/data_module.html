@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.7. data_module.py &mdash; AutomAl 6000  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.8. utils.py" href="utils.html" />
+    <link rel="prev" title="4.6. untangling_2.py" href="untangling_2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> AutomAl 6000
+            <img src="_static/logo_inverted.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="downloads.html">1. Downloads/resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">2. Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blog.html">3. Blog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="doc.html">4. Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AACC.html">4.1. AACC.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">4.2. core.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column_detection.html">4.3. column_detection.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_2.html">4.4. graph_2.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column_characterization.html">4.5. column_characterization.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="untangling_2.html">4.6. untangling_2.py</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.7. data_module.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">4.8. utils.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GUI.html">4.9. GUI.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GUI_elements.html">4.10. GUI_elements.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GUI_custom_components.html">4.11. GUI_custom_components.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="links.html">5. Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">6. About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AutomAl 6000</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="doc.html"><span class="section-number">4. </span>Documentation</a> &raquo;</li>
+      <li><span class="section-number">4.7. </span>data_module.py</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data_module.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-data_module">
+<span id="data-module-py"></span><h1><span class="section-number">4.7. </span>data_module.py<a class="headerlink" href="#module-data_module" title="Permalink to this heading">¶</a></h1>
+<p>This module contains the different statistical models used in the column characterization algorithm. It also has
+methods that can gather model parameters from sets of overlay files. See automal.org for more details.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="data_module.VertexDataManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">data_module.</span></span><span class="sig-name descname"><span class="pre">VertexDataManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_keys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'advanced_species'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recalc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_module.VertexDataManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class designed to gather, handle, transform, plot, model and export data from multiple images for AutomAl 6000</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">filter_</span></code> argument can be used to access particular sub-sets of the available data. The filter is passed
+as a list of 7 boolean values. The table below shows the effect of each value togheter with the default behavior if
+no filter is passed</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 42%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>x</p></th>
+<th class="head"><p>default <code class="code docutils literal notranslate"><span class="pre">filter_[x]</span></code></p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>False</p></td>
+<td><p>Include edge columns</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>True</p></td>
+<td><p>Include matrix columns</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>True</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>True</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>True</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>True</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>True</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="code docutils literal notranslate"><span class="pre">keys</span></code> argument is a list of strings that determine which of the data attributes that the data manager
+should include. The available keys are displayed in the table below, as well as an indication of which attributes
+will be included if no keys are passed. Only attributes that are singular real-valued will be used for statistical
+analysis, indicated by the ‘physical’ column.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 43%" />
+<col style="width: 17%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Attribute - type</p></th>
+<th class="head"><p>Included by default</p></th>
+<th class="head"><p>Physical</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'i'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.i</span></code> - int</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'r'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.r</span></code> - int</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'species_index'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.species_index</span></code> - int</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'species_variant'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.species_variant</span></code> - int</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'advanced_category_index'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.advanced_category_index</span></code> - int</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'alpha_angles'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.alpha_angles</span></code> - [float]</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'alpha_max'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.alpha_max</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'alpha_min'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.alpha_min</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'theta_angles'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.theta_angles</span></code> - [float]</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'theta_max'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.theta_max</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'theta_min'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.theta_min</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'theta_angle_variance'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.theta_angle_variance</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'theta_angle_mean'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.theta_angle_mean</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'peak_gamma'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.peak_gamma</span></code></p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'avg_gamma'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.avg_gamma</span></code></p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'normalized_peak_gamma'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.normalized_peak_gamma</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'normalized_avg_gamma'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.normalized_avg_gamma</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'redshift'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.redshift</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'avg_central_separation'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.avg_central_separation</span></code> - float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'zeta'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.zeta</span></code> - bool</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'im_coor_x'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.im_coor_x</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'im_coor_y'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.im_coor_y</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'im_coor_z'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.im_coor_z</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'spatial_coor_x'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.spatial_coor_x</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">'spatial_coor_y'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.spatial_coor_y</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">'spatial_coor_z'</span></code></p></td>
+<td><p><code class="code docutils literal notranslate"><span class="pre">vertex.spatial_coor_z</span></code> - float</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This dataManager is designed to handle vertex-based data. To analyse Arc-centered data, use the ‘ArcDataManager’ class</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> (<em>string</em>) – String of full filenames separated by newline character. Data will be gathered from each of the files.</p></li>
+<li><p><strong>filter</strong> (<em>[</em><em>bool</em><em>]</em>) – (Optional, default: None) Filter inclusion of data by the tokens in the above table.</p></li>
+<li><p><strong>attr_keys</strong> (<em>[</em><em>string</em><em>]</em>) – (Optional, default: None) The keys of the data attributes to include</p></li>
+<li><p><strong>save_filename</strong> (<em>string</em>) – (Optional, default: ‘model’) Pickle the model data with this filename</p></li>
+<li><p><strong>categorization</strong> (<em>string</em>) – (Optional, default: ‘advanced’) Categorization keyword</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns DataManager object</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>:rtype <code class="code docutils literal notranslate"><span class="pre">&lt;statistics.DataManager&gt;</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="data_module.VertexDataManager.load">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename_full</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#data_module.VertexDataManager.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a DataManager instance from a pickle-file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename_full</strong> (<em>string</em>) – Path-name of the file to be loaded.</p>
+</dd>
+<dt class="field-even">Returns DataManager object</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p>:rtype <code class="code docutils literal notranslate"><span class="pre">&lt;data_module.VertexDataManager&gt;</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="untangling_2.html" class="btn btn-neutral float-left" title="4.6. untangling_2.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="4.8. utils.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Haakon Tvedt.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

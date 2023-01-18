@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.8. utils.py &mdash; AutomAl 6000  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.9. GUI.py" href="GUI.html" />
+    <link rel="prev" title="4.7. data_module.py" href="data_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> AutomAl 6000
+            <img src="_static/logo_inverted.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="downloads.html">1. Downloads/resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">2. Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blog.html">3. Blog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="doc.html">4. Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AACC.html">4.1. AACC.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">4.2. core.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column_detection.html">4.3. column_detection.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_2.html">4.4. graph_2.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column_characterization.html">4.5. column_characterization.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="untangling_2.html">4.6. untangling_2.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_module.html">4.7. data_module.py</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.8. utils.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GUI.html">4.9. GUI.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GUI_elements.html">4.10. GUI_elements.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GUI_custom_components.html">4.11. GUI_custom_components.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="links.html">5. Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">6. About</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AutomAl 6000</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="doc.html"><span class="section-number">4. </span>Documentation</a> &raquo;</li>
+      <li><span class="section-number">4.8. </span>utils.py</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-utils">
+<span id="utils-py"></span><h1><span class="section-number">4.8. </span>utils.py<a class="headerlink" href="#module-utils" title="Permalink to this heading">¶</a></h1>
+<p>General utility/convenience functions</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.circularize_next_index">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">circularize_next_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.circularize_next_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an index cyclic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<em>int</em>) – Integer index to be converted to a cyclic index</p></li>
+<li><p><strong>i_max</strong> (<em>int</em>) – The maximum valid value of i.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>i</strong> – If input i is equal to i_max + 1, return 0, otherwise return the input i.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In python, list[-1] will automatically give you the last element of a list, so checking for i == -1 is redundant.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.closed_segment_intersect">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">closed_segment_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.closed_segment_intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies if closed segments a, b, c, d do intersect.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.covariance">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">covariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.covariance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Two-pass numerically stable covariance calculation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.cyclic_sort">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">cyclic_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.cyclic_sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the lowest member of list and perform cyclic permuting so that the lowest member is first.</p>
+<p>Assumes unique members.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.gen_de_framed_mat">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">gen_de_framed_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.gen_de_framed_mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input matrix de-framed by width r.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temp_mat</strong> (<em>np.array</em>) – Matrix to be de-padded.</p></li>
+<li><p><strong>r</strong> (<em>int</em>) – Width of frame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns De-framed matrix</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Rtype np.array</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.gen_fft">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">gen_fft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.gen_fft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the fast Fourier transform of a matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.gen_framed_mat">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">gen_framed_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.gen_framed_mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return input matrix padded with a frame of zeros and width r.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mat</strong> (<em>np.array</em>) – Matrix to be padded.</p></li>
+<li><p><strong>r</strong> (<em>int</em>) – Width of frame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns Framed matrix</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Rtype np.array</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.is_circularly_identical">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">is_circularly_identical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_circularly_identical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean indicating whether list_1 and list_2 are the same in any cyclic perturbation of each other.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.is_point_in_closed_segment">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">is_point_in_closed_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.is_point_in_closed_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if c is inside closed segment, False otherwise.
+a, b, c are expected to be collinear</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.make_int_from_list">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">make_int_from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.make_int_from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate the menbers of a list of integers into a integer.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.mean_val">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">mean_val</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.mean_val" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the mean of the given data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>[</em><em>float</em><em>] or </em><em>np.array</em>) – list or 1-d np.array with data values</p>
+</dd>
+<dt class="field-even">Returns mean</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Rtype float</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.multivariate_normal_dist">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">multivariate_normal_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covar_determinant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse_covar_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.multivariate_normal_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>All arguments assumed to be python lists</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.normalize_static">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">normalize_static</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.normalize_static" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize matrix such that its elements are in [0, 1]</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.side">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">side</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a position of the point c relative to the line going through a and b
+Points a, b are expected to be different</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.variance">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the var of the given data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>[</em><em>float</em><em>] or </em><em>np.array</em>) – list or 1-d np.array with data values</p>
+</dd>
+<dt class="field-even">Returns mean</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Rtype float</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data_module.html" class="btn btn-neutral float-left" title="4.7. data_module.py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="GUI.html" class="btn btn-neutral float-right" title="4.9. GUI.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Haakon Tvedt.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
