@@ -19,7 +19,6 @@ Images/Outputs/Buffers/
 Images/
 aacc.exe
 AutomAl6000.exe
-build/
 dist/
 Pipfile.lock
 aacc.spec
